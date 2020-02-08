@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.cse110_project.StrideCalculator;
 
@@ -25,6 +28,7 @@ public class HomeScreen extends AppCompatActivity {
     private Button addRouteBtn;
     private Chronometer mChronometer;
     private Button btnUpdateSteps;
+    private Button btnBoost;
 
     private TextView distance;
     private TextView estimatedDistance;
@@ -71,6 +75,20 @@ public class HomeScreen extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 selectFragment(item);
                 return false;
+            }
+        });
+
+
+        // TODO: STEP BOOST
+
+        btnBoost = findViewById(R.id.boostBtn);
+        btnBoost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String steps = textSteps.getText().toString();
+
+                int curr = Integer.parseInt(steps.substring(0,steps.indexOf(" ")));
+                setStepCount(curr + 500);
             }
         });
 
@@ -189,10 +207,18 @@ public class HomeScreen extends AppCompatActivity {
         double strideLength = calc.getStrideLength();
         double estimateDistance = stepCount * strideLength;
 
+        BigDecimal bd = new BigDecimal(estimateDistance);
+        bd = bd.round(new MathContext(3));
+        double rounded = bd.doubleValue();
+
         if (estimateDistance < FEET_IN_MILE){
-            estimatedDistance.setText(estimateDistance + " Feet");
+            estimatedDistance.setText(rounded + " Feet");
         } else {
-            estimatedDistance.setText((estimateDistance * 1.0 / FEET_IN_MILE ) + " Miles");
+            double convert = (estimateDistance * 1.0 / FEET_IN_MILE );
+            bd = new BigDecimal(convert);
+            bd = bd.round(new MathContext(3));
+            rounded = bd.doubleValue();
+            estimatedDistance.setText(rounded + " Miles");
         }
 
     }

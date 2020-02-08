@@ -110,7 +110,7 @@
 
         <Button
             android:id="@+id/stopWalkMaterial"
-            android:layout_width="match_parent"
+            android:layout_width="350sp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginTop="25sp"
@@ -123,11 +123,11 @@
             android:visibility="invisible"
             android:text="@string/endWalkLabel"
             android:textColor="@color/colorText"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/startWalkMaterial"
-            android:layout_width="match_parent"
+            android:layout_width="350sp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginTop="25sp"
@@ -138,7 +138,8 @@
             android:paddingRight="40dp"
             android:text="@string/startWalkLabel"
             android:textColor="@color/colorText"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
+
 
     </LinearLayout
  >

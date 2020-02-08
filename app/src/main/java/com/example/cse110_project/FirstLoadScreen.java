@@ -48,7 +48,7 @@ public class FirstLoadScreen extends AppCompatActivity {
             Toast.makeText(FirstLoadScreen.this, "NOTHING IN SHARED PREF" + name, Toast.LENGTH_SHORT).show();
             setContentView(R.layout.first_load_form);
         } else {
-            Toast.makeText(FirstLoadScreen.this, "PREF FOUND " + name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(FirstLoadScreen.this, "SharedPreference FOUND " + name, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, HomeScreen.class);
             intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
             startActivity(intent);
