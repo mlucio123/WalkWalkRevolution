@@ -42,6 +42,11 @@ public class FirstLoadScreen extends AppCompatActivity {
         });
 
         SharedPreferences sharedpreference_value = getSharedPreferences("user_info",MODE_PRIVATE);
+
+        /* FOR TESTING FIRST LOAD HEIGHT FORN */
+        // SharedPreferences.Editor editor = sharedpreference_value.edit();
+        // editor.clear().commit();
+
         String name = sharedpreference_value.getString("firstname", "");
 
         if(name.length() == 0) {
@@ -80,7 +85,9 @@ public class FirstLoadScreen extends AppCompatActivity {
                     toast.show();
                 } else {
                     Intent intent = new Intent(FirstLoadScreen.this, HomeScreen.class);
+                    intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
