@@ -35,4 +35,9 @@
     <string name="start_walk_btn">START WALK</string>
     <string name="add_route_btn_text">ADD ROUTE</string>
     <string name="boost_steps_btn_text">Boost Steps</string>
+    <string name="submit_text">Submit</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="route_name">Route Name</string>
+    <string name="start_position">Start Position</string>
+    <string name="new_route_text">New Route</string>
 </resources>
