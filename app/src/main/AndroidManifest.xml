@@ -14,13 +14,16 @@
             android:label="@string/title_activity_intentional_walk_screen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".HomeScreen">
+
+        </activity>
+        <activity android:name=".RouteScreen"></activity>
+        <activity android:name=".FirstLoadScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RouteScreen"></activity>
     </application>
 
 </manifest>
