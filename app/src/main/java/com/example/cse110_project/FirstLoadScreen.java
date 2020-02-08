@@ -80,7 +80,9 @@ public class FirstLoadScreen extends AppCompatActivity {
                     toast.show();
                 } else {
                     Intent intent = new Intent(FirstLoadScreen.this, HomeScreen.class);
+                    intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -129,10 +131,10 @@ public class FirstLoadScreen extends AppCompatActivity {
         editor.putString("firstname", fName);
         editor.putString("lastname", lName);
         editor.putInt("heightFt", ft);
-        editor.putInt("heightInch", ft);
+        editor.putInt("heightInch", inch);
         editor.putBoolean("STORED", false);
 
-        editor.apply();
+        //editor.apply();
         Toast.makeText(FirstLoadScreen.this, "Saved", Toast.LENGTH_SHORT).show();
 
         return true;

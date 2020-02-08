@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import com.example.cse110_project.HomeScreen;
 
-public class GoogleFitAdapter implements com.example.cse110_project.fitness.FitnessService {
+public class GoogleFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private final String TAG = "GoogleFitAdapter";
     private GoogleSignInAccount account;

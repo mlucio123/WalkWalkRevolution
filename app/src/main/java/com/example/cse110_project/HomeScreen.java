@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.cse110_project.StrideCalculator;
 
@@ -53,7 +54,8 @@ public class HomeScreen extends AppCompatActivity {
 
         // google fit initialize
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
-        fitnessService = com.example.cse110_project.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
+        System.out.println("FNSK: " + fitnessServiceKey);
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
 
 
         // update button for step count
@@ -66,7 +68,7 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-        fitnessService.setup();
+       fitnessService.setup();
 
         // bottom navigation bar implementation
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
