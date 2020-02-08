@@ -21,4 +21,8 @@ public class StrideCalculator {
     public void setFt(int newFt) { this.ft = newFt; }
     public void setInch(int newInch) { this.inch = newInch; }
 
+    //FOR TESTING
+    public int getFt() { return this.ft; }
+    public int getInch() { return this.inch; }
+
 }
