@@ -1,6 +1,8 @@
 package com.example.cse110_project;
 
 
+import android.nfc.Tag;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -12,6 +14,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.google.android.material.tabs.TabLayout;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -50,6 +53,8 @@ public class HomeScreenTest {
                 return new TestFitnessService(homeScreen);
             }
         });
+
+        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
@@ -110,6 +115,7 @@ public class HomeScreenTest {
                                 1),
                         isDisplayed()));
         textView.check(matches(withText("0 Steps")));
+        Log.d( "SHOWING STEP COUNT: x ",textView.toString());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.buttonUpdateSteps), withText("Update Steps"),
@@ -129,7 +135,7 @@ public class HomeScreenTest {
                                         2),
                                 1),
                         isDisplayed()));
-        textView2.check(matches(withText("323")));
+        textView2.check(matches(withText("323 Steps")));
     }
 
     private static Matcher<View> childAtPosition(

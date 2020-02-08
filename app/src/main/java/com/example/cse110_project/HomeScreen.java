@@ -54,7 +54,6 @@ public class HomeScreen extends AppCompatActivity {
 
         // google fit initialize
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
-        System.out.println("FNSK: " + fitnessServiceKey);
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
 
 
