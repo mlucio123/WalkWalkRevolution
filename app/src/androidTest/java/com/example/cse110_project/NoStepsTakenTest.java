@@ -1,8 +1,6 @@
 package com.example.cse110_project;
 
 
-import android.nfc.Tag;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -11,10 +9,6 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
-
-import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.FitnessServiceFactory;
-import com.google.android.material.tabs.TabLayout;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -27,6 +21,7 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -37,26 +32,14 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
-public class HomeScreenTest {
-
-    private static final String TEST_SERVICE = "TEST_SERVICE";
+@RunWith(AndroidJUnit4.class)
+public class NoStepsTakenTest {
 
     @Rule
     public ActivityTestRule<FirstLoadScreen> mActivityTestRule = new ActivityTestRule<>(FirstLoadScreen.class);
 
     @Test
-    //Check that steps are correct when updated
-    public void homeScreenTest() {
-
-        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(HomeScreen homeScreen) {
-                return new TestFitnessService(homeScreen);
-            }
-        });
-
-        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
-
+    public void noStepsTakenTest() {
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(
@@ -65,9 +48,69 @@ public class HomeScreenTest {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Connor"), closeSoftKeyboard());
+        appCompatEditText.perform(click());
 
         ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.userFirstName),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("Co"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.userFirstName), withText("Co"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatEditText3.perform(click());
+
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.userFirstName), withText("Co"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("Connor"));
+
+        ViewInteraction appCompatEditText5 = onView(
+                allOf(withId(R.id.userFirstName), withText("Connor"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatEditText5.perform(closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.userFirstName), withText("Connor"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatEditText6.perform(click());
+
+        ViewInteraction appCompatEditText7 = onView(
+                allOf(withId(R.id.userFirstName), withText("Connor"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatEditText7.perform(click());
+
+        ViewInteraction appCompatEditText8 = onView(
                 allOf(withId(R.id.userLastName),
                         childAtPosition(
                                 childAtPosition(
@@ -75,9 +118,9 @@ public class HomeScreenTest {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("p"), closeSoftKeyboard());
+        appCompatEditText8.perform(replaceText("P"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText3 = onView(
+        ViewInteraction appCompatEditText9 = onView(
                 allOf(withId(R.id.userHeightFt),
                         childAtPosition(
                                 childAtPosition(
@@ -85,9 +128,9 @@ public class HomeScreenTest {
                                         3),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("8"), closeSoftKeyboard());
+        appCompatEditText9.perform(replaceText("4"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText4 = onView(
+        ViewInteraction appCompatEditText10 = onView(
                 allOf(withId(R.id.userHeightInch),
                         childAtPosition(
                                 childAtPosition(
@@ -95,7 +138,17 @@ public class HomeScreenTest {
                                         3),
                                 3),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("4"), closeSoftKeyboard());
+        appCompatEditText10.perform(replaceText("4"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText11 = onView(
+                allOf(withId(R.id.userHeightInch), withText("4"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                3),
+                        isDisplayed()));
+        appCompatEditText11.perform(pressImeActionButton());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -116,7 +169,6 @@ public class HomeScreenTest {
                                 1),
                         isDisplayed()));
         textView.check(matches(withText("0 Steps")));
-        Log.d( "SHOWING STEP COUNT: x ",textView.toString());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.buttonUpdateSteps), withText("Update Steps"),
@@ -129,14 +181,14 @@ public class HomeScreenTest {
         appCompatButton2.perform(click());
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.homeDailyStepsCount),
+                allOf(withId(R.id.homeDailyStepsCount), withText("0 Steps"),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
                                         2),
                                 1),
                         isDisplayed()));
-        textView2.check(matches(withText("323 Steps")));
+        textView2.check(matches(withText("0 Steps")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -157,30 +209,4 @@ public class HomeScreenTest {
             }
         };
     }
-
-    private class TestFitnessService implements FitnessService {
-        private static final String TAG = "[TestFitnessService]: ";
-        private HomeScreen homeScreen;
-
-        public TestFitnessService(HomeScreen stepCountActivity) {
-            this.homeScreen = stepCountActivity;
-        }
-
-        @Override
-        public int getRequestCode() {
-            return 0;
-        }
-
-        @Override
-        public void setup() {
-            System.out.println(TAG + "setup");
-        }
-
-        @Override
-        public void updateStepCount() {
-            System.out.println(TAG + "updateStepCount");
-            homeScreen.setStepCount(323);
-        }
-    }
-
 }
