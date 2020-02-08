@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">CSE110_project</string>
+    <string name="app_name">Walk Walk  Revolution</string>
+    <string name="walkTitle">Walk</string>
+    <string name="homeTitle">Home</string>
+    <string name="home">Home</string>
+    <string name="walk">Walk</string>
+    <string name="route">Route</string>
+    <string name="today_s_stats">Today\'s Stats</string>
+    <string name="steps_title">Steps:</string>
+    <string name="default_zero">0</string>
+    <string name="distance">Distance:</string>
+    <string name="estimates">Estimates:</string>
+    <string name="large_distance">100000 Miles</string>
 </resources>
