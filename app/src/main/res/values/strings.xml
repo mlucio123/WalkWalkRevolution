@@ -44,4 +44,9 @@
     <string name="enter_cross_street1">Cross Street 1</string>
     <string name="enter_cross_street2">Cross Street 2</string>
     <string name="enter_notes">Notes (optional)</string>
+    <string name="submit_text">Submit</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="route_name">Route Name</string>
+    <string name="start_position">Start Position</string>
+    <string name="new_route_text">New Route</string>
 </resources>
