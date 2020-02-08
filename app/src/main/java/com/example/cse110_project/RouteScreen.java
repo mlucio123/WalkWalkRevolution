@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class RouteScreen extends AppCompatActivity {
+    private String fitnessServiceKey = "GOOGLE_FIT";
 
     private BottomNavigationView bottomNavigationView;
 
@@ -34,6 +35,7 @@ public class RouteScreen extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.navigation_home:
                 newIntent = new Intent(this, HomeScreen.class);
+                newIntent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                 startActivity(newIntent);
                 break;
             case R.id.navigation_walk:

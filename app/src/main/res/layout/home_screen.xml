@@ -11,7 +11,7 @@
         android:id="@+id/homeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
+        android:layout_marginTop="15sp"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/lato"
         android:text="@string/home"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textSize="55sp"
-        android:layout_marginTop="25sp"
+        android:layout_marginTop="15sp"
         android:fontFamily="@font/lato_bold"
         android:textColor="@color/colorText"
         android:text="@string/today_s_stats" />
@@ -32,7 +32,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40sp"
+        android:layout_marginTop="15sp"
         android:layout_marginLeft="30sp"
         android:layout_marginRight="30sp"
         android:orientation="horizontal"
@@ -53,15 +53,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_bold"
-            android:text="@string/default_zero"
+            android:text="@string/default_zero_steps"
             android:textColor="@color/colorAccent"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
+        android:layout_marginTop="15sp"
         android:layout_marginLeft="30sp"
         android:layout_marginRight="30sp"
         android:orientation="horizontal"
@@ -82,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_bold"
-            android:text="@string/large_distance"
+            android:text="@string/default_zero_miles"
             android:textColor="@color/colorAccent"
             android:textSize="25sp" />
     </LinearLayout>
@@ -90,7 +91,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
+        android:layout_marginTop="15sp"
         android:layout_marginLeft="30sp"
         android:layout_marginRight="30sp"
         android:orientation="horizontal"
@@ -137,11 +138,24 @@
             android:textColor="@color/colorText"/>
     </LinearLayout>
 
-
+    <Button
+        android:id="@+id/buttonUpdateSteps"
+        android:layout_width="250sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_rounded"
+        android:drawableStart="@drawable/ic_refresh_black_24dp"
+        android:drawablePadding="5dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:layout_marginTop="25sp"
+        android:text="@string/update_steps"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/startBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="250sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/btn_rounded"
@@ -150,43 +164,75 @@
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:layout_marginTop="25sp"
-        android:text="START WALK"
+        android:text="@string/start_walk_btn"
         android:textColor="#FFFFFF"
-        android:textSize="15sp" />
+        android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/addBtn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/btn_rounded"
-        android:drawableStart="@drawable/ic_add_white_24dp"
-        android:drawablePadding="5dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
         android:layout_marginTop="25sp"
-        android:text="ADD ROUTE"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp" />
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp"
+        style="?android:attr/buttonBarStyle"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
 
-        <FrameLayout
-            android:id="@+id/frameLayout"
+
+        <Button
+            android:id="@+id/boostBtn"
+            android:layout_width="150sp"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_height="50sp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_rounded"
+            android:drawableStart="@drawable/ic_add_white_24dp"
+            android:drawablePadding="5dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="@string/boost_steps_btn_text"
+            android:layout_marginEnd="5sp"
+            android:backgroundTint="@color/stop"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
+
+        <Button
+            android:id="@+id/addBtn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="150sp"
+            android:layout_height="50sp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_rounded"
+            android:drawableStart="@drawable/ic_add_white_24dp"
+            android:drawablePadding="5dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:layout_marginStart="5sp"
+            android:text="@string/add_route_btn_text"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Main content -->
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="@color/white"
+            app:menu="@menu/bottom_navigation_menu" />
 
-            <!-- Main content -->
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/colorPrimary"
-                app:itemIconTint="@color/white"
-                app:itemTextColor="@color/white"
-                app:menu="@menu/bottom_navigation_menu" />
-
-        </FrameLayout>
+    </FrameLayout>
 
 
 </LinearLayout>

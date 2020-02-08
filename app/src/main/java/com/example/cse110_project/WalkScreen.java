@@ -23,6 +23,8 @@ import java.util.Observable;
 
 public class WalkScreen extends AppCompatActivity {
 
+    private String fitnessServiceKey = "GOOGLE_FIT";
+
     private Button startButton;
     private Button endButton;
     private Chronometer mChronometer;
@@ -108,6 +110,7 @@ public class WalkScreen extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.navigation_home:
                 newIntent = new Intent(this, HomeScreen.class);
+                newIntent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                 startActivity(newIntent);
                 break;
             case R.id.navigation_routes:

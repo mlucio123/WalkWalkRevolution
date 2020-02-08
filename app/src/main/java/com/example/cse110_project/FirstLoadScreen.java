@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class FirstLoadScreen extends AppCompatActivity {
@@ -23,11 +26,20 @@ public class FirstLoadScreen extends AppCompatActivity {
     private EditText lastName;
     private EditText heightFt;
     private EditText heightInch;
+    private String fitnessServiceKey = "GOOGLE_FIT";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(HomeScreen stepCountActivity) {
+                return new GoogleFitAdapter(stepCountActivity);
+            }
+        });
 
         SharedPreferences sharedpreference_value = getSharedPreferences("user_info",MODE_PRIVATE);
         String name = sharedpreference_value.getString("firstname", "");
@@ -36,8 +48,9 @@ public class FirstLoadScreen extends AppCompatActivity {
             Toast.makeText(FirstLoadScreen.this, "NOTHING IN SHARED PREF" + name, Toast.LENGTH_SHORT).show();
             setContentView(R.layout.first_load_form);
         } else {
-            Toast.makeText(FirstLoadScreen.this, "PREF FOUND " + name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(FirstLoadScreen.this, "SharedPreference FOUND " + name, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, HomeScreen.class);
+            intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
             startActivity(intent);
             finish();
         }
@@ -73,6 +86,10 @@ public class FirstLoadScreen extends AppCompatActivity {
         });
 
 
+    }
+
+    public void setFitnessServiceKey(String fitnessServiceKey) {
+        this.fitnessServiceKey = fitnessServiceKey;
     }
 
     private boolean validateFormInput(EditText firstName, EditText lastName, EditText heightFt, EditText heightInch){

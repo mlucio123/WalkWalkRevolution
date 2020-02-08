@@ -29,4 +29,10 @@
     <string name="inch_text">Inch</string>
     <string name="get_started_msg">Get Started</string>
     <string name="first_name_qry">First Name:</string>
+    <string name="update_steps">Update Steps</string>
+    <string name="default_zero_miles">0 Miles</string>
+    <string name="default_zero_steps">0 Steps</string>
+    <string name="start_walk_btn">START WALK</string>
+    <string name="add_route_btn_text">ADD ROUTE</string>
+    <string name="boost_steps_btn_text">Boost Steps</string>
 </resources>
