@@ -32,7 +32,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
+        android:layout_marginTop="20sp"
         android:layout_marginLeft="30sp"
         android:layout_marginRight="30sp"
         android:orientation="horizontal"
@@ -117,6 +117,28 @@
     </LinearLayout>
 
 
+<!--    VISIBILITY SET TO INVISIBLE-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal">
+
+        <Chronometer
+            android:id="@+id/homeTimer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15sp"
+            android:format="00:00:00"
+            android:gravity="center_horizontal"
+            android:textSize="45sp"
+            android:textColor="@color/colorText"/>
+    </LinearLayout>
+
+
+
     <Button
         android:id="@+id/startBtn"
         android:layout_width="wrap_content"
@@ -127,7 +149,7 @@
         android:drawablePadding="5dp"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
-        android:layout_marginTop="35sp"
+        android:layout_marginTop="25sp"
         android:text="START WALK"
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
@@ -147,24 +169,24 @@
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!-- Main content -->
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+        <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            app:itemIconTint="@color/white"
-            app:itemTextColor="@color/white"
-            app:menu="@menu/bottom_navigation_menu" />
+            android:layout_height="match_parent">
 
-    </FrameLayout>
+            <!-- Main content -->
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/colorPrimary"
+                app:itemIconTint="@color/white"
+                app:itemTextColor="@color/white"
+                app:menu="@menu/bottom_navigation_menu" />
+
+        </FrameLayout>
 
 
 </LinearLayout>

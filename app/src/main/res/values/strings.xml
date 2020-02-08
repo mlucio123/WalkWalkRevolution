@@ -11,4 +11,14 @@
     <string name="distance">Distance:</string>
     <string name="estimates">Estimates:</string>
     <string name="large_distance">100000 Miles</string>
+    <string name="title_activity_intentional_walk_screen">IntentionalWalkScreen</string>
+    <string name="walkPageTitle">Walk</string>
+    <string name="stepsStr">Step Count:</string>
+    <string name="distanceStr">Distance Traveled:</string>
+    <string name="stopWalkStr">Stop Walk</string>
+    <string name="startWalkLabel">Start Walking!</string>
+    <string name="endWalkLabel">End My Walk</string>
+    <string name="startingTime">00</string>
+    <string name="colonStr">:</string>
+    <string name="homeStr">Home</string>
 </resources>
