@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="74dp"
+        android:layout_marginTop="5sp"
+        android:layout_marginLeft="5sp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="#00FFFFFF"
+        app:srcCompat="@android:drawable/btn_dialog" />
+
+    <TextView
+        android:id="@+id/route_form_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20sp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/route_form_title"
+        android:textColor="@color/colorText"
+        android:textSize="35sp" />
+
+
+    <LinearLayout
+        android:id="@+id/route_name_entry"
+        android:layout_width="match_parent"
+        android:layout_height="102dp"
+        android:layout_marginTop="50sp"
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/route_name_display"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorText"
+            android:textSize="25sp"
+            android:fontFamily="@font/lato"
+            android:text="@string/enter_route_name" />
+
+        <EditText
+            android:id="@+id/routeNameUserEntry"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/white"
+            android:fontFamily="@font/lato_bold"
+            android:hint="@string/enter_route_name"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/colorAccent"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cross_streets_entry"
+        android:layout_width="match_parent"
+        android:layout_height="153dp"
+        android:layout_marginLeft="30sp"
+        android:layout_marginTop="30sp"
+        android:layout_marginRight="30sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cross_streets_display"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/lato"
+            android:text="@string/enter_cross_streets"
+            android:textColor="@color/colorText"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/crossStreetsUserEntry"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/white"
+            android:fontFamily="@font/lato_bold"
+            android:hint="@string/enter_cross_street1"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/colorAccent"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/crossStreets2UserEntry"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/text_border"
+            android:fontFamily="@font/lato_bold"
+            android:hint="@string/enter_cross_street2"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/colorAccent"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notes_entry"
+        android:layout_width="match_parent"
+        android:layout_height="102dp"
+        android:layout_marginTop="20sp"
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/notes_display"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorText"
+            android:textSize="25sp"
+            android:fontFamily="@font/lato"
+            android:text="@string/enter_notes" />
+
+        <EditText
+            android:id="@+id/notesUserEntry"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/white"
+            android:fontFamily="@font/lato_bold"
+            android:hint="@string/enter_notes"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/colorAccent"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/addRouteEntryBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20sp"
+        android:background="@drawable/btn_rounded"
+        android:drawableStart="@drawable/ic_check_white_24dp"
+        android:drawablePadding="5dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:text="@string/submitRoute"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+
+
+</LinearLayout>

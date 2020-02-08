@@ -18,6 +18,22 @@
         android:textColor="@color/colorText"
         android:textSize="45sp" />
 
+    <ScrollView
+        android:id="@+id/routeContain"
+        android:layout_width="match_parent"
+        android:layout_height="543dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/addRouteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_route_btn_text" />
 
     <FrameLayout
         android:id="@+id/frameLayout"

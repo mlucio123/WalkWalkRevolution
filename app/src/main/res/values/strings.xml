@@ -35,4 +35,13 @@
     <string name="start_walk_btn">START WALK</string>
     <string name="add_route_btn_text">ADD ROUTE</string>
     <string name="boost_steps_btn_text">Boost Steps</string>
+
+
+    <string name="route_form_title">Enter Route Info</string>
+    <string name="enter_route_name">Enter Route Name</string>
+    <string name="submitRoute">Submit Route info</string>
+    <string name="enter_cross_streets">Enter Start Location</string>
+    <string name="enter_cross_street1">Cross Street 1</string>
+    <string name="enter_cross_street2">Cross Street 2</string>
+    <string name="enter_notes">Notes (optional)</string>
 </resources>
