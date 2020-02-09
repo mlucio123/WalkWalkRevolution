@@ -2,10 +2,14 @@ package com.example.cse110_project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -28,11 +32,26 @@ public class FirstLoadScreen extends AppCompatActivity {
     private EditText heightInch;
     private String fitnessServiceKey = "GOOGLE_FIT";
 
+    private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
+
+            Toast.makeText(FirstLoadScreen.this, "PERMISSION NONE", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(FirstLoadScreen.this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
+        }
+
 
         FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -44,8 +63,8 @@ public class FirstLoadScreen extends AppCompatActivity {
         SharedPreferences sharedpreference_value = getSharedPreferences("user_info",MODE_PRIVATE);
 
         /* FOR TESTING FIRST LOAD HEIGHT FORN */
-        // SharedPreferences.Editor editor = sharedpreference_value.edit();
-        // editor.clear().commit();
+//         SharedPreferences.Editor editor = sharedpreference_value.edit();
+//         editor.clear().commit();
 
         String name = sharedpreference_value.getString("firstname", "");
 

@@ -78,10 +78,9 @@ public class RouteFormScreen extends AppCompatActivity {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RouteFormScreen.this, HomeScreen.class);
-                intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
-                startActivity(intent);
-//                finish();
+
+                // return to walk screen
+                finish();
             }
         });
 
@@ -98,7 +97,6 @@ public class RouteFormScreen extends AppCompatActivity {
                     Intent intent = new Intent(RouteFormScreen.this, HomeScreen.class);
                     intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                     startActivity(intent);
-//                    finish();
                 }
             }
         });

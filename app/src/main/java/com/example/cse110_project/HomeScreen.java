@@ -62,7 +62,7 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fitnessService.updateStepCount();
-
+                fitnessService.readHistoryData();
             }
         });
 
@@ -188,10 +188,15 @@ public class HomeScreen extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == fitnessService.getRequestCode()) {
                 fitnessService.updateStepCount();
+                fitnessService.readHistoryData();
             }
         } else {
             Log.e(TAG, "ERROR, google fit result code: " + resultCode);
         }
+    }
+
+    public void setDistance(long distanceValue){
+        distance.setText(String.valueOf(distanceValue) + " Miles");
     }
 
     public void setStepCount(long stepCount) {
