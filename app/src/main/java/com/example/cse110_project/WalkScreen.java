@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -26,11 +27,18 @@ public class WalkScreen extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
 
     private Button startButton;
+    private Button doneWalkButton;
     private Button endButton;
     private Chronometer mChronometer;
     private BottomNavigationView bottomNavigationView;
     private long walkTime;
     Walk currentWalk;
+
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+    private static final String TAG = "HomeScreen";
+    private static final int FEET_IN_MILE = 5280;
+    private TextView textSteps;
+    private com.example.cse110_project.fitness.FitnessService fitnessService;
 
     private boolean walking;
 
@@ -41,9 +49,12 @@ public class WalkScreen extends AppCompatActivity {
 
         startButton = findViewById(R.id.startWalkMaterial);
         endButton = findViewById(R.id.stopWalkMaterial);
+        doneWalkButton = findViewById(R.id.doneWalkBtn);
         mChronometer = findViewById(R.id.timerDisplay);
         endButton.setVisibility(View.GONE);
-//        Button homeButton = findViewById(R.id.homeButton);
+
+        textSteps = findViewById(R.id.stepView);
+
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,15 +80,17 @@ public class WalkScreen extends AppCompatActivity {
                     }
                 });
                 //start updating steps/distance traveled
+
             }
         });
 
-//        homeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
+        doneWalkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WalkScreen.this, RouteFormScreen.class);
+                startActivity(intent);
+            }
+        });
 
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
