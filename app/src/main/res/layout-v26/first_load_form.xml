@@ -28,7 +28,7 @@
         android:layout_gravity="center_horizontal">
 
         <TextView
-            android:id="@+id/firstNameEntry"
+            android:id="@+id/routeNameEntry"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
