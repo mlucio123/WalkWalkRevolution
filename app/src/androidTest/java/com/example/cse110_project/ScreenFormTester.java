@@ -39,7 +39,7 @@ public class ScreenFormTester {
 
     @Test
     public void testFormPopulatesRoute() {
-        String name = "exampleName";
+        final String name = "exampleName";
         final String location = "exampleLocation";
         ActivityScenario<RouteFormScreen> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(new ActivityScenario.ActivityAction<RouteFormScreen>() {
