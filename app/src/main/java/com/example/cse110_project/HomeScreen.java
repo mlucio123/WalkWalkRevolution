@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 
@@ -120,7 +121,7 @@ public class HomeScreen extends AppCompatActivity {
         addRouteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeScreen.this, RouteScreen.class);
+                Intent intent = new Intent(HomeScreen.this, RouteFormScreen.class);
                 startActivity(intent);
             }
         });
