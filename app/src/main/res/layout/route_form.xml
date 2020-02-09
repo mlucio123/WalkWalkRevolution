@@ -40,6 +40,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="5sp"
             android:background="@drawable/btn_circular"
+            android:contextClickable="true"
             android:drawableStart="@drawable/ic_favorite_border_black_24dp"
             android:drawablePadding="15dp"
             android:paddingLeft="13dp"
@@ -68,7 +69,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/routeName"
+            android:id="@+id/routeNameDisplay"
             android:layout_width="180sp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_bold"
@@ -137,10 +138,10 @@
             android:id="@+id/routeStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20sp"
-            android:layout_marginLeft="20sp"
             android:layout_centerInParent="true"
-            android:checked="true"/>
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp"
+            android:checked="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -354,20 +355,20 @@
 
 
         <Button
-            android:id="@+id/submitBtn"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="150sp"
-            android:layout_height="50sp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_rounded"
-            android:drawableStart="@drawable/ic_check_white_24dp"
-            android:drawablePadding="5dp"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:layout_marginStart="5sp"
-            android:text="@string/submit_text"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp" />
+        android:id="@+id/submitBtn"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="150sp"
+        android:layout_height="50sp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_rounded"
+        android:drawableStart="@drawable/ic_check_white_24dp"
+        android:drawablePadding="5dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:layout_marginStart="5sp"
+        android:text="@string/submit_text"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp" />
 
     </LinearLayout>
 

@@ -36,20 +36,25 @@ public class RouteFormScreen extends AppCompatActivity {
     private Button hardBtn;
     private Button cancelBtn;
     private Button submitBtn;
+    private SwitchMaterial rStyle;
+    private SwitchMaterial rLand;
+    private SwitchMaterial rType;
+    private SwitchMaterial rSurface;
 
     private EditText routeName;
     private EditText startPosition;
 
     private String fitnessServiceKey = "GOOGLE_FIT";
+    boolean favorite = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.route_form);
 
         routeName = findViewById(R.id.routeName);
+        startPosition = findViewById(R.id.routeStart);
 
         cancelBtn = findViewById(R.id.cancelBtn);
         submitBtn = findViewById(R.id.submitBtn);
@@ -60,6 +65,12 @@ public class RouteFormScreen extends AppCompatActivity {
 
         favBtn = findViewById(R.id.favBtn);
 
+        rStyle = findViewById(R.id.routeStyle);
+        rLand = findViewById(R.id.routeLand);
+        rType = findViewById(R.id.routeType);
+        rSurface = findViewById(R.id.routeSurface);
+
+
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,8 +80,10 @@ public class RouteFormScreen extends AppCompatActivity {
 
                 if ( favBtn.getBackgroundTintList() == ColorStateList.valueOf( 0xFF000000 )){
                     favBtn.setBackgroundTintList( ColorStateList.valueOf( 0xFFFF0000 ) );
+                    favorite = true;
                 } else {
                     favBtn.setBackgroundTintList( ColorStateList.valueOf( 0xFF000000 ) );
+                    favorite = false;
                 }
             }
         });
@@ -89,14 +102,18 @@ public class RouteFormScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (routeName.getText().toString() == null) {
+                if (routeName.getText().toString().equals("")) {
                     Toast.makeText(RouteFormScreen.this, "You did not fill in route name.", Toast.LENGTH_SHORT).show();
                 } else {
 
                     // TODO CREATE OBJ OF CORRESPONDING MESSAGES AND SEND TO FIREBASE
+                    boolean[] tags ={rStyle.isChecked(), rLand.isChecked(), rType.isChecked(), rSurface.isChecked()};
 
-                    Intent intent = new Intent(RouteFormScreen.this, HomeScreen.class);
-                    intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
+                    Route newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
+                            tags, favorite, "");
+
+                    Intent intent = new Intent(RouteFormScreen.this, RouteScreen.class);
+                    //intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                     startActivity(intent);
 //                    finish();
                 }

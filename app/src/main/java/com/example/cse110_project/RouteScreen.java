@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class RouteScreen extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
+    private Button addRoute;
 
 
 
@@ -27,6 +28,16 @@ public class RouteScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.route_screen);
+
+        final Intent intent = new Intent(this, RouteFormScreen.class);
+
+        addRoute = findViewById(R.id.addRouteBtn);
+        addRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
 
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
