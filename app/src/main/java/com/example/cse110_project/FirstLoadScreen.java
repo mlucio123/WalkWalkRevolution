@@ -42,6 +42,11 @@ public class FirstLoadScreen extends AppCompatActivity {
         });
 
         SharedPreferences sharedpreference_value = getSharedPreferences("user_info",MODE_PRIVATE);
+
+        /* FOR TESTING FIRST LOAD HEIGHT FORN */
+        // SharedPreferences.Editor editor = sharedpreference_value.edit();
+        // editor.clear().commit();
+
         String name = sharedpreference_value.getString("firstname", "");
 
         if(name.length() == 0) {
