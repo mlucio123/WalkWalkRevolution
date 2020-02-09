@@ -155,7 +155,7 @@ public class FirstLoadScreen extends AppCompatActivity {
         editor.putString("firstname", fName);
         editor.putString("lastname", lName);
         editor.putInt("heightFt", ft);
-        editor.putInt("heightInch", ft);
+        editor.putInt("heightInch", inch);
         editor.putBoolean("STORED", false);
 
         editor.apply();
