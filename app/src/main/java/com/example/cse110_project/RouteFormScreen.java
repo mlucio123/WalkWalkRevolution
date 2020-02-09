@@ -40,6 +40,7 @@ public class RouteFormScreen extends AppCompatActivity {
     private SwitchMaterial rLand;
     private SwitchMaterial rType;
     private SwitchMaterial rSurface;
+    public Route newRoute; // Public for now for testing
 
     private EditText routeName;
     private EditText startPosition;
@@ -109,7 +110,7 @@ public class RouteFormScreen extends AppCompatActivity {
                     // TODO CREATE OBJ OF CORRESPONDING MESSAGES AND SEND TO FIREBASE
                     boolean[] tags ={rStyle.isChecked(), rLand.isChecked(), rType.isChecked(), rSurface.isChecked()};
 
-                    Route newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
+                    newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
                             tags, favorite, "");
 
                     Intent intent = new Intent(RouteFormScreen.this, RouteScreen.class);

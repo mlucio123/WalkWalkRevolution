@@ -19,4 +19,12 @@ public class Route extends Observable {
             this.extraNotes = extraNotes;
             this.favorite = favorite;
     }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public String getStartingPoint(){
+        return this.startingPoint;
+    }
 }
