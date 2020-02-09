@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.cse110_project.StrideCalculator;
 
@@ -54,7 +55,7 @@ public class HomeScreen extends AppCompatActivity {
 
         // google fit initialize
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
-        fitnessService = com.example.cse110_project.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
 
 
         // update button for step count
@@ -63,11 +64,11 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fitnessService.updateStepCount();
-
+                fitnessService.readHistoryData();
             }
         });
 
-        fitnessService.setup();
+       fitnessService.setup();
 
         // bottom navigation bar implementation
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -189,10 +190,15 @@ public class HomeScreen extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == fitnessService.getRequestCode()) {
                 fitnessService.updateStepCount();
+                fitnessService.readHistoryData();
             }
         } else {
             Log.e(TAG, "ERROR, google fit result code: " + resultCode);
         }
+    }
+
+    public void setDistance(long distanceValue){
+        distance.setText(String.valueOf(distanceValue) + " Miles");
     }
 
     public void setStepCount(long stepCount) {
@@ -213,12 +219,14 @@ public class HomeScreen extends AppCompatActivity {
         double rounded = bd.doubleValue();
 
         if (estimateDistance < FEET_IN_MILE){
+            //String estDistStr = rounded + "@string/space" + "@string/feetStr";
             estimatedDistance.setText(rounded + " Feet");
         } else {
             double convert = (estimateDistance * 1.0 / FEET_IN_MILE );
             bd = new BigDecimal(convert);
             bd = bd.round(new MathContext(3));
             rounded = bd.doubleValue();
+            String estDistStr = rounded + "@string/space" + "@string/milesStr";
             estimatedDistance.setText(rounded + " Miles");
         }
 

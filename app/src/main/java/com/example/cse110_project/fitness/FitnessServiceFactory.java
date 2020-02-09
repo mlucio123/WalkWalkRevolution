@@ -17,12 +17,12 @@ public class FitnessServiceFactory {
         blueprints.put(key, bluePrint);
     }
 
-    public static com.example.cse110_project.fitness.FitnessService create(String key, HomeScreen stepCountActivity) {
+    public static FitnessService create(String key, HomeScreen homeScreen) {
         Log.i(TAG, String.format("creating FitnessService with key %s", key));
-        return blueprints.get(key).create(stepCountActivity);
+        return blueprints.get(key).create(homeScreen);
     }
 
     public interface BluePrint {
-        com.example.cse110_project.fitness.FitnessService create(HomeScreen stepCountActivity);
+        FitnessService create(HomeScreen stepCountActivity);
     }
 }
