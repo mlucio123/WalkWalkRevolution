@@ -22,6 +22,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,6 +50,7 @@ public class HomeScreenTest {
     public ActivityTestRule<FirstLoadScreen> mActivityTestRule = new ActivityTestRule<>(FirstLoadScreen.class);
 
     @Before
+    @After
     public void clearSharedPrefs() {
         SharedPreferences.Editor editor = mActivityTestRule.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE).edit();
         editor.clear();
@@ -179,6 +181,11 @@ public class HomeScreenTest {
         @Override
         public int getRequestCode() {
             return 0;
+        }
+
+        @Override
+        public void readHistoryData() {
+
         }
 
         @Override

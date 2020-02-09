@@ -132,7 +132,7 @@ public class FirstLoadScreen extends AppCompatActivity {
         try {
 
             fName = firstName.getText().toString();
-            lName = firstName.getText().toString();
+            lName = lastName.getText().toString();
 
             ft = Integer.parseInt(heightFt.getText().toString());
             inch = Integer.parseInt(heightInch.getText().toString());
