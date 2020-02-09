@@ -1,6 +1,8 @@
 package com.example.cse110_project;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +22,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +36,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -43,6 +47,13 @@ public class HomeScreenTest {
 
     @Rule
     public ActivityTestRule<FirstLoadScreen> mActivityTestRule = new ActivityTestRule<>(FirstLoadScreen.class);
+
+    @Before
+    public void clearSharedPrefs() {
+        SharedPreferences.Editor editor = mActivityTestRule.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.apply();
+    }
 
     @Test
     //Check that steps are correct when updated
@@ -116,7 +127,6 @@ public class HomeScreenTest {
                                 1),
                         isDisplayed()));
         textView.check(matches(withText("0 Steps")));
-        Log.d( "SHOWING STEP COUNT: x ",textView.toString());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.buttonUpdateSteps), withText("Update Steps"),

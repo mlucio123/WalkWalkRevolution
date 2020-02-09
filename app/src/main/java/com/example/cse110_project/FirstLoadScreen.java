@@ -134,7 +134,7 @@ public class FirstLoadScreen extends AppCompatActivity {
         editor.putInt("heightInch", inch);
         editor.putBoolean("STORED", false);
 
-        //editor.apply();
+        editor.apply();
         Toast.makeText(FirstLoadScreen.this, "Saved", Toast.LENGTH_SHORT).show();
 
         return true;
