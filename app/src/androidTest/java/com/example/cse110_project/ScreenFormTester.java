@@ -52,8 +52,6 @@ public class ScreenFormTester {
                 locationText.setText(location);
 
                 activity.newRoute.getName();
-               
-
 
             }
         });
