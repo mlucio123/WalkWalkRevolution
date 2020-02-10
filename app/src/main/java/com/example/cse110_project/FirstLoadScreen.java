@@ -1,6 +1,5 @@
 package com.example.cse110_project;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -11,8 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class FirstLoadScreen extends AppCompatActivity {
 
@@ -148,17 +144,9 @@ public class FirstLoadScreen extends AppCompatActivity {
             return false;
         }
 
-        //update to SharedPreference
-        SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        AccessSharedPrefs setPrefs = new AccessSharedPrefs();
+        setPrefs.setUserInfo(this, fName, lName, ft, inch);
 
-        editor.putString("firstname", fName);
-        editor.putString("lastname", lName);
-        editor.putInt("heightFt", ft);
-        editor.putInt("heightInch", inch);
-        editor.putBoolean("STORED", false);
-
-        editor.apply();
         Toast.makeText(FirstLoadScreen.this, "Saved", Toast.LENGTH_SHORT).show();
 
         return true;

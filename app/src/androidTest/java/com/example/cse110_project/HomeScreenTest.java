@@ -12,6 +12,7 @@ import android.view.ViewParent;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.example.cse110_project.fitness.FitnessService;
@@ -56,6 +57,12 @@ public class HomeScreenTest {
         editor.clear();
         editor.apply();
     }
+
+
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION");
 
     @Test
     //Check that steps are correct when updated
