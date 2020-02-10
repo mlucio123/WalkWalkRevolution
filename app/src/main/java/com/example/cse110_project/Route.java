@@ -1,5 +1,8 @@
 package com.example.cse110_project;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Observable;
 
 public class Route extends Observable {
@@ -9,6 +12,7 @@ public class Route extends Observable {
     private boolean[] tags;
     private String extraNotes;
     private Boolean favorite;
+    private DatabaseReference mDatabase;
 
     //other stuff
 
@@ -26,5 +30,14 @@ public class Route extends Observable {
 
     public String getStartingPoint(){
         return this.startingPoint;
+    }
+
+
+    public void post(){
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+       // DatabaseReference myRef = database.getReference("routes");
+
+       // myRef.setValue("Hello, World!");
     }
 }

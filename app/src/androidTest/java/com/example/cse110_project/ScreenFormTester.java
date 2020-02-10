@@ -39,7 +39,7 @@ public class ScreenFormTester {
 
     @Test
     public void testFormPopulatesRoute() {
-        String name = "exampleName";
+        final String name = "exampleName";
         final String location = "exampleLocation";
         ActivityScenario<RouteFormScreen> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(new ActivityScenario.ActivityAction<RouteFormScreen>() {
@@ -52,13 +52,15 @@ public class ScreenFormTester {
                 locationText.setText(location);
 
                 activity.newRoute.getName();
-               
-
 
             }
         });
+    }
 
-
-
+    @Test
+    public void testRoutPost() {
+        boolean[] tags = {true, true, false, false};
+        Route tester = new Route("Name", "location", tags, true, "no notes");
+        tester.post();
     }
 }
