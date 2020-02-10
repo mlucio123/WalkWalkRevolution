@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.Observable;
+import java.util.Observer;
 
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
@@ -30,7 +32,7 @@ import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.cse110_project.StrideCalculator;
 
-public class HomeScreen extends AppCompatActivity {
+public class HomeScreen extends AppCompatActivity implements Observer {
 
     private BottomNavigationView bottomNavigationView;
     private Button startWalkBtn;
@@ -52,18 +54,16 @@ public class HomeScreen extends AppCompatActivity {
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
 
+    @Override
+    public void update(Observable o, Object obj) {
+        System.out.println("overloaded");
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
-
-        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(HomeScreen stepCountActivity) {
-                return new GoogleFitAdapter(stepCountActivity);
-            }
-        });
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -84,6 +84,13 @@ public class HomeScreen extends AppCompatActivity {
             Toast.makeText(HomeScreen.this, "SharedPreference FOUND " +
                     AccessSharedPrefs.getFirstName(this), Toast.LENGTH_SHORT).show();
         }
+
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(HomeScreen stepCountActivity) {
+                return new GoogleFitAdapter(stepCountActivity);
+            }
+        });
 
         // initialize text views
         textSteps = findViewById(R.id.homeDailyStepsCount);
@@ -186,7 +193,6 @@ public class HomeScreen extends AppCompatActivity {
                 break;
         }
     }
-
 
     // start intent to walk screen
     public void launchWalk() {
