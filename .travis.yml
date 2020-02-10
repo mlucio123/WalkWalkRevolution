@@ -38,6 +38,10 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 
+branches:
+  only:
+    - "master"
+
 jobs:
   include:
     - name: unit_test
