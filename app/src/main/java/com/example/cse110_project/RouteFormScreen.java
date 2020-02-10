@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -59,14 +60,14 @@ public class RouteFormScreen extends AppCompatActivity {
     private boolean easy;
     private boolean medium;
     private boolean hard;
+    private boolean favorite;
     public Route newRoute; // Public for now for testing
 
     private EditText routeName;
     private EditText startPosition;
 
     private String fitnessServiceKey = "GOOGLE_FIT";
-    boolean favorite = false;
-
+    private String TAG = "ROUTE FORM: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,7 +239,7 @@ public class RouteFormScreen extends AppCompatActivity {
 
 
 
-
+        /* Submit on click listener */
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -248,14 +249,19 @@ public class RouteFormScreen extends AppCompatActivity {
                 } else {
 
                     // TODO CREATE OBJ OF CORRESPONDING MESSAGES AND SEND TO FIREBASE
-                    boolean[] tags ={out, loop, flat, hills, even, rough, street, trail, easy, medium, hard};
+                    boolean[] tags ={out, loop, flat, hills, even, rough, street, trail, easy, medium, hard, favorite};
+
+                    Log.d(TAG, "REsult : " + out + flat + hills + even + rough + street + trail + easy + medium + hard);
 
                     newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
                             tags, favorite, "");
+                    newRoute.setTags(tags);
 
                     RouteCollection rc = new RouteCollection();
                     String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                     rc.addRoute(newRoute, deviceID);
+
+                    Toast.makeText(RouteFormScreen.this, "Form Submitted!", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(RouteFormScreen.this, RouteScreen.class);
                     intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
