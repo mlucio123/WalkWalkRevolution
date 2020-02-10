@@ -21,6 +21,11 @@ android {
             java.srcDirs = ['src/main/java', 'src/main/java/com/example/cse110_project/Activities']
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file("external/debug.keystore")
+        }
+    }
 }
 
 

@@ -1,4 +1,4 @@
-language: android
+anguage: android
 dist: trusty
 
 before_cache:
@@ -41,7 +41,7 @@ android:
 branches:
   only:
     - "master"
-    
+
 jobs:
   include:
     - name: unit_test
