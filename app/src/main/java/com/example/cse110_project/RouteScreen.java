@@ -2,6 +2,8 @@ package com.example.cse110_project;
 import android.app.Activity;
 
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,19 +17,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.cse110_project.Firebase.MyCallback;
+import com.example.cse110_project.Firebase.RouteCollection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
 
 public class RouteScreen extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
     private Button addRoute;
+    private Button expandBtn;
 
+    private ArrayList<Route> currentRotes;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.route_screen);
+
+        currentRotes = new ArrayList<Route>();
 
         final Intent intent = new Intent(this, RouteFormScreen.class);
 
@@ -46,6 +57,29 @@ public class RouteScreen extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 selectFragment(item);
                 return false;
+            }
+        });
+
+        expandBtn = findViewById(R.id.expandBtn);
+        expandBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RouteCollection rc = new RouteCollection();
+                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                rc.getRoutes(deviceID, new MyCallback() {
+                    @Override
+                    public void getRoutes(ArrayList<Route> routes) {
+                        currentRotes = routes;
+                        Log.d("TAG", "SIZE IS = " + routes.size());
+
+                        for(int i = 0; i < routes.size(); i++){
+                            Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
+                            // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
+                        }
+
+                    }
+                });
+
             }
         });
     }
