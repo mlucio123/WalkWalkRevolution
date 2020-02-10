@@ -40,6 +40,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="5sp"
             android:background="@drawable/btn_circular"
+            android:backgroundTint="#00000000"
             android:contextClickable="true"
             android:drawableStart="@drawable/ic_favorite_border_black_24dp"
             android:drawablePadding="15dp"
@@ -116,158 +117,223 @@
     </LinearLayout>
 
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/tagDisplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
-        android:layout_marginLeft="30sp"
-        android:layout_marginRight="30sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Route Tags"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:text="Loop"
-            android:textColor="@color/colorText"
-            android:layout_alignParentStart="true"
-            android:textSize="20sp" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/routeStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="20sp"
-            android:layout_marginRight="20sp"
-            android:checked="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:text="Out-and-back"
-            android:layout_alignParentEnd="true"
-            android:textColor="@color/colorText"
+            android:layout_weight="1"
+            android:text="Style: "
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/routeStyleLoop"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100sp"
+            android:layout_height="50sp"
+            android:layout_marginStart="5sp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/btn_circular"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Loop"
+            android:textColor="#FFFFFFFF"
+            android:textSize="12sp" />
 
-    <RelativeLayout
+        <Button
+            android:id="@+id/routeStyleOutAndBack"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100sp"
+            android:layout_height="50sp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/btn_circular"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Out\u0026Back"
+            android:textColor="#FFFFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
-        android:layout_marginLeft="30sp"
-        android:layout_marginRight="30sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp">
+
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:text="Flat"
-            android:textColor="@color/colorText"
-            android:layout_alignParentStart="true"
-            android:textSize="20sp" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/routeLand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20sp"
-            android:layout_marginLeft="20sp"
-            android:layout_centerInParent="true"
-            android:checked="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:text="Loop"
-            android:layout_alignParentEnd="true"
-            android:textColor="@color/colorText"
+            android:layout_weight="1"
+            android:text="Land:"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/routeLandFlat"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100sp"
+            android:layout_height="50sp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="5sp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/btn_circular"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Flat"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/routeLandHills"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100sp"
+            android:layout_height="50sp"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/btn_circular"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Hills"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
-        android:layout_marginLeft="30sp"
-        android:layout_marginRight="30sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:text="Streets"
-            android:textColor="@color/colorText"
-            android:layout_alignParentStart="true"
-            android:textSize="20sp" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/routeType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20sp"
-            android:layout_marginLeft="20sp"
-            android:layout_centerInParent="true"
-            android:checked="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:text="Trail"
-            android:layout_alignParentEnd="true"
-            android:textColor="@color/colorText"
+            android:layout_weight="1"
+            android:text="Type:"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/routeTypeStreets"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100sp"
+            android:layout_height="50sp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="5sp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/btn_circular"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Streets"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
-    <RelativeLayout
+        <Button
+            android:id="@+id/routeTypeTrail"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100sp"
+            android:layout_height="50sp"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/btn_circular"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Trail"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
-        android:layout_marginLeft="30sp"
-        android:layout_marginRight="30sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:text="Even Surface"
-            android:textColor="@color/colorText"
-            android:layout_alignParentStart="true"
-            android:textSize="20sp" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/routeSurface"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20sp"
-            android:layout_marginLeft="20sp"
-            android:layout_centerInParent="true"
-            android:checked="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
-            android:text="Uneven Surface"
-            android:layout_alignParentEnd="true"
-            android:textColor="@color/colorText"
+            android:layout_weight="1"
+            android:text="Surface:"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/surfaceEven"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100sp"
+            android:layout_height="50sp"
+            android:layout_marginStart="5sp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/btn_circular"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Even"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/surfaceRough"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="100sp"
+            android:layout_height="50sp"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/btn_circular"
+            android:drawablePadding="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Rough"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -355,20 +421,20 @@
 
 
         <Button
-        android:id="@+id/submitBtn"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="150sp"
-        android:layout_height="50sp"
-        android:layout_weight="1"
-        android:background="@drawable/btn_rounded"
-        android:drawableStart="@drawable/ic_check_white_24dp"
-        android:drawablePadding="5dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:layout_marginStart="5sp"
-        android:text="@string/submit_text"
-        android:textColor="#FFFFFF"
-        android:textSize="13sp" />
+            android:id="@+id/submitBtn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="150sp"
+            android:layout_height="50sp"
+            android:layout_marginStart="5sp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_rounded"
+            android:drawableStart="@drawable/ic_check_white_24dp"
+            android:drawablePadding="5dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="@string/submit_text"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
 
     </LinearLayout>
 

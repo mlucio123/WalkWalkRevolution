@@ -1,7 +1,9 @@
 package com.example.cse110_project;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.core.Context;
 
 import java.util.Observable;
 
@@ -34,10 +36,11 @@ public class Route extends Observable {
 
 
     public void post(){
-        //FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-       // DatabaseReference myRef = database.getReference("routes");
 
-       // myRef.setValue("Hello, World!");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("routes").push();
+
+        myRef.child("new").setValue("Hello, World!");
+
     }
 }
