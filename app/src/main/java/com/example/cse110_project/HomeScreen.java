@@ -2,10 +2,14 @@ package com.example.cse110_project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -14,12 +18,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.cse110_project.StrideCalculator;
 
@@ -42,21 +49,51 @@ public class HomeScreen extends AppCompatActivity {
     private TextView textSteps;
     private com.example.cse110_project.fitness.FitnessService fitnessService;
 
+    private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
+    private String fitnessServiceKey = "GOOGLE_FIT";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
+
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(HomeScreen stepCountActivity) {
+                return new GoogleFitAdapter(stepCountActivity);
+            }
+        });
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
+
+            Toast.makeText(HomeScreen.this, "PERMISSION NONE", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(HomeScreen.this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
+        }
+
+        if( AccessSharedPrefs.getFirstName(this).length() == 0 ) {
+            launchFirstLoadScreen();
+        } else {
+            Toast.makeText(HomeScreen.this, "SharedPreference FOUND " +
+                    AccessSharedPrefs.getFirstName(this), Toast.LENGTH_SHORT).show();
+        }
 
         // initialize text views
         textSteps = findViewById(R.id.homeDailyStepsCount);
         distance = findViewById(R.id.homeDailyDistanceCount);
         estimatedDistance = findViewById(R.id.homeDailyEstimateCount);
 
-
         // google fit initialize
-        String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
 
+        fitnessService.setup();
 
         // update button for step count
         btnUpdateSteps = findViewById(R.id.buttonUpdateSteps);
@@ -67,8 +104,6 @@ public class HomeScreen extends AppCompatActivity {
                 fitnessService.readHistoryData();
             }
         });
-
-       fitnessService.setup();
 
         // bottom navigation bar implementation
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -197,6 +232,8 @@ public class HomeScreen extends AppCompatActivity {
         }
     }
 
+
+
     public void setDistance(long distanceValue){
         distance.setText(String.valueOf(distanceValue) + " Miles");
     }
@@ -230,5 +267,10 @@ public class HomeScreen extends AppCompatActivity {
             estimatedDistance.setText(rounded + " Miles");
         }
 
+    }
+
+    public void launchFirstLoadScreen() {
+        Intent intent = new Intent(this, FirstLoadScreen.class);
+        startActivity(intent);
     }
 }

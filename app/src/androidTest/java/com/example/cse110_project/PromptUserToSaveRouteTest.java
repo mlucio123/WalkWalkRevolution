@@ -222,6 +222,7 @@ public class PromptUserToSaveRouteTest {
         public void updateStepCount() {
             System.out.println(TAG + "updateStepCount");
             homeScreen.setStepCount(323);
+
         }
 
     }
