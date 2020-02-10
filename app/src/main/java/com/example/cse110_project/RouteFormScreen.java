@@ -239,14 +239,6 @@ public class RouteFormScreen extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
