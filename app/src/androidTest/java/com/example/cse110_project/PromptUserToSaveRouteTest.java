@@ -195,32 +195,6 @@ public class PromptUserToSaveRouteTest {
     }
 
     private class TestFitnessService implements FitnessService {
-        private static final String TAG = "[TestFitnessService]: ";
-        private HomeScreen homeScreen;
 
-        public TestFitnessService(HomeScreen stepCountActivity) {
-            this.homeScreen = stepCountActivity;
-        }
-
-        @Override
-        public int getRequestCode() {
-            return 0;
-        }
-
-        @Override
-        public void readHistoryData() {
-
-        }
-
-        @Override
-        public void setup() {
-            System.out.println(TAG + "setup");
-        }
-
-        @Override
-        public void updateStepCount() {
-            System.out.println(TAG + "updateStepCount");
-            homeScreen.setStepCount(323);
-        }
     }
 }
