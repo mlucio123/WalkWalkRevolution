@@ -55,8 +55,12 @@ public class ScreenFormTester {
 
             }
         });
+    }
 
-
-
+    @Test
+    public void testRoutPost() {
+        boolean[] tags = {true, true, false, false};
+        Route tester = new Route("Name", "location", tags, true, "no notes");
+        tester.post();
     }
 }
