@@ -195,6 +195,7 @@ public class PromptUserToSaveRouteTest {
     }
 
     private class TestFitnessService implements FitnessService {
+
         private static final String TAG = "[TestFitnessService]: ";
         private HomeScreen homeScreen;
 
@@ -221,6 +222,8 @@ public class PromptUserToSaveRouteTest {
         public void updateStepCount() {
             System.out.println(TAG + "updateStepCount");
             homeScreen.setStepCount(323);
+
         }
+
     }
 }
