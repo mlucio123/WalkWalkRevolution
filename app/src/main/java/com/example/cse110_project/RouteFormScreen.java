@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
@@ -259,8 +261,12 @@ public class RouteFormScreen extends AppCompatActivity {
                     newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
                             tags, favorite, "");
 
+                    RouteCollection rc = new RouteCollection();
+                    String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                    rc.addRoute(newRoute, deviceID);
+
                     Intent intent = new Intent(RouteFormScreen.this, RouteScreen.class);
-                    //intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
+                    intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                     startActivity(intent);
                 }
             }
