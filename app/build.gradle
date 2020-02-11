@@ -27,6 +27,10 @@ android {
             storeFile file("external/debug.keystore")
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 

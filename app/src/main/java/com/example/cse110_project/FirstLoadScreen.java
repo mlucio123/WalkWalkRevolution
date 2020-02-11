@@ -40,6 +40,7 @@ public class FirstLoadScreen extends AppCompatActivity {
 
                 boolean res = validateFormInput(firstName, lastName, heightFt, heightInch);
 
+                // TODO: More informative toast message
                 if (!res) {
                     Context context = getApplicationContext();
                     CharSequence text = "Invalid Form Input!";
@@ -56,10 +57,15 @@ public class FirstLoadScreen extends AppCompatActivity {
 
     }
 
-    public void setFitnessServiceKey(String fitnessServiceKey) {
-        this.fitnessServiceKey = fitnessServiceKey;
-    }
+//    public void setFitnessServiceKey(String fitnessServiceKey) {
+//        this.fitnessServiceKey = fitnessServiceKey;
+//    }
 
+    /*
+     * Function: validateFormInput
+     * Description: Validate Form Input, return error messages
+     * TODO: return error messages
+     */
     private boolean validateFormInput(EditText firstName, EditText lastName, EditText heightFt, EditText heightInch){
 
         if(firstName == null || lastName == null || heightFt == null || heightInch == null) {
