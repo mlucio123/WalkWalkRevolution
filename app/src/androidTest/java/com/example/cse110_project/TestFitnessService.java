@@ -1,6 +1,6 @@
 package com.example.cse110_project;
 
-import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness_deprecated.FitnessService;
 
 public class TestFitnessService implements FitnessService {
 
