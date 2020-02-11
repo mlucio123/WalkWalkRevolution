@@ -28,7 +28,6 @@ import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.example.cse110_project.StrideCalculator;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -51,7 +50,6 @@ public class HomeScreen extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +87,13 @@ public class HomeScreen extends AppCompatActivity {
             Toast.makeText(HomeScreen.this, "LOCATION PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
         }
 
+
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(HomeScreen stepCountActivity) {
+                return new GoogleFitAdapter(stepCountActivity);
+            }
+        });
 
         // initialize text views
         textSteps = findViewById(R.id.homeDailyStepsCount);
@@ -131,6 +136,7 @@ public class HomeScreen extends AppCompatActivity {
 
                 int curr = Integer.parseInt(steps.substring(0,steps.indexOf(" ")));
                 setStepCount(curr + 500);
+
             }
         });
 
@@ -191,7 +197,6 @@ public class HomeScreen extends AppCompatActivity {
                 break;
         }
     }
-
 
     // start intent to walk screen
     public void launchWalk() {
@@ -278,4 +283,5 @@ public class HomeScreen extends AppCompatActivity {
         Intent intent = new Intent(this, FirstLoadScreen.class);
         startActivity(intent);
     }
+
 }
