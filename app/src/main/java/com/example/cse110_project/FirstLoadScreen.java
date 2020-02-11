@@ -83,7 +83,7 @@ public class FirstLoadScreen extends AppCompatActivity {
             if (lName.length() == 0) { return false; }
 
             if (ft <= 0 || ft > 8) { return false; }
-            if (inch < 0 || ft > 11 ) { return false; }
+            if (inch < 0 || inch > 11 ) { return false; }
 
 
         } catch (Exception e){
