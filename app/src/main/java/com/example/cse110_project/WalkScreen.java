@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.fitness.FitnessService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class WalkScreen extends AppCompatActivity {
@@ -31,7 +33,7 @@ public class WalkScreen extends AppCompatActivity {
     private static final String TAG = "HomeScreen";
     private static final int FEET_IN_MILE = 5280;
     private TextView textSteps;
-    private com.example.cse110_project.fitness.FitnessService fitnessService;
+    private FitnessService fitnessService;
 
     private boolean walking;
 
@@ -39,6 +41,12 @@ public class WalkScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.walk_screen);
+
+        /**
+         * Create and start fitnessService
+         */
+        fitnessService = FitnessServiceFactory.create(this, false);
+        fitnessService.setup();
 
         startButton = findViewById(R.id.startWalkMaterial);
         endButton = findViewById(R.id.stopWalkMaterial);
@@ -51,6 +59,9 @@ public class WalkScreen extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO: test cross screen fitness service
+                fitnessService.listActiveSubscriptions();
+
                 walking = true;
                 startButton.setVisibility(View.GONE);
                 endButton.setVisibility(View.VISIBLE);

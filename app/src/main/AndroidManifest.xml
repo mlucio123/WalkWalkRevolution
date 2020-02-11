@@ -17,6 +17,7 @@
         <activity android:name=".FirstLoadScreen"></activity>
         <activity android:name=".RouteScreen"></activity>
         <activity android:name=".HomeScreen">
+            <!--            Set HomeScreen as Main entrance of the APP-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
