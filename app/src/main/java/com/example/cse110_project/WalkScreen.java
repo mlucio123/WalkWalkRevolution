@@ -19,13 +19,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class WalkScreen extends AppCompatActivity {
 
     private String fitnessServiceKey = "GOOGLE_FIT";
+    private static final long FIVE_SECS = 5000;
 
     private Button startButton;
     private Button doneWalkButton;
     private Button endButton;
     private Chronometer mChronometer;
     private BottomNavigationView bottomNavigationView;
+    private Button boostTimeBtn;
     private long walkTime;
+    private long addedWalkTime;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final String TAG = "HomeScreen";
@@ -34,6 +37,7 @@ public class WalkScreen extends AppCompatActivity {
     private com.example.cse110_project.fitness.FitnessService fitnessService;
 
     private boolean walking;
+    private boolean testing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class WalkScreen extends AppCompatActivity {
         endButton = findViewById(R.id.stopWalkMaterial);
         doneWalkButton = findViewById(R.id.doneWalkBtn);
         mChronometer = findViewById(R.id.timerDisplay);
+        boostTimeBtn = findViewById(R.id.boostBtn);
         endButton.setVisibility(View.GONE);
 
         textSteps = findViewById(R.id.stepView);
@@ -56,6 +61,7 @@ public class WalkScreen extends AppCompatActivity {
                 endButton.setVisibility(View.VISIBLE);
                 mChronometer.setBase(SystemClock.elapsedRealtime());
                 mChronometer.start();
+                setChronoText(mChronometer.getBase() - SystemClock.elapsedRealtime());
                 mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
                     @Override
                     public void onChronometerTick(Chronometer chronometer) {
@@ -63,14 +69,7 @@ public class WalkScreen extends AppCompatActivity {
                             return;
                         }
                         long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                        int h = (int) (time / 3600000);
-                        int m = (int) (time - h * 3600000) / 60000;
-                        int s = (int) (time - h * 3600000 - m * 60000) / 1000;
-                        String hStr = h < 10 ? "0" + h : h + "";
-                        String mStr = m < 10 ? "0" + m : m + "";
-                        String sStr = s < 10 ? "0" + s : s + "";
-                        String format = hStr + ":" + mStr + ":" + sStr;
-                        chronometer.setText(format);
+                        setChronoText(time);
                     }
                 });
                 //start updating steps/distance traveled
@@ -97,7 +96,21 @@ public class WalkScreen extends AppCompatActivity {
                 mChronometer.stop();
                 mChronometer.setEnabled(false);
                 Intent intent = new Intent(WalkScreen.this, RouteFormScreen.class);
-                startActivity(intent);
+startActivity(intent);
+            }
+        });
+
+        boostTimeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(walking) {
+                    mChronometer.setBase(mChronometer.getBase() - FIVE_SECS);
+                    setChronoText(SystemClock.elapsedRealtime() - mChronometer.getBase());
+                    return;
+                }
+                long elapsedRealTimeOffset = System.currentTimeMillis() - SystemClock.elapsedRealtime();
+                mChronometer.setBase((addedWalkTime - elapsedRealTimeOffset));
+                setChronoText(mChronometer.getBase());
             }
         });
 
@@ -111,6 +124,17 @@ public class WalkScreen extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void setChronoText(long newTime) {
+        int h = (int) (newTime / 3600000);
+        int m = (int) (newTime - h * 3600000) / 60000;
+        int s = (int) (newTime - h * 3600000 - m * 60000) / 1000;
+        String hStr = h < 10 ? "0" + h : h + "";
+        String mStr = m < 10 ? "0" + m : m + "";
+        String sStr = s < 10 ? "0" + s : s + "";
+        String format = hStr + ":" + mStr + ":" + sStr;
+        mChronometer.setText(format);
     }
 
     private void selectFragment(MenuItem item){
