@@ -1,10 +1,11 @@
 package com.example.cse110_project;
 
 import com.google.firebase.FirebaseApp;
+/*
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.core.Context;
-
+*/
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -18,7 +19,7 @@ public class Route extends Observable {
     private boolean[] tags;
     private String extraNotes;
     private Boolean favorite;
-    private DatabaseReference mDatabase;
+    //private DatabaseReference mDatabase;
     private boolean favorite1;
 
     //other stuff
@@ -46,14 +47,12 @@ public class Route extends Observable {
         return this.startingPoint;
     }
 
-
+/*
     public void post(){
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("routes").push();
-
         myRef.child("new").setValue("Hello, World!");
-
+*/
     public HashMap<String, Object> getFeatureMap () {
         HashMap<String, Object> route = new HashMap<>();
         route.put("title", this.getName());

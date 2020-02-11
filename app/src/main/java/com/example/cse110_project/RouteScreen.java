@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class RouteScreen extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private Button addRoute;
     private Button expandBtn;
+    private RelativeLayout invis;
 
     private ArrayList<Route> currentRotes;
 
@@ -60,10 +62,13 @@ public class RouteScreen extends AppCompatActivity {
             }
         });
 
+        invis = findViewById(R.id.invisibleRel);
+        invis.setVisibility(View.GONE);
         expandBtn = findViewById(R.id.expandBtn);
         expandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                toggle_contents();
                 RouteCollection rc = new RouteCollection();
                 String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 rc.getRoutes(deviceID, new MyCallback() {
@@ -82,6 +87,16 @@ public class RouteScreen extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void toggle_contents(){
+        if( invis.isShown()) {
+            invis.setVisibility(View.GONE);
+            expandBtn.setText("Expand");
+        } else {
+            invis.setVisibility(View.VISIBLE);
+            expandBtn.setText("Hide");
+        }
     }
 
     private void selectFragment(MenuItem item){
