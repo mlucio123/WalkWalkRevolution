@@ -56,6 +56,24 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
 
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(HomeScreen stepCountActivity) {
+                return new GoogleFitAdapter(stepCountActivity);
+            }
+        });
+
+
+        // check for google fit access
+        if( AccessSharedPrefs.getFirstName(this).length() == 0 ) {
+            launchFirstLoadScreen();
+        } else {
+            Toast.makeText(HomeScreen.this, "SharedPreference FOUND " +
+                    AccessSharedPrefs.getFirstName(this), Toast.LENGTH_SHORT).show();
+        }
+
+
+        // Check for location access
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -66,15 +84,9 @@ public class HomeScreen extends AppCompatActivity {
             Toast.makeText(HomeScreen.this, "PERMISSION NONE", Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(HomeScreen.this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeScreen.this, "LOCATION PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
         }
 
-        if( AccessSharedPrefs.getFirstName(this).length() == 0 ) {
-            launchFirstLoadScreen();
-        } else {
-            Toast.makeText(HomeScreen.this, "SharedPreference FOUND " +
-                    AccessSharedPrefs.getFirstName(this), Toast.LENGTH_SHORT).show();
-        }
 
         FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
             @Override

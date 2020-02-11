@@ -1,5 +1,6 @@
 package com.example.cse110_project;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -16,12 +17,16 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
@@ -36,18 +41,33 @@ public class RouteFormScreen extends AppCompatActivity {
     private Button hardBtn;
     private Button cancelBtn;
     private Button submitBtn;
-    private SwitchMaterial rStyle;
-    private SwitchMaterial rLand;
-    private SwitchMaterial rType;
-    private SwitchMaterial rSurface;
+    private Button rStyleLoop;
+    private Button rStyleOut;
+    private Button rLandFlat;
+    private Button rLandHills;
+    private Button rTypeStreet;
+    private Button rTypeTrail;
+    private Button rSurfaceEven;
+    private Button rSurfaceRough;
+    private boolean loop;
+    private boolean out;
+    private boolean flat;
+    private boolean hills;
+    private boolean street;
+    private boolean trail;
+    private boolean even;
+    private boolean rough;
+    private boolean easy;
+    private boolean medium;
+    private boolean hard;
+    private boolean favorite;
     public Route newRoute; // Public for now for testing
 
     private EditText routeName;
     private EditText startPosition;
 
     private String fitnessServiceKey = "GOOGLE_FIT";
-    boolean favorite = false;
-
+    private String TAG = "ROUTE FORM: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +86,14 @@ public class RouteFormScreen extends AppCompatActivity {
 
         favBtn = findViewById(R.id.favBtn);
 
-        rStyle = findViewById(R.id.routeStyle);
-        rLand = findViewById(R.id.routeLand);
-        rType = findViewById(R.id.routeType);
-        rSurface = findViewById(R.id.routeSurface);
+        rStyleLoop = findViewById(R.id.routeStyleLoop);
+        rStyleOut = findViewById(R.id.routeStyleOutAndBack);
+        rLandFlat = findViewById(R.id.routeLandFlat);
+        rLandHills = findViewById(R.id.routeLandHills);
+        rTypeStreet = findViewById(R.id.routeTypeStreets);
+        rTypeTrail = findViewById(R.id.routeTypeTrail);
+        rSurfaceEven = findViewById(R.id.surfaceEven);
+        rSurfaceRough = findViewById(R.id.surfaceRough);
 
 
         favBtn.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +103,7 @@ public class RouteFormScreen extends AppCompatActivity {
                 // TODO : FIX LOGIC AND SEND FAV TO BACKEND OR ROUTE OBJECT
                 // TODO : THIS CURRENTLY REMOVES THE BORDER IN THE FAVORITE BUTTON
 
-                if ( favBtn.getBackgroundTintList() == ColorStateList.valueOf( 0xFF000000 )){
+                if ( favBtn.getBackgroundTintList() != ColorStateList.valueOf( 0xFFFF0000 )){
                     favBtn.setBackgroundTintList( ColorStateList.valueOf( 0xFFFF0000 ) );
                     favorite = true;
                 } else {
@@ -98,6 +122,124 @@ public class RouteFormScreen extends AppCompatActivity {
             }
         });
 
+
+        rStyleLoop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {loop, out};
+                switchType(rStyleLoop, rStyleOut, bools);
+                loop = bools[0];
+                out = bools[1];
+            }
+        });
+
+        rStyleOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {out, loop};
+                switchType(rStyleOut, rStyleLoop, bools);
+                out = bools[0];
+                loop = bools[1];
+            }
+        });
+
+        rLandFlat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {flat, hills};
+                switchType(rLandFlat, rLandHills, bools);
+                flat = bools[0];
+                hills = bools[1];
+            }
+        });
+
+        rLandHills.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {hills, flat};
+                switchType(rLandHills, rLandFlat, bools);
+                hills = bools[0];
+                flat = bools[1];
+            }
+        });
+
+        rSurfaceEven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {even, rough};
+                switchType(rSurfaceEven, rSurfaceRough, bools);
+                even = bools[0];
+                rough = bools[1];
+            }
+        });
+
+        rSurfaceRough.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {rough, even};
+                switchType(rSurfaceRough, rSurfaceEven, bools);
+                rough = bools[0];
+                even = bools[1];
+            }
+        });
+
+        rTypeStreet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {street, trail};
+                switchType(rTypeStreet, rTypeTrail, bools);
+                street = bools[0];
+                trail = bools[1];
+            }
+        });
+
+        rTypeTrail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {trail, street};
+                switchType(rTypeTrail, rTypeStreet, bools);
+                trail = bools[0];
+                street = bools[1];
+            }
+        });
+
+
+        easyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {easy, medium, hard};
+                switchType3(easyBtn, moderateBtn, hardBtn, bools);
+                easy = bools[0];
+                medium = bools[1];
+                hard = bools[2];
+            }
+        });
+
+        moderateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {medium, easy, hard};
+                switchType3(moderateBtn, easyBtn, hardBtn, bools);
+                medium = bools[0];
+                easy = bools[1];
+                hard = bools[2];
+            }
+        });
+
+        hardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean[] bools = {hard, easy, medium};
+                switchType3(hardBtn, easyBtn, moderateBtn, bools);
+                hard = bools[0];
+                easy = bools[1];
+                medium = bools[2];
+            }
+        });
+
+
+
+        /* Submit on click listener */
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,17 +249,72 @@ public class RouteFormScreen extends AppCompatActivity {
                 } else {
 
                     // TODO CREATE OBJ OF CORRESPONDING MESSAGES AND SEND TO FIREBASE
-                    boolean[] tags ={rStyle.isChecked(), rLand.isChecked(), rType.isChecked(), rSurface.isChecked()};
+                    boolean[] tags ={out, loop, flat, hills, even, rough, street, trail, easy, medium, hard, favorite};
+
+                    Log.d(TAG, "REsult : " + out + flat + hills + even + rough + street + trail + easy + medium + hard);
 
                     newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
                             tags, favorite, "");
+                    newRoute.setTags(tags);
+
+                    RouteCollection rc = new RouteCollection();
+                    String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                    rc.addRoute(newRoute, deviceID);
+
+                    Toast.makeText(RouteFormScreen.this, "Form Submitted!", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(RouteFormScreen.this, RouteScreen.class);
-                    //intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
+                    intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                     startActivity(intent);
                 }
             }
         });
     }
 
+    public void switchType(Button target, Button parallel, boolean[] bools){
+        int white = Color.parseColor("#FFFFFFFF");
+        int black = Color.parseColor("#FF000000");
+        if (target.getCurrentTextColor() != black){
+            target.setTextColor(black);
+            Drawable drawable = getDrawable(R.drawable.btn_circular_selected);
+            target.setBackground(drawable);
+            bools[0] = true;
+            if(bools[1]){
+                bools[1] = false;
+                parallel.setTextColor(white);
+                Drawable draw = getDrawable(R.drawable.btn_circular);
+                parallel.setBackground(draw);
+            }
+        } else{
+            target.setTextColor(white);
+            Drawable drawable = getDrawable(R.drawable.btn_circular);
+            target.setBackground(drawable);
+            bools[0] = false;
+        }
+    }
+
+    public void switchType3(Button target, Button parallel1, Button parallel2, boolean[] bools){
+        int white = Color.parseColor("#FFFFFFFF");
+        int black = Color.parseColor("#FF000000");
+        if (target.getCurrentTextColor() != black){
+            target.setTextColor(black);
+            Drawable drawable = getDrawable(R.drawable.btn_circular_selected);
+            target.setBackground(drawable);
+            bools[0] = true;
+            if(bools[1] || bools[2]){
+                bools[1] = false;
+                bools[2] = false;
+                Drawable draw = getDrawable(R.drawable.btn_circular);
+                parallel1.setTextColor(white);
+                parallel1.setBackground(draw);
+                parallel2.setTextColor(white);
+                parallel2.setBackground(draw);
+            }
+        } else{
+            target.setTextColor(white);
+            Drawable drawable = getDrawable(R.drawable.btn_circular);
+            target.setBackground(drawable);
+            bools[0] = false;
+        }
+    }
 }
