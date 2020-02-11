@@ -121,7 +121,6 @@ public class SetSharedPrefsTest {
         appCompatButton.perform(click());
 
         SharedPreferences prefs = mActivityTestRule.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
 
         String first = prefs.getString("firstname", "");
         String last = prefs.getString("lastname", "");
