@@ -23,16 +23,13 @@ import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.Observable;
-import java.util.Observer;
 
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.example.cse110_project.StrideCalculator;
 
-public class HomeScreen extends AppCompatActivity implements Observer {
+public class HomeScreen extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private Button startWalkBtn;
@@ -53,12 +50,6 @@ public class HomeScreen extends AppCompatActivity implements Observer {
 
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-
-    @Override
-    public void update(Observable o, Object obj) {
-        System.out.println("overloaded");
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +124,7 @@ public class HomeScreen extends AppCompatActivity implements Observer {
 
                 int curr = Integer.parseInt(steps.substring(0,steps.indexOf(" ")));
                 setStepCount(curr + 500);
+
             }
         });
 
@@ -279,4 +271,5 @@ public class HomeScreen extends AppCompatActivity implements Observer {
         Intent intent = new Intent(this, FirstLoadScreen.class);
         startActivity(intent);
     }
+
 }

@@ -1,11 +1,7 @@
 
 package com.example.cse110_project;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,8 +15,6 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Observable;
 
 public class WalkScreen extends AppCompatActivity {
 
@@ -54,7 +48,6 @@ public class WalkScreen extends AppCompatActivity {
 
         textSteps = findViewById(R.id.stepView);
 
-
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +59,9 @@ public class WalkScreen extends AppCompatActivity {
                 mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
                     @Override
                     public void onChronometerTick(Chronometer chronometer) {
+                        if(!walking) {
+                            return;
+                        }
                         long time = SystemClock.elapsedRealtime() - chronometer.getBase();
                         int h = (int) (time / 3600000);
                         int m = (int) (time - h * 3600000) / 60000;
@@ -85,7 +81,8 @@ public class WalkScreen extends AppCompatActivity {
         doneWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(WalkScreen.this, RouteFormScreen.class);
+                walking = false;
+                Intent intent = new Intent(WalkScreen.this, RouteScreen.class);
                 startActivity(intent);
             }
         });
@@ -93,12 +90,14 @@ public class WalkScreen extends AppCompatActivity {
         endButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //save walk + stats, show prompt
+                walking = false;
                 walkTime = SystemClock.elapsedRealtime() - mChronometer.getBase();
                 startButton.setVisibility(View.VISIBLE);
                 endButton.setVisibility(View.GONE);
                 mChronometer.stop();
                 mChronometer.setEnabled(false);
+                Intent intent = new Intent(WalkScreen.this, RouteFormScreen.class);
+                startActivity(intent);
             }
         });
 
