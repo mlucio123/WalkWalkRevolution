@@ -3,6 +3,7 @@ import android.app.Activity;
 
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -20,8 +21,10 @@ import android.view.MenuItem;
 
 import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -54,6 +57,7 @@ public class RouteScreen extends AppCompatActivity {
 
         RouteCollection rc = new RouteCollection();
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
         rc.getRoutes(deviceID, new MyCallback() {
             @Override
             public void getRoutes(ArrayList<Route> routes) {
@@ -62,20 +66,25 @@ public class RouteScreen extends AppCompatActivity {
 
                 LinearLayout l = (LinearLayout) findViewById(R.id.linear_layout_routes);
 
+
                 for(int i = 0; i < routes.size(); i++){
                     Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
                     // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
                     Button newButton = new Button(RouteScreen.this);
                     newButton.setText(routes.get(i).getName());
                     newButton.setBackgroundColor(0xFF99D6D6);
+                    newButton.setTag(routes.get(i));
+
                     dummyRoute = routes.get(i);
+
                     newButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(RouteScreen.this, WalkScreen.class);
-                            intent.putExtra("routeName", dummyRoute.getName());
-                            intent.putExtra("routeStart", dummyRoute.getStartingPoint());
-                            intent.putExtra("routeNotes", dummyRoute.getNotes());
+                            Route dummy = (Route) view.getTag();
+                            intent.putExtra("routeName", dummy.getName());
+                            intent.putExtra("routeStart", dummy.getStartingPoint());
+                            intent.putExtra("routeNotes", dummy.getNotes());
                             startActivity(intent);
                         }
                     });

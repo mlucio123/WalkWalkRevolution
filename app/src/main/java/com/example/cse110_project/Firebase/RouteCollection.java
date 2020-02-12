@@ -20,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RouteCollection {
@@ -75,26 +76,27 @@ public class RouteCollection {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            ArrayList<Route> routesSimpleList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 qryRoutes.add(makeRoute(document));
+                                routesSimpleList.add(makeRoute(document));
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
+                            myCallback.getRoutes(routesSimpleList);
                             Log.d(TAG, "CURRENT LIST OF ROUTES: " + qryRoutes.size());
 
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
-                })
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        myCallback.getRoutes(qryRoutes);
-                    }
                 });
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        myCallback.getRoutes(qryRoutes);
+//                    }
+//                });
     }
-
-
 
 
     /* This method makes Route object from returning query document snapshot */

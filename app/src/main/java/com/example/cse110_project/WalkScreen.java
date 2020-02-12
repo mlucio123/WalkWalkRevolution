@@ -61,6 +61,8 @@ public class WalkScreen extends AppCompatActivity {
         routeNotes = findViewById(R.id.routeNotesWalkScreen);
         routeSummaryTitle = findViewById(R.id.route_summary_title);
 
+        routeNotes.setMovementMethod(new ScrollingMovementMethod());
+
         Intent intent = getIntent();
         String title = intent.getStringExtra("routeName");
         String start = intent.getStringExtra("routeStart");
@@ -80,7 +82,6 @@ public class WalkScreen extends AppCompatActivity {
             routeTitle.setText(title);
             routeStart.setText(start);
             routeNotes.setText(notes);
-            routeNotes.setMovementMethod(new ScrollingMovementMethod());
         }
 
         startButton.setOnClickListener(new View.OnClickListener() {
