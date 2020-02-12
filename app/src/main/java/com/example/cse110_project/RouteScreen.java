@@ -40,8 +40,6 @@ public class RouteScreen extends AppCompatActivity {
     private Button addRoute;
     private Button expandBtn;
     private RelativeLayout invis;
-    private LinearLayout hidden;
-    private Button expand;
 
     private ArrayList<Route> currentRotes;
 
@@ -126,9 +124,9 @@ public class RouteScreen extends AppCompatActivity {
         LinearLayout container = new LinearLayout(this);
         container.setLayoutParams( new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.VERTICAL
+                LinearLayout.LayoutParams.WRAP_CONTENT
         ));
+        container.setOrientation(LinearLayout.VERTICAL);
         container.setPadding(10, 5, 10, 5);
         container.setBackground(draw);
 
@@ -136,8 +134,9 @@ public class RouteScreen extends AppCompatActivity {
         titleEntry.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.HORIZONTAL
+                1f
         ));
+        titleEntry.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView title = new TextView(this);
         title.setText("Route Name:");
@@ -145,8 +144,7 @@ public class RouteScreen extends AppCompatActivity {
         title.setTextSize(20);
         title.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.6f
+                LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f
         ));
 
         TextView titleDisplay = new TextView(this);
@@ -155,8 +153,7 @@ public class RouteScreen extends AppCompatActivity {
         titleDisplay.setTextSize(20);
         titleDisplay.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.4f
+                LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
         ));
 
 
@@ -164,34 +161,34 @@ public class RouteScreen extends AppCompatActivity {
         titleEntry.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.HORIZONTAL
+                1f
         ));
+        startEntry.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView start = new TextView(this);
-        title.setText("Start Position:");
-        title.setTextColor(fontColor);
-        title.setTextSize(20);
-        title.setLayoutParams(new LinearLayout.LayoutParams(
+        start.setText("Start Position:");
+        start.setTextColor(fontColor);
+        start.setTextSize(20);
+        start.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.6f
+                LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f
         ));
 
         TextView startDisplay = new TextView(this);
-        titleDisplay.setText(routeEntry.getStartingPoint());
-        titleDisplay.setTextColor(fontColor);
-        titleDisplay.setTextSize(20);
-        titleDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+        startDisplay.setText(routeEntry.getStartingPoint());
+        startDisplay.setTextColor(fontColor);
+        startDisplay.setTextSize(20);
+        startDisplay.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.4f
+                LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
         ));
 
-        hidden = new LinearLayout(this);
+        final LinearLayout hidden = new LinearLayout(this);
         hidden.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
+        hidden.setOrientation(LinearLayout.VERTICAL);
         hidden.setVisibility(View.GONE);
 
         TextView tags = new TextView(this);
@@ -200,12 +197,12 @@ public class RouteScreen extends AppCompatActivity {
         tags.setTextColor(fontColor);
 
 
-        expand = new Button(this);
+        final Button expand = new Button(this);
         expand.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-  /*      expand.setOnClickListener(new View.OnClickListener() {
+        expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if( hidden.isShown()) {
@@ -216,7 +213,7 @@ public class RouteScreen extends AppCompatActivity {
                     expand.setText("Hide");
                 }
             }
-        });*/
+        });
         Drawable buttonBack = getDrawable(R.drawable.btn_rounded);
         expand.setBackground(buttonBack);
         expand.setText("Expand");
