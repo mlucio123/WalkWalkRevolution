@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -59,6 +60,24 @@ public class WalkScreen extends AppCompatActivity {
         boostTimeBtn = findViewById(R.id.boostBtn);
         endButton.setVisibility(View.GONE);
 
+        Log.d("THIS IS BEFORE YOU CAN", "STARTED WALK\n");
+        if(AccessSharedPrefs.getWalkStatus(this)) {
+            Log.d("YOU HAVE A ", "STARTED WALK\n");
+            walking = true;
+            mChronometer.setBase(AccessSharedPrefs.getWalkStartTime(this));
+            mChronometer.start();
+            mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+                @Override
+                public void onChronometerTick(Chronometer chronometer) {
+                    if(!walking) {
+                        return;
+                    }
+                    long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+                    setChronoText(time);
+                }
+            });
+        }
+
         textSteps = findViewById(R.id.stepView);
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +86,17 @@ public class WalkScreen extends AppCompatActivity {
                 // TODO: test cross screen fitness service
                 fitnessService.listActiveSubscriptions();
 
+                setOnWalkUI();
+
+                //toggle walk status, and save
                 walking = true;
-                startButton.setVisibility(View.GONE);
-                endButton.setVisibility(View.VISIBLE);
-                mChronometer.setBase(SystemClock.elapsedRealtime());
+                AccessSharedPrefs.setWalkStatus(WalkScreen.this, true);
+
+                //setup and start chronometer
+                long startTime = SystemClock.elapsedRealtime();
+                //AccessSharedPrefs.setWalkStatus(this, true);
+                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                mChronometer.setBase(startTime);
                 mChronometer.start();
                 setChronoText(mChronometer.getBase() - SystemClock.elapsedRealtime());
                 mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -91,6 +117,7 @@ public class WalkScreen extends AppCompatActivity {
         doneWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AccessSharedPrefs.setWalkStatus(WalkScreen.this, false);
                 walking = false;
                 Intent intent = new Intent(WalkScreen.this, RouteScreen.class);
                 startActivity(intent);
@@ -107,7 +134,7 @@ public class WalkScreen extends AppCompatActivity {
                 mChronometer.stop();
                 mChronometer.setEnabled(false);
                 Intent intent = new Intent(WalkScreen.this, RouteFormScreen.class);
-startActivity(intent);
+                startActivity(intent);
             }
         });
 
@@ -146,6 +173,12 @@ startActivity(intent);
         String sStr = s < 10 ? "0" + s : s + "";
         String format = hStr + ":" + mStr + ":" + sStr;
         mChronometer.setText(format);
+    }
+
+    private void setOnWalkUI() {
+        //toggle button visibility
+        startButton.setVisibility(View.GONE);
+        endButton.setVisibility(View.VISIBLE);
     }
 
     private void selectFragment(MenuItem item){

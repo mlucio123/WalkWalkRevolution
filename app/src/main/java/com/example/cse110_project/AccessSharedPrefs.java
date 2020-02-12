@@ -45,6 +45,34 @@ public class AccessSharedPrefs {
 
     }
 
+    public static void setWalkStatus(Context context, boolean status) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putBoolean("walkStatus", status);
+        editor.apply();
+    }
+
+    public static void setWalkStartTime(Context context, long startTIme) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putLong("walkStartTime", startTIme);
+        editor.apply();
+    }
+
+    public static long getWalkStartTime(Context context) {
+        SharedPreferences prefs = setUp(context);
+        return prefs.getLong("walkStartTime", -1);
+    }
+
+    public static boolean getWalkStatus(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(!prefs.contains("walkStatus")) return false;
+        return prefs.getBoolean("walkStatus", false);
+    }
+
+
     /*public static void setFirstName(Context context) {
         return setUp(context).getString("firstname", "");
 
