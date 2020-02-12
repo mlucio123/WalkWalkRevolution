@@ -238,10 +238,26 @@ public class RouteFormScreen extends AppCompatActivity {
 
                     Log.d(TAG, "REsult : " + out + flat + hills + even + rough + street + trail + easy + medium + hard);
 
+                    String timer = getIntent().getStringExtra("completedTime");
+                    String steps = getIntent().getStringExtra("stepCount");
+                    String distance = getIntent().getStringExtra("distance");
+
                     newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
                             tags, favorite, "");
                     newRoute.setTags(tags);
                     newRoute.setNotes(notes.getText().toString());
+
+                    if (timer != null || timer.length() != 0){
+                        newRoute.setLastCompletedTime(timer);
+                    }
+
+                    if (steps != null || steps.length() != 0){
+                        newRoute.setLastCompletedSteps(steps);
+                    }
+
+                    if (distance != null || distance.length() != 0){
+                        newRoute.setLastCompletedDistance(distance);
+                    }
 
                     RouteCollection rc = new RouteCollection();
                     String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);

@@ -37,10 +37,19 @@ public class WalkScreen extends AppCompatActivity {
     private TextView routeNotes;
     private TextView routeSummaryTitle;
 
+    private LinearLayout routeLastCompletedTimeLayout;
+    private LinearLayout routeLastCompletedStepsLayout;
+    private LinearLayout routeLastCompletedDistanceLayout;
+
+    private TextView routeLastCompletedTime;
+    private TextView routeLastcompletedSteps;
+    private TextView routeLastcompletedDistance;
+
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final String TAG = "HomeScreen";
     private static final int FEET_IN_MILE = 5280;
     private TextView textSteps;
+    private TextView textDistance;
     private FitnessService fitnessService;
 
     private boolean walking;
@@ -63,6 +72,15 @@ public class WalkScreen extends AppCompatActivity {
         endButton.setVisibility(View.GONE);
 
         textSteps = findViewById(R.id.stepView);
+        textDistance = findViewById(R.id.distanceView);
+
+        routeLastCompletedTimeLayout = findViewById(R.id.routeCompletedTimeLayout);
+        routeLastCompletedStepsLayout = findViewById(R.id.routeCompletedStepsLayout);
+        routeLastCompletedDistanceLayout = findViewById(R.id.routeCompletedDistanceLayout);
+
+        routeLastCompletedTime = findViewById(R.id.routeCompletedTime);
+        routeLastcompletedSteps = findViewById(R.id.routeCompletedSteps);
+        routeLastcompletedDistance = findViewById(R.id.routeCompletedDistance);
 
         routeStart = findViewById(R.id.routeStartWalkScreen);
         routeTitle = findViewById(R.id.routeTitleWalkScreen);
@@ -75,11 +93,16 @@ public class WalkScreen extends AppCompatActivity {
         String title = intent.getStringExtra("routeName");
         String start = intent.getStringExtra("routeStart");
         String notes = intent.getStringExtra("routeNotes");
+
+        String lastTime = intent.getStringExtra("lastCompletedTime");
+        String lastSteps = intent.getStringExtra( "lastCompletedSteps");
+        String lastDistance = intent.getStringExtra("lastCompletedDistance");
+
         LinearLayout layout = findViewById(R.id.route_summary);
 
-        Log.d("WALKSCREEN", "THIS IS " +  title);
-        Log.d("WALKSCREEN", "THIS IS " + start);
-        Log.d("WALKSCREEN", "THIS IS " + notes);
+        Log.d("WALKSCREEN", "THIS IS " +  lastTime);
+        Log.d("WALKSCREEN", "THIS IS " + lastSteps);
+        Log.d("WALKSCREEN", "THIS IS " + lastDistance);
 
 
         if(title == null && start == null && notes == null){
@@ -90,6 +113,26 @@ public class WalkScreen extends AppCompatActivity {
             routeTitle.setText(title);
             routeStart.setText(start);
             routeNotes.setText(notes);
+            if(lastTime != null || lastTime.length() != 0){
+                routeLastCompletedTimeLayout.setVisibility(View.VISIBLE);
+                routeLastCompletedTime.setText(lastTime);
+            } else {
+                routeLastCompletedTimeLayout.setVisibility(View.GONE);
+            }
+
+            if(lastSteps != null || lastSteps.length() != 0){
+                routeLastCompletedStepsLayout.setVisibility(View.VISIBLE);
+                routeLastcompletedSteps.setText(lastSteps);
+            } else {
+                routeLastCompletedStepsLayout.setVisibility(View.GONE);
+            }
+
+            if(lastDistance != null || lastDistance.length() != 0){
+                routeLastCompletedDistanceLayout.setVisibility(View.VISIBLE);
+                routeLastcompletedDistance.setText(lastDistance);
+            } else {
+                routeLastCompletedDistanceLayout.setVisibility(View.GONE);
+            }
         }
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +186,15 @@ public class WalkScreen extends AppCompatActivity {
                 endButton.setVisibility(View.GONE);
                 mChronometer.stop();
                 mChronometer.setEnabled(false);
+
+                String timer = mChronometer.getText().toString();
+                String steps = textSteps.getText().toString();
+                String distance = textDistance.getText().toString();
+
                 Intent intent = new Intent(WalkScreen.this, RouteFormScreen.class);
+                intent.putExtra("completedTime", timer);
+                intent.putExtra("stepCount", steps);
+                intent.putExtra("distance", distance);
                 startActivity(intent);
             }
         });

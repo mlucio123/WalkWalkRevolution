@@ -69,7 +69,9 @@ public class RouteScreen extends AppCompatActivity {
 
                 for(int i = 0; i < routes.size(); i++){
                     Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
+
                     // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
+
                     Button newButton = new Button(RouteScreen.this);
                     newButton.setText(routes.get(i).getName());
                     newButton.setBackgroundColor(0xFF99D6D6);
@@ -85,6 +87,9 @@ public class RouteScreen extends AppCompatActivity {
                             intent.putExtra("routeName", dummy.getName());
                             intent.putExtra("routeStart", dummy.getStartingPoint());
                             intent.putExtra("routeNotes", dummy.getNotes());
+                            intent.putExtra("lastCompletedTime", dummy.getLastCompletedTime());
+                            intent.putExtra("lastCompletedSteps", dummy.getLastCompletedSteps());
+                            intent.putExtra("lastCompletedDistance", dummy.getLastCompletedDistance());
                             startActivity(intent);
                         }
                     });

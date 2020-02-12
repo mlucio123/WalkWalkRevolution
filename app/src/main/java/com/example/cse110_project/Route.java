@@ -27,6 +27,10 @@ public class Route extends Observable {
     private boolean street, trail;
     private boolean easy, medium, hard;
 
+    private String lastCompletedTime;
+    private String lastCompletedSteps;
+    private String lastCompletedDistance;
+
     private final String TAG = "ROUTE CLASS: ";
 
     //other stuff
@@ -34,6 +38,7 @@ public class Route extends Observable {
     public Route( String name, String startingPoint ){
         this.name = name;
         this.startingPoint = startingPoint;
+        this.lastCompletedTime = this.lastCompletedSteps = this.lastCompletedDistance = "";
     }
 
     public Route( String name, String startingPoint, boolean[] tags, boolean favorite, String extraNotes) {
@@ -75,6 +80,18 @@ public class Route extends Observable {
         this.extraNotes = notes;
     }
 
+    public String getLastCompletedTime() { return this.lastCompletedTime; }
+
+    public void setLastCompletedTime(String time) { this.lastCompletedTime = time; }
+
+    public String getLastCompletedSteps() { return this.lastCompletedSteps; }
+
+    public void setLastCompletedSteps(String steps) { this.lastCompletedSteps = steps; }
+
+    public String getLastCompletedDistance() { return this.lastCompletedDistance; }
+
+    public void setLastCompletedDistance(String distance) { this.lastCompletedDistance = distance; }
+
     public HashMap<String, Object> getFeatureMap () {
         HashMap<String, Object> route = new HashMap<>();
         route.put("title", this.getName());
@@ -92,6 +109,9 @@ public class Route extends Observable {
         route.put("hard", hard);
         route.put("favorite", favorite);
         route.put("notes", extraNotes);
+        route.put("lastCompletedTime", lastCompletedTime);
+        route.put("lastCompletedSteps", lastCompletedSteps);
+        route.put("lastCompletedDistance", lastCompletedDistance);
 
         Log.d(TAG, "Submit below information to firebase");
         for(String key : route.keySet()){
