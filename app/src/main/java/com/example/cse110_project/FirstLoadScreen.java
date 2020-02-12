@@ -1,6 +1,5 @@
 package com.example.cse110_project;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -11,8 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.GoogleFitAdapter;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class FirstLoadScreen extends AppCompatActivity {
 
@@ -32,57 +28,16 @@ public class FirstLoadScreen extends AppCompatActivity {
     private EditText heightInch;
     private String fitnessServiceKey = "GOOGLE_FIT";
 
-    private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
-
-            Toast.makeText(FirstLoadScreen.this, "PERMISSION NONE", Toast.LENGTH_SHORT).show();
-
-        } else {
-            Toast.makeText(FirstLoadScreen.this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
-        }
-
-
-        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(HomeScreen stepCountActivity) {
-                return new GoogleFitAdapter(stepCountActivity);
-            }
-        });
-
-        SharedPreferences sharedpreference_value = getSharedPreferences("user_info",MODE_PRIVATE);
-
-        /* FOR TESTING FIRST LOAD HEIGHT FORN */
-//         SharedPreferences.Editor editor = sharedpreference_value.edit();
-//         editor.clear().commit();
-
-        String name = sharedpreference_value.getString("firstname", "");
-
-        if(name.length() == 0) {
-            Toast.makeText(FirstLoadScreen.this, "NOTHING IN SHARED PREF" + name, Toast.LENGTH_SHORT).show();
-            setContentView(R.layout.first_load_form);
-        } else {
-            Toast.makeText(FirstLoadScreen.this, "SharedPreference FOUND " + name, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, HomeScreen.class);
-            intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
-            startActivity(intent);
-            finish();
-        }
-
         setContentView(R.layout.first_load_form);
 
         getStartedBtn = (Button) findViewById(R.id.getStartedBtn);
-
 
         getStartedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,9 +58,6 @@ public class FirstLoadScreen extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } else {
-                    Intent intent = new Intent(FirstLoadScreen.this, HomeScreen.class);
-                    intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
-                    startActivity(intent);
                     finish();
                 }
             }
@@ -148,17 +100,8 @@ public class FirstLoadScreen extends AppCompatActivity {
             return false;
         }
 
-        //update to SharedPreference
-        SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        AccessSharedPrefs.setUserInfo(this, fName, lName, ft, inch);
 
-        editor.putString("firstname", fName);
-        editor.putString("lastname", lName);
-        editor.putInt("heightFt", ft);
-        editor.putInt("heightInch", inch);
-        editor.putBoolean("STORED", false);
-
-        editor.apply();
         Toast.makeText(FirstLoadScreen.this, "Saved", Toast.LENGTH_SHORT).show();
 
         return true;
