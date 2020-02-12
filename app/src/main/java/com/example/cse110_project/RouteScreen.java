@@ -1,16 +1,25 @@
 package com.example.cse110_project;
 import android.app.Activity;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,6 +40,8 @@ public class RouteScreen extends AppCompatActivity {
     private Button addRoute;
     private Button expandBtn;
     private RelativeLayout invis;
+    private LinearLayout hidden;
+    private Button expand;
 
     private ArrayList<Route> currentRotes;
 
@@ -62,41 +73,175 @@ public class RouteScreen extends AppCompatActivity {
             }
         });
 
+        RouteCollection rc = new RouteCollection();
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        rc.getRoutes(deviceID, new MyCallback() {
+            @Override
+            public void getRoutes(ArrayList<Route> routes) {
+                currentRotes = routes;
+                Log.d("TAG", "SIZE IS = " + routes.size());
+
+                for(int i = 0; i < routes.size(); i++){
+                    Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
+                    // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
+                }
+
+                for (Route routeEntry : currentRotes ){
+                    addElement(routeEntry);
+                }
+
+            }
+        });
+
+        for (Route routeEntry : currentRotes ){
+            addElement(routeEntry);
+        }
+
         invis = findViewById(R.id.invisibleRel);
         invis.setVisibility(View.GONE);
         expandBtn = findViewById(R.id.expandBtn);
         expandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toggle_contents();
-                RouteCollection rc = new RouteCollection();
-                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                rc.getRoutes(deviceID, new MyCallback() {
-                    @Override
-                    public void getRoutes(ArrayList<Route> routes) {
-                        currentRotes = routes;
-                        Log.d("TAG", "SIZE IS = " + routes.size());
-
-                        for(int i = 0; i < routes.size(); i++){
-                            Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
-                            // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
-                        }
-
-                    }
-                });
-
+                toggle_contents(expandBtn, invis);
             }
         });
     }
 
-    public void toggle_contents(){
-        if( invis.isShown()) {
-            invis.setVisibility(View.GONE);
-            expandBtn.setText("Expand");
+    public void toggle_contents(Button exp, RelativeLayout hide){
+        if( hide.isShown()) {
+            hide.setVisibility(View.GONE);
+            exp.setText("Expand");
         } else {
-            invis.setVisibility(View.VISIBLE);
-            expandBtn.setText("Hide");
+            hide.setVisibility(View.VISIBLE);
+            exp.setText("Hide");
         }
+    }
+
+    public void addElement(Route routeEntry){
+        int fontColor = Color.parseColor("#ffffffff");
+        Drawable draw = getDrawable(R.drawable.rounded_edges);
+
+        LinearLayout routeContain = findViewById(R.id.routeContain);
+        LinearLayout container = new LinearLayout(this);
+        container.setLayoutParams( new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.VERTICAL
+        ));
+        container.setPadding(10, 5, 10, 5);
+        container.setBackground(draw);
+
+        LinearLayout titleEntry = new LinearLayout(this);
+        titleEntry.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.HORIZONTAL
+        ));
+
+        TextView title = new TextView(this);
+        title.setText("Route Name:");
+        title.setTextColor(fontColor);
+        title.setTextSize(20);
+        title.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+
+        TextView titleDisplay = new TextView(this);
+        titleDisplay.setText(routeEntry.getName());
+        titleDisplay.setTextColor(fontColor);
+        titleDisplay.setTextSize(20);
+        titleDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.4f
+        ));
+
+
+        LinearLayout startEntry = new LinearLayout(this);
+        titleEntry.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.HORIZONTAL
+        ));
+
+        TextView start = new TextView(this);
+        title.setText("Start Position:");
+        title.setTextColor(fontColor);
+        title.setTextSize(20);
+        title.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+
+        TextView startDisplay = new TextView(this);
+        titleDisplay.setText(routeEntry.getStartingPoint());
+        titleDisplay.setTextColor(fontColor);
+        titleDisplay.setTextSize(20);
+        titleDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.4f
+        ));
+
+        hidden = new LinearLayout(this);
+        hidden.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        hidden.setVisibility(View.GONE);
+
+        TextView tags = new TextView(this);
+        tags.setText("Tags:");
+        tags.setTextSize(20);
+        tags.setTextColor(fontColor);
+
+
+        expand = new Button(this);
+        expand.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+  /*      expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if( hidden.isShown()) {
+                    hidden.setVisibility(View.GONE);
+                    expand.setText("Expand");
+                } else {
+                    hidden.setVisibility(View.VISIBLE);
+                    expand.setText("Hide");
+                }
+            }
+        });*/
+        Drawable buttonBack = getDrawable(R.drawable.btn_rounded);
+        expand.setBackground(buttonBack);
+        expand.setText("Expand");
+        expand.setTextSize(20);
+        int black = Color.parseColor("#ff000000");
+        expand.setTextColor(black);
+        expand.setVisibility(View.VISIBLE);
+        LinearLayout btnHolder = new LinearLayout(this);
+        btnHolder.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+
+        btnHolder.addView(expand);
+        hidden.addView(tags);
+        startEntry.addView(start);
+        startEntry.addView(startDisplay);
+        titleEntry.addView(title);
+        titleEntry.addView(titleDisplay);
+        container.addView(titleEntry);
+        container.addView(startEntry);
+        container.addView(hidden);
+        container.addView(btnHolder);
+        routeContain.addView(container);
+
     }
 
     private void selectFragment(MenuItem item){

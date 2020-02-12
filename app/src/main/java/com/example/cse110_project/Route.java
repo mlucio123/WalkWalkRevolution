@@ -1,5 +1,9 @@
 package com.example.cse110_project;
 
+import android.content.Context;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
 import com.google.firebase.FirebaseApp;
 /*
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +57,9 @@ public class Route extends Observable {
         DatabaseReference myRef = database.getReference("routes").push();
         myRef.child("new").setValue("Hello, World!");
 */
+
+
+
     public HashMap<String, Object> getFeatureMap () {
         HashMap<String, Object> route = new HashMap<>();
         route.put("title", this.getName());
