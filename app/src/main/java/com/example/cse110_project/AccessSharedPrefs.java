@@ -2,10 +2,13 @@ package com.example.cse110_project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class AccessSharedPrefs {
+
+    private static final String TAG = "xxACCESS SHARED PREFS: ";
 
 
     public AccessSharedPrefs() {}
@@ -56,13 +59,16 @@ public class AccessSharedPrefs {
     public static void setWalkStartTime(Context context, long startTIme) {
         SharedPreferences prefs = setUp(context);
         SharedPreferences.Editor editor = prefs.edit();
-
+        Log.d(TAG, "saving " + String.valueOf(startTIme));
         editor.putLong("walkStartTime", startTIme);
         editor.apply();
     }
 
     public static long getWalkStartTime(Context context) {
         SharedPreferences prefs = setUp(context);
+        Log.d("ACCESS SHARED PREFS: ", "CHECKING");
+        if(!prefs.contains("walkStartTime")) return -1;
+        Log.d("ACCESS SHARED PREFS: ", String.valueOf(prefs.getLong("walkStartTime", -1)));
         return prefs.getLong("walkStartTime", -1);
     }
 

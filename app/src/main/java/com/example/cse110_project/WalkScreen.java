@@ -23,6 +23,7 @@ public class WalkScreen extends AppCompatActivity {
 
     private String fitnessServiceKey = "GOOGLE_FIT";
     private static final long FIVE_SECS = 5000;
+    private static final String TAG = "xxWALK SCREEN: ";
 
     private Button startButton;
     private Button doneWalkButton;
@@ -32,9 +33,9 @@ public class WalkScreen extends AppCompatActivity {
     private Button boostTimeBtn;
     private long walkTime;
     private long addedWalkTime;
+    private long startTime;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
-    private static final String TAG = "HomeScreen";
     private static final int FEET_IN_MILE = 5280;
     private TextView textSteps;
     private FitnessService fitnessService;
@@ -47,7 +48,7 @@ public class WalkScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.walk_screen);
 
-        /**
+        /*
          * Create and start fitnessService
          */
         fitnessService = FitnessServiceFactory.create(this, false);
@@ -60,22 +61,22 @@ public class WalkScreen extends AppCompatActivity {
         boostTimeBtn = findViewById(R.id.boostBtn);
         endButton.setVisibility(View.GONE);
 
-        Log.d("THIS IS BEFORE YOU CAN", "STARTED WALK\n");
-        if(AccessSharedPrefs.getWalkStatus(this)) {
-            Log.d("YOU HAVE A ", "STARTED WALK\n");
+        if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1) {
             walking = true;
-            mChronometer.setBase(AccessSharedPrefs.getWalkStartTime(this));
+            Log.d(TAG, "YOU SAVED A TIME");
+            setOnWalkUI();
+            startTime = AccessSharedPrefs.getWalkStartTime(WalkScreen.this);
+            Log.d(TAG, "Using start time: " + String.valueOf(startTime));
+            mChronometer.setBase(startTime);
             mChronometer.start();
             mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
                 @Override
                 public void onChronometerTick(Chronometer chronometer) {
-                    if(!walking) {
-                        return;
-                    }
                     long time = SystemClock.elapsedRealtime() - chronometer.getBase();
                     setChronoText(time);
                 }
             });
+            Log.d(TAG, "AFTER START");
         }
 
         textSteps = findViewById(R.id.stepView);
@@ -90,26 +91,21 @@ public class WalkScreen extends AppCompatActivity {
 
                 //toggle walk status, and save
                 walking = true;
-                AccessSharedPrefs.setWalkStatus(WalkScreen.this, true);
 
-                //setup and start chronometer
-                long startTime = SystemClock.elapsedRealtime();
-                //AccessSharedPrefs.setWalkStatus(this, true);
-                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                startTime = SystemClock.elapsedRealtime();
                 mChronometer.setBase(startTime);
+                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                Log.d(TAG, "after saved time");
+
                 mChronometer.start();
                 setChronoText(mChronometer.getBase() - SystemClock.elapsedRealtime());
                 mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
                     @Override
                     public void onChronometerTick(Chronometer chronometer) {
-                        if(!walking) {
-                            return;
-                        }
                         long time = SystemClock.elapsedRealtime() - chronometer.getBase();
                         setChronoText(time);
                     }
                 });
-                //start updating steps/distance traveled
 
             }
         });
@@ -117,8 +113,7 @@ public class WalkScreen extends AppCompatActivity {
         doneWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AccessSharedPrefs.setWalkStatus(WalkScreen.this, false);
-                walking = false;
+                if(walking) AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
                 Intent intent = new Intent(WalkScreen.this, RouteScreen.class);
                 startActivity(intent);
             }
@@ -128,7 +123,9 @@ public class WalkScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 walking = false;
+                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 walkTime = SystemClock.elapsedRealtime() - mChronometer.getBase();
+                Log.d("Walktime is: ", String.valueOf(walkTime));
                 startButton.setVisibility(View.VISIBLE);
                 endButton.setVisibility(View.GONE);
                 mChronometer.stop();
@@ -142,6 +139,7 @@ public class WalkScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(walking) {
+                    startTime-=FIVE_SECS;
                     mChronometer.setBase(mChronometer.getBase() - FIVE_SECS);
                     setChronoText(SystemClock.elapsedRealtime() - mChronometer.getBase());
                     return;
@@ -186,11 +184,13 @@ public class WalkScreen extends AppCompatActivity {
         Intent newIntent = new Intent(this, this.getClass());
         switch(item.getItemId()) {
             case R.id.navigation_home:
+                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
                 newIntent = new Intent(this, HomeScreen.class);
                 newIntent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                 startActivity(newIntent);
                 break;
             case R.id.navigation_routes:
+                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
                 newIntent = new Intent(this, RouteScreen.class);
                 startActivity(newIntent);
                 break;

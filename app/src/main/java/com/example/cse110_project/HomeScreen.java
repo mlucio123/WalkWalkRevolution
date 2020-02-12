@@ -202,6 +202,7 @@ public class HomeScreen extends AppCompatActivity {
                 break;
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
+                newIntent.putExtra("actFlag", "Home");
                 startActivity(newIntent);
                 break;
             default:
@@ -236,11 +237,6 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
 
     public void setDistance(long distanceValue){
         distance.setText(String.valueOf(distanceValue) + " Miles");
