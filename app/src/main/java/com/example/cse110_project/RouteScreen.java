@@ -8,6 +8,7 @@ import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ public class RouteScreen extends AppCompatActivity {
 
     private ArrayList<Route> currentRotes;
 
+    private Route dummyRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,39 @@ public class RouteScreen extends AppCompatActivity {
             }
         });
 
+        RouteCollection rc = new RouteCollection();
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        rc.getRoutes(deviceID, new MyCallback() {
+            @Override
+            public void getRoutes(ArrayList<Route> routes) {
+                currentRotes = routes;
+                Log.d("TAG", "SIZE IS = " + routes.size());
+
+                LinearLayout l = (LinearLayout) findViewById(R.id.linear_layout_routes);
+
+                for(int i = 0; i < routes.size(); i++){
+                    Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
+                    // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
+                    Button newButton = new Button(RouteScreen.this);
+                    newButton.setText(routes.get(i).getName());
+                    newButton.setBackgroundColor(0xFF99D6D6);
+                    dummyRoute = routes.get(i);
+                    newButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(RouteScreen.this, WalkScreen.class);
+                            intent.putExtra("routeName", dummyRoute.getName());
+                            intent.putExtra("routeStart", dummyRoute.getStartingPoint());
+                            intent.putExtra("routeNotes", dummyRoute.getNotes());
+                            startActivity(intent);
+                        }
+                    });
+                    l.addView(newButton);
+                }
+
+            }
+        });
+
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -64,21 +99,7 @@ public class RouteScreen extends AppCompatActivity {
         expandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RouteCollection rc = new RouteCollection();
-                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                rc.getRoutes(deviceID, new MyCallback() {
-                    @Override
-                    public void getRoutes(ArrayList<Route> routes) {
-                        currentRotes = routes;
-                        Log.d("TAG", "SIZE IS = " + routes.size());
 
-                        for(int i = 0; i < routes.size(); i++){
-                            Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
-                            // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
-                        }
-
-                    }
-                });
 
             }
         });

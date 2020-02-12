@@ -54,6 +54,7 @@ public class Route extends Observable {
         return this.startingPoint;
     }
 
+    public String getNotes() { return this.extraNotes; }
 
     public void setTags(boolean[] tags){
         out = tags[0];
@@ -90,6 +91,7 @@ public class Route extends Observable {
         route.put("medium", medium);
         route.put("hard", hard);
         route.put("favorite", favorite);
+        route.put("notes", extraNotes);
 
         Log.d(TAG, "Submit below information to firebase");
         for(String key : route.keySet()){

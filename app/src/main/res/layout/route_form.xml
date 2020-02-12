@@ -405,6 +405,40 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25sp"
+                android:layout_marginLeft="30sp"
+                android:layout_marginRight="30sp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/notesLabel"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
+                    android:text="@string/notes_label"
+                    android:textColor="@color/colorText"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/notesText"
+                    android:layout_width="200sp"
+                    android:layout_height="100sp"
+                    android:fontFamily="@font/lato_bold"
+                    android:hint="@string/notes_label"
+                    android:gravity="top"
+                    android:inputType="text"
+                    android:background="@color/white"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"
+                    android:autofillHints="" tools:targetApi="o" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="35sp"
                 android:layout_marginLeft="30sp"
                 android:layout_marginRight="30sp"

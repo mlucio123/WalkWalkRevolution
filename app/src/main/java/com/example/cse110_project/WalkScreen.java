@@ -8,10 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.SystemClock;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,6 +29,11 @@ public class WalkScreen extends AppCompatActivity {
     private Chronometer mChronometer;
     private BottomNavigationView bottomNavigationView;
     private long walkTime;
+
+    private TextView routeTitle;
+    private TextView routeStart;
+    private TextView routeNotes;
+    private TextView routeSummaryTitle;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final String TAG = "HomeScreen";
@@ -47,6 +55,33 @@ public class WalkScreen extends AppCompatActivity {
         endButton.setVisibility(View.GONE);
 
         textSteps = findViewById(R.id.stepView);
+
+        routeStart = findViewById(R.id.routeStartWalkScreen);
+        routeTitle = findViewById(R.id.routeTitleWalkScreen);
+        routeNotes = findViewById(R.id.routeNotesWalkScreen);
+        routeSummaryTitle = findViewById(R.id.route_summary_title);
+
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("routeName");
+        String start = intent.getStringExtra("routeStart");
+        String notes = intent.getStringExtra("routeNotes");
+        LinearLayout layout = findViewById(R.id.route_summary);
+
+        Log.d("WALKSCREEN", "THIS IS " +  title);
+        Log.d("WALKSCREEN", "THIS IS " + start);
+        Log.d("WALKSCREEN", "THIS IS " + notes);
+
+
+        if(title == null && start == null && notes == null){
+            routeSummaryTitle.setText("This is a new route!");
+        } else {
+            routeSummaryTitle.setText("Route Summary");
+            layout.setVisibility(View.VISIBLE);
+            routeTitle.setText(title);
+            routeStart.setText(start);
+            routeNotes.setText(notes);
+            routeNotes.setMovementMethod(new ScrollingMovementMethod());
+        }
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override

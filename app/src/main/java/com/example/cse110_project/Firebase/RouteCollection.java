@@ -105,7 +105,9 @@ public class RouteCollection {
             String id = qry.getId();
             String title = qry.getData().get("start_position").toString();
             String start_position = qry.getData().get("title").toString();
+            String notes = qry.getData().get("notes").toString();
             newRoute = new Route(title, start_position);
+            newRoute.setNotes(notes);
             newRoute.setId(qry.getId().toString());
             return newRoute;
 

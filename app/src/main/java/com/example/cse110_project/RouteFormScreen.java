@@ -65,6 +65,7 @@ public class RouteFormScreen extends AppCompatActivity {
 
     private EditText routeName;
     private EditText startPosition;
+    private EditText notes;
 
     private String fitnessServiceKey = "GOOGLE_FIT";
     private String TAG = "ROUTE FORM: ";
@@ -76,6 +77,7 @@ public class RouteFormScreen extends AppCompatActivity {
 
         routeName = findViewById(R.id.routeName);
         startPosition = findViewById(R.id.routeStart);
+        notes = findViewById(R.id.notesText);
 
         cancelBtn = findViewById(R.id.cancelBtn);
         submitBtn = findViewById(R.id.submitBtn);
@@ -256,6 +258,7 @@ public class RouteFormScreen extends AppCompatActivity {
                     newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
                             tags, favorite, "");
                     newRoute.setTags(tags);
+                    newRoute.setNotes(notes.getText().toString());
 
                     RouteCollection rc = new RouteCollection();
                     String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
