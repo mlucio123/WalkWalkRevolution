@@ -139,7 +139,19 @@
                     android:text="Expand" />
 
             </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/linear_layout_routes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </LinearLayout>
+
         </LinearLayout>
+
     </ScrollView>
 
     <Button
@@ -150,7 +162,7 @@
         android:layout_gravity="center"
         android:layout_marginStart="5sp"
         android:background="@drawable/btn_rounded"
-        android:backgroundTint="#D8023E"
+        android:backgroundTint="@color/colorAccent"
         android:drawablePadding="5dp"
         android:gravity="center_horizontal|center_vertical"
         android:paddingLeft="40dp"

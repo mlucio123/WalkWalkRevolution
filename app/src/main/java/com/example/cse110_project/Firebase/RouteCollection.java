@@ -20,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RouteCollection {
@@ -75,26 +76,34 @@ public class RouteCollection {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            ArrayList<Route> routesSimpleList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                qryRoutes.add(makeRoute(document));
+                                try {
+                                    Route newRoute = makeRoute(document);
+                                    qryRoutes.add(makeRoute(document));
+                                    routesSimpleList.add(makeRoute(document));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.d(TAG, "THIS ROUTE CAN't be ADDED");
+                                }
+
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
+                            myCallback.getRoutes(routesSimpleList);
                             Log.d(TAG, "CURRENT LIST OF ROUTES: " + qryRoutes.size());
 
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
-                })
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        myCallback.getRoutes(qryRoutes);
-                    }
                 });
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        myCallback.getRoutes(qryRoutes);
+//                    }
+//                });
     }
-
-
 
 
     /* This method makes Route object from returning query document snapshot */
@@ -103,13 +112,59 @@ public class RouteCollection {
         try {
             Route newRoute;
             String id = qry.getId();
-            String title = qry.getData().get("start_position").toString();
-            String start_position = qry.getData().get("title").toString();
+
+            String title = "";
+
+            if(qry.getData().get("title") != null) {
+                title = qry.getData().get("title").toString();
+            }
+
+            String start_position = "";
+
+            if(qry.getData().get("start_position") != null){
+                start_position = qry.getData().get("start_position").toString();
+            }
+
+
+            String notes = "";
+
+            if(qry.getData().get("notes") != null){
+                notes = qry.getData().get("notes").toString();
+            }
+
             newRoute = new Route(title, start_position);
+            newRoute.setNotes(notes);
             newRoute.setId(qry.getId().toString());
+
+            String time;
+            String steps;
+            String distance;
+
+            if(qry.getData().get("lastCompletedTime") != null ){
+                time = qry.getData().get("lastCompletedTime").toString();
+                if(time != null){
+                    newRoute.setLastCompletedTime(time);
+                }
+            }
+
+            if(qry.getData().get("lastCompletedSteps") != null){
+                steps = qry.getData().get("lastCompletedSteps").toString();
+                if(steps != null){
+                    newRoute.setLastCompletedSteps(steps);
+                }
+            }
+
+            if(qry.getData().get("lastCompletedDistance") != null){
+                distance = qry.getData().get("lastCompletedDistance").toString();
+                if(distance != null){
+                    newRoute.setLastCompletedDistance(distance);
+                }
+            }
+
             return newRoute;
 
         } catch (Exception e) {
+            e.printStackTrace();
             Log.d(TAG, "PROBLEMS WITH GETTING BACK ROUTES");
             return null;
         }
