@@ -66,6 +66,18 @@ public class RouteCollection {
     }
 
 
+    /* Update walking stats to existing routes */
+    public void updateRoute(String id, String lastCompletedTime, String lastCompletedSteps, String lastCompletedDistance) {
+
+        db.collection("routes").document(id)
+                .update(
+                        "lastCompletedTime", lastCompletedTime,
+                        "lastCompletedSteps", lastCompletedSteps,
+                        "lastCompletedDistance", lastCompletedDistance
+                );
+    }
+
+
     /* Get routes for current device */
     public void getRoutes(String deviceID, final MyCallback myCallback){
 
@@ -160,6 +172,8 @@ public class RouteCollection {
                     newRoute.setLastCompletedDistance(distance);
                 }
             }
+
+            newRoute.setId(id);
 
             return newRoute;
 

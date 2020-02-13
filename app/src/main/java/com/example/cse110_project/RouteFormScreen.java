@@ -80,7 +80,6 @@ public class RouteFormScreen extends AppCompatActivity {
         rSurfaceEven = findViewById(R.id.surfaceEven);
         rSurfaceRough = findViewById(R.id.surfaceRough);
 
-
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

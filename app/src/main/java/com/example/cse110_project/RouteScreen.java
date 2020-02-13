@@ -84,6 +84,7 @@ public class RouteScreen extends AppCompatActivity {
                         public void onClick(View view) {
                             Intent intent = new Intent(RouteScreen.this, WalkScreen.class);
                             Route dummy = (Route) view.getTag();
+                            intent.putExtra("routeID", dummy.getId());
                             intent.putExtra("routeName", dummy.getName());
                             intent.putExtra("routeStart", dummy.getStartingPoint());
                             intent.putExtra("routeNotes", dummy.getNotes());
