@@ -105,7 +105,11 @@ public class RouteScreen extends AppCompatActivity {
                             startActivity(intent);
                         }
                     });
-                    l.addView(newButton);
+                    //l.addView(newButton);
+
+                }
+                for (Route routeEntry : currentRotes ){
+                    addElement(routeEntry);
                 }
 
             }
@@ -120,7 +124,7 @@ public class RouteScreen extends AppCompatActivity {
                 return false;
             }
         });
-
+/*
         RouteCollection rc = new RouteCollection();
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         rc.getRoutes(deviceID, new MyCallback() {
@@ -134,16 +138,13 @@ public class RouteScreen extends AppCompatActivity {
                     // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
                 }
 
-                for (Route routeEntry : currentRotes ){
-                    addElement(routeEntry);
-                }
+
 
             }
         });
 
-        for (Route routeEntry : currentRotes ){
-            addElement(routeEntry);
-        }
+ */
+
 
         invis = findViewById(R.id.invisibleRel);
         invis.setVisibility(View.GONE);
@@ -247,10 +248,16 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
+        tagHolder.setOrientation(LinearLayout.HORIZONTAL);
         TextView tags = new TextView(this);
         tags.setText("Tags:");
         tags.setTextSize(20);
         tags.setTextColor(fontColor);
+        tags.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
 
 
         TextView tagsDisplay = new TextView(this);
@@ -267,6 +274,11 @@ public class RouteScreen extends AppCompatActivity {
         tagsDisplay.setText(Arrays.toString(tagString));
         tagsDisplay.setTextSize(20);
         tagsDisplay.setTextColor(fontColor);
+        tagsDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.4f
+        ));
 
 
         final Button expand = new Button(this);

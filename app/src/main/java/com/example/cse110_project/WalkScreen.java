@@ -113,21 +113,21 @@ public class WalkScreen extends AppCompatActivity {
             routeTitle.setText(title);
             routeStart.setText(start);
             routeNotes.setText(notes);
-            if(lastTime != null || lastTime.length() != 0){
+            if(lastTime != null && lastTime.length() != 0){
                 routeLastCompletedTimeLayout.setVisibility(View.VISIBLE);
                 routeLastCompletedTime.setText(lastTime);
             } else {
                 routeLastCompletedTimeLayout.setVisibility(View.GONE);
             }
 
-            if(lastSteps != null || lastSteps.length() != 0){
+            if(lastSteps != null && lastSteps.length() != 0){
                 routeLastCompletedStepsLayout.setVisibility(View.VISIBLE);
                 routeLastcompletedSteps.setText(lastSteps);
             } else {
                 routeLastCompletedStepsLayout.setVisibility(View.GONE);
             }
 
-            if(lastDistance != null || lastDistance.length() != 0){
+            if(lastDistance != null && lastDistance.length() != 0){
                 routeLastCompletedDistanceLayout.setVisibility(View.VISIBLE);
                 routeLastcompletedDistance.setText(lastDistance);
             } else {

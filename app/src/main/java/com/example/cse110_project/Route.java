@@ -51,12 +51,11 @@ public class Route extends Observable {
         this.lastCompletedTime = this.lastCompletedSteps = this.lastCompletedDistance = "";
     }
 
-    public Route( String name, String startingPoint, boolean[] tags, boolean favorite, String extraNotes) {
+    public Route( String name, String startingPoint, boolean[] tags,  String extraNotes) {
             this.name = name;
             this.startingPoint = startingPoint;
             this.tags = tags;
             this.extraNotes = extraNotes;
-            this.favorite = favorite;
     }
 
     public void setId(String id){ this.id = id; }
