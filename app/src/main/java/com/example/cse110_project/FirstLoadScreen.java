@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
+
 public class FirstLoadScreen extends AppCompatActivity {
 
     private Button getStartedBtn;
@@ -17,6 +19,14 @@ public class FirstLoadScreen extends AppCompatActivity {
     private EditText heightFt;
     private EditText heightInch;
     private String fitnessServiceKey = "GOOGLE_FIT";
+
+    // Error msg for form validation
+    public static final String FORM_VALIDATION_SUCCESSFUL = "SUCCESS";
+    public static final String FORM_VALIDATION_INPUT_NULL = "Please fill out all fields.";
+    public static final String FORM_VALIDATION_FN_BLANK = "First name can't be blank";
+    public static final String FORM_VALIDATION_LN_BLANK = "Last name can't be blank";
+    public static final String FORM_VALIDATION_FT_OUT_OF_RANGE = "Feet needs to be a number between 0-8";
+    public static final String FORM_VALIDATION_INCH_OUT_OF_RANGE = "Inch needs to be a number between 0-11";
 
 
 
@@ -38,18 +48,17 @@ public class FirstLoadScreen extends AppCompatActivity {
                 heightInch = (EditText) findViewById(R.id.userHeightInch);
 
 
-                boolean res = validateFormInput(firstName, lastName, heightFt, heightInch);
+                String res = validateFormInput(firstName, lastName, heightFt, heightInch);
 
                 // TODO: More informative toast message
-                if (!res) {
+                if (res == "SUCCESS") {
+                    finish();
+                } else {
                     Context context = getApplicationContext();
-                    CharSequence text = "Invalid Form Input!";
+                    CharSequence text = res;
                     int duration = Toast.LENGTH_LONG;
-
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
-                } else {
-                    finish();
                 }
             }
         });
@@ -66,10 +75,10 @@ public class FirstLoadScreen extends AppCompatActivity {
      * Description: Validate Form Input, return error messages
      * TODO: return error messages
      */
-    private boolean validateFormInput(EditText firstName, EditText lastName, EditText heightFt, EditText heightInch){
+    private String validateFormInput(EditText firstName, EditText lastName, EditText heightFt, EditText heightInch){
 
         if(firstName == null || lastName == null || heightFt == null || heightInch == null) {
-            return false;
+            return FORM_VALIDATION_INPUT_NULL;
         }
 
         String fName;
@@ -85,22 +94,22 @@ public class FirstLoadScreen extends AppCompatActivity {
             ft = Integer.parseInt(heightFt.getText().toString());
             inch = Integer.parseInt(heightInch.getText().toString());
 
-            if (fName.length() == 0) { return false; }
-            if (lName.length() == 0) { return false; }
+            if (fName.length() == 0) { return FORM_VALIDATION_FN_BLANK; }
+            if (lName.length() == 0) { return FORM_VALIDATION_LN_BLANK; }
 
-            if (ft <= 0 || ft > 8) { return false; }
-            if (inch < 0 || inch > 11 ) { return false; }
+            if (ft <= 0 || ft > 8) { return FORM_VALIDATION_FT_OUT_OF_RANGE; }
+            if (inch < 0 || inch > 11 ) { return FORM_VALIDATION_INCH_OUT_OF_RANGE; }
 
 
         } catch (Exception e){
-            return false;
+            return FORM_VALIDATION_INPUT_NULL;
         }
 
         AccessSharedPrefs.setUserInfo(this, fName, lName, ft, inch);
 
         Toast.makeText(FirstLoadScreen.this, "Saved", Toast.LENGTH_SHORT).show();
 
-        return true;
+        return FORM_VALIDATION_SUCCESSFUL;
 
     }
 
