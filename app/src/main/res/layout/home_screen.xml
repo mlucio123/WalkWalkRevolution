@@ -218,6 +218,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/recentWalkLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5sp"
@@ -226,7 +227,7 @@
         style="?android:attr/buttonBarStyle"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal">
-
+        <!--         android:visibility="invisible" -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -255,7 +256,8 @@
             <TextView
                 android:id="@+id/stepsViewHome"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="Steps Go Here">
             </TextView>
 
         </LinearLayout>
@@ -280,7 +282,8 @@
             <TextView
                 android:id="@+id/distViewHome"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="Dist Goes Here">>
             </TextView>
 
         </LinearLayout>
@@ -305,7 +308,8 @@
             <TextView
                 android:id="@+id/timeViewHome"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="Time Goes Here">>>
             </TextView>
 
         </LinearLayout>

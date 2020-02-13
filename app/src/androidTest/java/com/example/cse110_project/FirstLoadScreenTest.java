@@ -72,6 +72,4 @@ public class FirstLoadScreenTest {
         heightInch = (EditText) firstLoadScreen.findViewById(R.id.userHeightInch);
         assertEquals("0", heightInch.getHint());
     }
-
-
 }

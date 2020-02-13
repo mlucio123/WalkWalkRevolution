@@ -117,6 +117,8 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
+        //if recent walk is found, show recentWalkLaout and set values
+
 
         // TODO: STEP BOOST
 
