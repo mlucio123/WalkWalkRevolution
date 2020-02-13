@@ -51,6 +51,8 @@ public class Route extends Observable {
         return this.startingPoint;
     }
 
+    public boolean[] getTags() { return this.tags; }
+
 /*
     public void post(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();

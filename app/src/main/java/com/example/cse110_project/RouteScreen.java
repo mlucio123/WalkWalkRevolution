@@ -33,6 +33,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RouteScreen extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
@@ -122,12 +124,13 @@ public class RouteScreen extends AppCompatActivity {
 
         LinearLayout routeContain = findViewById(R.id.routeContain);
         LinearLayout container = new LinearLayout(this);
-        container.setLayoutParams( new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
+        );
         container.setOrientation(LinearLayout.VERTICAL);
-        container.setPadding(10, 5, 10, 5);
+        container.setPaddingRelative(30, 25, 30, 25);
+        container.setLayoutParams(containerParams);
         container.setBackground(draw);
 
         LinearLayout titleEntry = new LinearLayout(this);
@@ -191,10 +194,30 @@ public class RouteScreen extends AppCompatActivity {
         hidden.setOrientation(LinearLayout.VERTICAL);
         hidden.setVisibility(View.GONE);
 
+        LinearLayout tagHolder = new LinearLayout(this);
+        tagHolder.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
         TextView tags = new TextView(this);
         tags.setText("Tags:");
         tags.setTextSize(20);
         tags.setTextColor(fontColor);
+
+        TextView tagsDisplay = new TextView(this);
+        Object[] tagString = parseTags(routeEntry.getTags());
+        /*
+        if (tagString.length > 0){
+            for(int i = 0; i < tagString.length; i++){
+
+            }
+        }
+
+         */
+
+        tagsDisplay.setText(Arrays.toString(tagString));
+        tagsDisplay.setTextSize(20);
+        tagsDisplay.setTextColor(fontColor);
 
 
         final Button expand = new Button(this);
@@ -217,18 +240,22 @@ public class RouteScreen extends AppCompatActivity {
         Drawable buttonBack = getDrawable(R.drawable.btn_rounded);
         expand.setBackground(buttonBack);
         expand.setText("Expand");
-        expand.setTextSize(20);
+        expand.setTextSize(14);
         int black = Color.parseColor("#ff000000");
         expand.setTextColor(black);
         expand.setVisibility(View.VISIBLE);
         LinearLayout btnHolder = new LinearLayout(this);
-        btnHolder.setLayoutParams(new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
+        );
+        btnParams.setMargins(150, 50, 150, 0);
+        btnHolder.setLayoutParams(btnParams);
 
         btnHolder.addView(expand);
-        hidden.addView(tags);
+        tagHolder.addView(tags);
+        tagHolder.addView(tagsDisplay);
+        hidden.addView(tagHolder);
         startEntry.addView(start);
         startEntry.addView(startDisplay);
         titleEntry.addView(title);
@@ -240,6 +267,48 @@ public class RouteScreen extends AppCompatActivity {
         routeContain.addView(container);
 
     }
+
+
+    protected Object[] parseTags(boolean[] tags) {
+        //boolean[] tags ={out, loop, flat, hills, even, rough, street, trail, easy, medium, hard};
+        List<String> tagList = new ArrayList<String>();
+        if (tags[0]) {
+            tagList.add("Out&Back");
+        } else if (tags[1]) {
+            tagList.add("Loop");
+        }
+
+        if (tags[2]) {
+            tagList.add("Flat");
+        } else if (tags[3]){
+            tagList.add("Hills");
+        }
+
+        if (tags[4]){
+            tagList.add("Even");
+        } else if (tags[5]){
+            tagList.add("Rough");
+        }
+
+        if (tags[6]){
+            tagList.add("Street");
+        } else if (tags[7]){
+            tagList.add("Trail");
+        }
+
+        if (tags[8]){
+            tagList.add("Easy");
+        } else if (tags[9]){
+            tagList.add("Medium");
+        } else if (tags[10]){
+            tagList.add("Hard");
+        }
+
+
+        return tagList.toArray();
+    }
+
+
 
     private void selectFragment(MenuItem item){
 

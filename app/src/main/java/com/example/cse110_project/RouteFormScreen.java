@@ -250,8 +250,8 @@ public class RouteFormScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (routeName.getText().toString().equals("")) {
-                    Toast.makeText(RouteFormScreen.this, "You did not fill in route name.", Toast.LENGTH_SHORT).show();
+                if (routeName.getText().toString().equals("") || startPosition.getText().toString().equals("")) {
+                    Toast.makeText(RouteFormScreen.this, "Please fill out all form sections", Toast.LENGTH_SHORT).show();
                 } else {
 
                     // TODO CREATE OBJ OF CORRESPONDING MESSAGES AND SEND TO FIREBASE
