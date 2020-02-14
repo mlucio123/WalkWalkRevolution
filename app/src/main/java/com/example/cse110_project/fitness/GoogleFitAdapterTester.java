@@ -1,6 +1,14 @@
 package com.example.cse110_project.fitness;
 
-public class GoogleFitAdaptorTest implements FitnessService {
+import android.app.Activity;
+
+public class GoogleFitAdapterTester implements FitnessService {
+    private Activity activity;
+
+    public GoogleFitAdapterTester(Activity activity, boolean is_test) {
+        this.activity = activity;
+    }
+
     @Override
     public void setup(){
 

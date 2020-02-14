@@ -7,7 +7,7 @@ public class FitnessServiceFactory {
 
         // Check is_test flag, return testFitnessService if flag is on
         if (is_test) {
-            return new GoogleFitAdapter(activity, is_test);
+            return new GoogleFitAdapterTester(activity, is_test);
         }
         else {
             return new GoogleFitAdapter(activity, is_test);
