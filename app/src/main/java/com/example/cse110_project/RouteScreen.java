@@ -313,7 +313,7 @@ public class RouteScreen extends AppCompatActivity {
 
         btnParams.setMargins(150, 50, 150, 0);
         btnHolder.setLayoutParams(btnParams);
-
+        newButton.setLayoutParams(btnParams);
 
         tagHolder.addView(tags);
         tagHolder.addView(tagsDisplay);
