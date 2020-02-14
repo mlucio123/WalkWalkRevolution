@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -83,7 +84,7 @@ public class RouteScreen extends AppCompatActivity {
                     Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
 
                     // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
-
+/*
                     Button newButton = new Button(RouteScreen.this);
                     newButton.setText(routes.get(i).getName());
                     newButton.setBackgroundColor(0xFF99D6D6);
@@ -106,7 +107,7 @@ public class RouteScreen extends AppCompatActivity {
                         }
                     });
                     //l.addView(newButton);
-
+*/
                 }
                 for (Route routeEntry : currentRotes ){
                     addElement(routeEntry);
@@ -124,26 +125,7 @@ public class RouteScreen extends AppCompatActivity {
                 return false;
             }
         });
-/*
-        RouteCollection rc = new RouteCollection();
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        rc.getRoutes(deviceID, new MyCallback() {
-            @Override
-            public void getRoutes(ArrayList<Route> routes) {
-                currentRotes = routes;
-                Log.d("TAG", "SIZE IS = " + routes.size());
 
-                for(int i = 0; i < routes.size(); i++){
-                    Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
-                    // TODO : CALLS METHOD TAHT BUILDS THE ROUTE HERE
-                }
-
-
-
-            }
-        });
-
- */
 
 
         invis = findViewById(R.id.invisibleRel);
@@ -208,6 +190,21 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
         ));
 
+        ImageView favDisplay =  new ImageView(this);
+        favDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        Drawable favImage = getDrawable(R.drawable.ic_favorite_border_black_24dp);
+        Drawable favBackgroundFalse = getDrawable(R.drawable.btn_black);
+        Drawable favBackgroundTrue = getDrawable(R.drawable.btn_red);
+        favDisplay.setImageDrawable(favImage);
+        if (routeEntry.getFavorite()){
+            favDisplay.setBackground(favBackgroundTrue);
+        } else {
+            favDisplay.setBackground(favBackgroundFalse);
+        }
+
 
         LinearLayout startEntry = new LinearLayout(this);
         titleEntry.setLayoutParams(new LinearLayout.LayoutParams(
@@ -235,6 +232,12 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
         ));
 
+
+        int fontSmall = 14;
+        int smallColor = Color.parseColor("#FF868686");
+
+        // HIDDEN EXPANDABLE SECTION
+
         final LinearLayout hidden = new LinearLayout(this);
         hidden.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -251,35 +254,115 @@ public class RouteScreen extends AppCompatActivity {
         tagHolder.setOrientation(LinearLayout.HORIZONTAL);
         TextView tags = new TextView(this);
         tags.setText("Tags:");
-        tags.setTextSize(20);
-        tags.setTextColor(fontColor);
+        tags.setTextSize(fontSmall);
+        tags.setTextColor(smallColor);
         tags.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.6f
         ));
 
-
         TextView tagsDisplay = new TextView(this);
         Object[] tagString = parseTags(routeEntry.getTags());
-        /*
-        if (tagString.length > 0){
-            for(int i = 0; i < tagString.length; i++){
-
-            }
-        }
-
-         */
-
         tagsDisplay.setText(Arrays.toString(tagString));
-        tagsDisplay.setTextSize(20);
-        tagsDisplay.setTextColor(fontColor);
+        tagsDisplay.setTextSize(fontSmall);
+        tagsDisplay.setTextColor(smallColor);
         tagsDisplay.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 0.4f
         ));
 
+        LinearLayout timeHolder = new LinearLayout(this);
+        timeHolder.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        timeHolder.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView time = new TextView(this);
+        time.setText("Time:");
+        time.setTextSize(fontSmall);
+        time.setTextColor(smallColor);
+        time.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+        TextView timeDisplay = new TextView(this);
+        timeDisplay.setText(routeEntry.getLastCompletedTime());
+        timeDisplay.setTextSize(fontSmall);
+        timeDisplay.setTextColor(smallColor);
+        timeDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+        timeHolder.addView(time);
+        timeHolder.addView(timeDisplay);
+
+
+        LinearLayout distHolder = new LinearLayout(this);
+        distHolder.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        distHolder.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView distance = new TextView(this);
+        distance.setText("Distance:");
+        distance.setTextSize(fontSmall);
+        distance.setTextColor(smallColor);
+        distance.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+
+        TextView distanceDisplay = new TextView(this);
+        distanceDisplay.setText(routeEntry.getLastCompletedDistance());
+        distanceDisplay.setTextSize(fontSmall);
+        distanceDisplay.setTextColor(smallColor);
+        distanceDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.4f
+        ));
+        distHolder.addView(distance);
+        distHolder.addView(distanceDisplay);
+
+        LinearLayout stepHolder = new LinearLayout(this);
+        stepHolder.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        stepHolder.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView steps = new TextView(this);
+        steps.setText("Steps:");
+        steps.setTextSize(fontSmall);
+        steps.setTextColor(smallColor);
+        steps.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+
+        TextView stepDisplay = new TextView(this);
+        stepDisplay.setText(routeEntry.getLastCompletedSteps());
+        stepDisplay.setTextSize(fontSmall);
+        stepDisplay.setTextColor(smallColor);
+        stepDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.4f
+        ));
+        stepHolder.addView(steps);
+        stepHolder.addView(stepDisplay);
+
+
+
+        //     BUTTON SECTION
 
         final Button expand = new Button(this);
         expand.setLayoutParams(new LinearLayout.LayoutParams(
@@ -298,6 +381,37 @@ public class RouteScreen extends AppCompatActivity {
                 }
             }
         });
+
+        LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        btnParams.setMargins(150, 50, 150, 0);
+
+        final Button newButton = new Button(RouteScreen.this);
+        newButton.setText("Start" + (routeEntry.getName()));
+        Drawable startButtonBack = getDrawable(R.drawable.btn_circular);
+        newButton.setBackground(startButtonBack);
+        newButton.setTextColor(fontColor);
+        newButton.setTag(routeEntry);
+
+
+        newButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RouteScreen.this, WalkScreen.class);
+                Route dummy = (Route) view.getTag();
+                intent.putExtra("routeName", dummy.getName());
+                intent.putExtra("routeStart", dummy.getStartingPoint());
+                intent.putExtra("routeNotes", dummy.getNotes());
+                intent.putExtra("lastCompletedTime", dummy.getLastCompletedTime());
+                intent.putExtra("lastCompletedSteps", dummy.getLastCompletedSteps());
+                intent.putExtra("lastCompletedDistance", dummy.getLastCompletedDistance());
+                startActivity(intent);
+            }
+        });
+        newButton.setLayoutParams(btnParams);
+
         Drawable buttonBack = getDrawable(R.drawable.btn_rounded);
         expand.setBackground(buttonBack);
         expand.setText("Expand");
@@ -306,21 +420,25 @@ public class RouteScreen extends AppCompatActivity {
         expand.setTextColor(black);
         expand.setVisibility(View.VISIBLE);
         LinearLayout btnHolder = new LinearLayout(this);
-        LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        btnParams.setMargins(150, 50, 150, 0);
+
         btnHolder.setLayoutParams(btnParams);
 
+
+
+        // ADD COMPLETED ELEMENTS
         btnHolder.addView(expand);
         tagHolder.addView(tags);
         tagHolder.addView(tagsDisplay);
         hidden.addView(tagHolder);
+        hidden.addView(timeHolder);
+        hidden.addView(distHolder);
+        hidden.addView(stepHolder);
+        hidden.addView(newButton);
         startEntry.addView(start);
         startEntry.addView(startDisplay);
         titleEntry.addView(title);
         titleEntry.addView(titleDisplay);
+        titleEntry.addView(favDisplay);
         container.addView(titleEntry);
         container.addView(startEntry);
         container.addView(hidden);

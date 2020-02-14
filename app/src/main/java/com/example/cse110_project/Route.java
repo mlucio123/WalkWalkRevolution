@@ -70,6 +70,8 @@ public class Route extends Observable {
 
     public boolean[] getTags() { return this.tags; }
 
+    public boolean getFavorite(){ return this.favorite; }
+
 
     public String getNotes() { return this.extraNotes; }
 

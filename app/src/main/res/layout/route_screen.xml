@@ -71,7 +71,8 @@
                         android:id="@+id/imageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_favorite_border_red" />
+                        android:background="@drawable/btn_circular"
+                        app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
                 </LinearLayout>
 
@@ -86,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".6"
                         android:text="@string/start_position"
-                        android:textColor="@color/white"
+                        android:textColor="#868686"
                         android:textSize="20sp" />
 
                     <TextView
