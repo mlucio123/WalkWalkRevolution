@@ -48,6 +48,7 @@ public class RouteFormScreen extends AppCompatActivity {
 
     private EditText routeName;
     private EditText startPosition;
+    private EditText notes;
 
     private String fitnessServiceKey = "GOOGLE_FIT";
     private String TAG = "ROUTE FORM: ";
@@ -59,6 +60,8 @@ public class RouteFormScreen extends AppCompatActivity {
 
         routeName = findViewById(R.id.routeName);
         startPosition = findViewById(R.id.routeStart);
+
+        notes = findViewById(R.id.notesText);
 
         cancelBtn = findViewById(R.id.cancelBtn);
         submitBtn = findViewById(R.id.submitBtn);
@@ -77,7 +80,6 @@ public class RouteFormScreen extends AppCompatActivity {
         rTypeTrail = findViewById(R.id.routeTypeTrail);
         rSurfaceEven = findViewById(R.id.surfaceEven);
         rSurfaceRough = findViewById(R.id.surfaceRough);
-
 
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +101,6 @@ public class RouteFormScreen extends AppCompatActivity {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // return to walk screen
                 finish();
             }
@@ -227,8 +228,8 @@ public class RouteFormScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (routeName.getText().toString().equals("")) {
-                    Toast.makeText(RouteFormScreen.this, "You did not fill in route name.", Toast.LENGTH_SHORT).show();
+                if (routeName.getText().toString().equals("") || startPosition.getText().toString().equals("")) {
+                    Toast.makeText(RouteFormScreen.this, "Please fill out all form sections", Toast.LENGTH_SHORT).show();
                 } else {
 
                     // TODO CREATE OBJ OF CORRESPONDING MESSAGES AND SEND TO FIREBASE
@@ -236,9 +237,26 @@ public class RouteFormScreen extends AppCompatActivity {
 
                     Log.d(TAG, "REsult : " + out + flat + hills + even + rough + street + trail + easy + medium + hard);
 
+                    String timer = getIntent().getStringExtra("completedTime");
+                    String steps = getIntent().getStringExtra("stepCount");
+                    String distance = getIntent().getStringExtra("distance");
+
                     newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
-                            tags, favorite, "");
+                            tags, "");
                     newRoute.setTags(tags);
+                    newRoute.setNotes(notes.getText().toString());
+
+                    if (timer != null && timer.length() != 0){
+                        newRoute.setLastCompletedTime(timer);
+                    }
+
+                    if (steps != null && steps.length() != 0){
+                        newRoute.setLastCompletedSteps(steps);
+                    }
+
+                    if (distance != null && distance.length() != 0){
+                        newRoute.setLastCompletedDistance(distance);
+                    }
 
                     RouteCollection rc = new RouteCollection();
                     String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);

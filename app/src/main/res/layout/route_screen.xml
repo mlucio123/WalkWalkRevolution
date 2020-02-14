@@ -14,84 +14,37 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25sp"
+        android:layout_marginBottom="15sp"
         android:fontFamily="@font/lato"
         android:text="@string/route"
         android:textColor="@color/colorText"
         android:textSize="45sp" />
 
     <ScrollView
-        android:id="@+id/routeContain"
+        android:id="@+id/scrl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#A801646D"
-        android:backgroundTint="#CB005F46">
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp">
 
         <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/routesContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/routeContain"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/text_border"
-                    android:text="@string/route_name"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textColorHint="@color/white"
-                    android:textSize="20sp"
-                    tools:text="@string/route_name" />
-
-                <TextView
-                    android:id="@+id/routeNameDisplay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:textSize="20sp" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:background="@drawable/text_border"
-                    android:text="@string/start_position"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/startPositionDisplay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/expandBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Expand" />
 
         </LinearLayout>
+
     </ScrollView>
 
     <Button
@@ -107,6 +60,8 @@
         android:gravity="center_horizontal|center_vertical"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/add_route_btn_text"
         android:textColor="#FFFFFF"
         android:textSize="13sp" />

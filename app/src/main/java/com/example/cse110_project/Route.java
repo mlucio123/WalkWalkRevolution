@@ -1,8 +1,17 @@
 package com.example.cse110_project;
 
-import android.util.Log;
+import android.content.Context;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.FirebaseApp;
+/*
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.core.Context;
+*/
+import android.util.Log;
+
 //import com.google.firebase.database.DatabaseReference;
 //import com.google.firebase.database.FirebaseDatabase;
 //import com.google.firebase.database.core.Context;
@@ -19,6 +28,7 @@ public class Route extends Observable {
     private String startingPoint;
     private boolean[] tags;
     private String extraNotes;
+    private boolean favorite1;
     private boolean favorite;
 
     private boolean out, loop;
@@ -27,6 +37,10 @@ public class Route extends Observable {
     private boolean street, trail;
     private boolean easy, medium, hard;
 
+    private String lastCompletedTime;
+    private String lastCompletedSteps;
+    private String lastCompletedDistance;
+
     private final String TAG = "ROUTE CLASS: ";
 
     //other stuff
@@ -34,17 +48,19 @@ public class Route extends Observable {
     public Route( String name, String startingPoint ){
         this.name = name;
         this.startingPoint = startingPoint;
+        this.lastCompletedTime = this.lastCompletedSteps = this.lastCompletedDistance = "";
     }
 
-    public Route( String name, String startingPoint, boolean[] tags, boolean favorite, String extraNotes) {
-            this.name = name;
-            this.startingPoint = startingPoint;
-            this.tags = tags;
-            this.extraNotes = extraNotes;
-            this.favorite = favorite;
+    public Route( String name, String startingPoint, boolean[] tags,  String extraNotes) {
+        this.name = name;
+        this.startingPoint = startingPoint;
+        this.tags = tags;
+        this.extraNotes = extraNotes;
     }
 
     public void setId(String id){ this.id = id; }
+
+    public String getId() { return this.id; }
 
     public String getName(){
         return this.name;
@@ -54,6 +70,11 @@ public class Route extends Observable {
         return this.startingPoint;
     }
 
+    public boolean[] getTags() { return this.tags; }
+
+    public boolean getFavorite(){ return this.favorite; }
+
+    public String getNotes() { return this.extraNotes; }
 
     public void setTags(boolean[] tags){
         out = tags[0];
@@ -74,6 +95,18 @@ public class Route extends Observable {
         this.extraNotes = notes;
     }
 
+    public String getLastCompletedTime() { return this.lastCompletedTime; }
+
+    public void setLastCompletedTime(String time) { this.lastCompletedTime = time; }
+
+    public String getLastCompletedSteps() { return this.lastCompletedSteps; }
+
+    public void setLastCompletedSteps(String steps) { this.lastCompletedSteps = steps; }
+
+    public String getLastCompletedDistance() { return this.lastCompletedDistance; }
+
+    public void setLastCompletedDistance(String distance) { this.lastCompletedDistance = distance; }
+
     public HashMap<String, Object> getFeatureMap () {
         HashMap<String, Object> route = new HashMap<>();
         route.put("title", this.getName());
@@ -90,6 +123,10 @@ public class Route extends Observable {
         route.put("medium", medium);
         route.put("hard", hard);
         route.put("favorite", favorite);
+        route.put("notes", extraNotes);
+        route.put("lastCompletedTime", lastCompletedTime);
+        route.put("lastCompletedSteps", lastCompletedSteps);
+        route.put("lastCompletedDistance", lastCompletedDistance);
 
         Log.d(TAG, "Submit below information to firebase");
         for(String key : route.keySet()){

@@ -2,10 +2,13 @@ package com.example.cse110_project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class AccessSharedPrefs {
+
+    private static final String TAG = "xxACCESS SHARED PREFS: ";
 
 
     public AccessSharedPrefs() {}
@@ -44,6 +47,72 @@ public class AccessSharedPrefs {
         return setUp(context).getInt("heightInch", -1);
 
     }
+
+    public static void setWalkStatus(Context context, boolean status) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putBoolean("walkStatus", status);
+        editor.apply();
+    }
+
+    public static void setWalkStartTime(Context context, long startTIme) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        Log.d(TAG, "saving " + String.valueOf(startTIme));
+        editor.putLong("walkStartTime", startTIme);
+        editor.apply();
+    }
+
+    public static long getWalkStartTime(Context context) {
+        SharedPreferences prefs = setUp(context);
+        Log.d("ACCESS SHARED PREFS: ", "CHECKING");
+        if(!prefs.contains("walkStartTime")) return -1;
+        Log.d("ACCESS SHARED PREFS: ", String.valueOf(prefs.getLong("walkStartTime", -1)));
+        return prefs.getLong("walkStartTime", -1);
+    }
+
+    public static boolean getWalkStatus(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(!prefs.contains("walkStatus")) return false;
+        return prefs.getBoolean("walkStatus", false);
+    }
+
+    public static void saveWalk(Context context, String timer, String steps, String distance) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString("distance", distance);
+        editor.putString("timer", timer);
+        editor.putString("steps", steps);
+
+        editor.apply();
+    }
+
+    public static String getSavedSteps(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("steps"))
+            return prefs.getString("steps", "");
+
+        return "";
+    }
+
+    public static String getSavedDistance(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("distance"))
+            return prefs.getString("distance", "");
+
+        return "";
+    }
+
+    public static String getSavedTimer(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("timer"))
+            return prefs.getString("timer", "");
+
+        return "";
+    }
+
 
     /*public static void setFirstName(Context context) {
         return setUp(context).getString("firstname", "");

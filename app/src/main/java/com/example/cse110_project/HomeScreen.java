@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -16,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.math.BigDecimal;
@@ -82,10 +85,27 @@ public class HomeScreen extends AppCompatActivity {
             Toast.makeText(HomeScreen.this, "LOCATION PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
         }
 
+        if(AccessSharedPrefs.getSavedDistance(this).length() != 0) {
+            TextView recentWalkSteps = findViewById(R.id.recentSteps);
+            String steps = AccessSharedPrefs.getSavedSteps(this) + "Steps";
+            recentWalkSteps.setText(steps);
+            TextView recentWalkDist = findViewById(R.id.recentDist);
+            recentWalkDist.setText(AccessSharedPrefs.getSavedDistance(this));
+            TextView recentTimeView = findViewById(R.id.recentTime);
+            recentTimeView.setText(AccessSharedPrefs.getSavedTimer(this));
+            LinearLayout recentWalkStats = findViewById(R.id.recentWalkLayout);
+            recentWalkStats.setVisibility(View.VISIBLE);
+        }
+
+        /*if(AccessSharedPrefs.getWalkStartTime(this) != -1 && !WalkScreen.walking) {
+            Log.d(TAG, "Overwriting time");
+            AccessSharedPrefs.setWalkStartTime(this, -1);
+        }*/
+
         /**
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, false);
+        fitnessService = FitnessServiceFactory.create(this, true);
         fitnessService.setup();
         fitnessService.startRecording();
 
@@ -203,6 +223,7 @@ public class HomeScreen extends AppCompatActivity {
                 break;
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
+                newIntent.putExtra("actFlag", "Home");
                 startActivity(newIntent);
                 break;
             default:
@@ -238,11 +259,6 @@ public class HomeScreen extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
     public void setDistance(long distanceValue){
         distance.setText(String.valueOf(distanceValue) + " Miles");
     }
@@ -267,6 +283,7 @@ public class HomeScreen extends AppCompatActivity {
         if (estimateDistance < FEET_IN_MILE){
             //String estDistStr = rounded + "@string/space" + "@string/feetStr";
             estimatedDistance.setText(rounded + " Feet");
+            distance.setText(rounded + " Feet");
         } else {
             double convert = (estimateDistance * 1.0 / FEET_IN_MILE );
             bd = new BigDecimal(convert);
@@ -274,6 +291,7 @@ public class HomeScreen extends AppCompatActivity {
             rounded = bd.doubleValue();
             String estDistStr = rounded + "@string/space" + "@string/milesStr";
             estimatedDistance.setText(rounded + " Miles");
+            distance.setText(rounded + " Miles");
         }
 
     }

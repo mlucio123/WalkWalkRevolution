@@ -65,6 +65,11 @@ public class FirstLoadScreen extends AppCompatActivity {
 
     }
 
+//     public void setFitnessServiceKey(String fitnessServiceKey) {
+//         this.fitnessServiceKey = fitnessServiceKey;
+//     }
+
+
     /*
      * Function: validateFormInput
      * Description: Validate Form Input, return error messages
