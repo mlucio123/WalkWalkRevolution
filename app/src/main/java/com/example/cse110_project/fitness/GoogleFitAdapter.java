@@ -24,6 +24,7 @@ public class GoogleFitAdapter implements FitnessService {
     private Activity activity;
     private GoogleSignInAccount account;
     private FitnessOptions fitnessOptions;
+    private long steps;
 
     /* Static variables */
     // TODO: might have problem(**)
@@ -159,16 +160,41 @@ public class GoogleFitAdapter implements FitnessService {
 
     }
 
+
     @Override
-    public void readHistory(){
-//        DataReadRequest dataReadRequest = DataReadRequest.Builder()
-//                .setTimeRange(startTime.getMillis(), endTime.getMillis(), TimeUnit.MILLISECONDS)
-//                .bucketByTime(1, TimeUnit.HOURS)
-//                .aggregate(DataType.TYPE_LOCATION_SAMPLE, DataType.AGGREGATE_LOCATION_BOUNDING_BOX)
-//                .build();
-        return;
+    public long getDailySteps(){
+        getGoogleDailySteps();
+        return this.steps;
     }
 
 
+    private void setDailySteps(long steps){
+        Log.d(TAG, "Total steps: " + steps);
+        this.steps = steps;
+    }
 
+    private void getGoogleDailySteps(){
+        Fitness.getHistoryClient(activity, account)
+                .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
+                .addOnSuccessListener(
+                        new OnSuccessListener<DataSet>() {
+                            @Override
+                            public void onSuccess(DataSet dataSet) {
+                                Log.d(TAG, "STEP_COUNT_DATASET: " + dataSet.toString());
+                                long total =
+                                        dataSet.isEmpty()
+                                                ? 0
+                                                : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
+
+                                setDailySteps(total);
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "There was a problem getting the step count.", e);
+                            }
+                        });
+    }
 }

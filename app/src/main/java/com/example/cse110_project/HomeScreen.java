@@ -100,10 +100,8 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: ADD update StepCount() and readHistoryData()
-                fitnessService.listActiveSubscriptions();
-
-//                fitnessService.updateStepCount();
-//                fitnessService.readHistoryData();
+                long steps = fitnessService.getDailySteps();
+                textSteps.setText(String.valueOf(steps));
             }
         });
 

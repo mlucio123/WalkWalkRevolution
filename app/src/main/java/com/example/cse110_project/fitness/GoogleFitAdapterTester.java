@@ -30,7 +30,8 @@ public class GoogleFitAdapterTester implements FitnessService {
     }
 
     @Override
-    public void readHistory(){
-
+    public long getDailySteps(){
+        return 0;
     }
+
 }
