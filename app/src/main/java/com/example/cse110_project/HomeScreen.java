@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -84,6 +85,23 @@ public class HomeScreen extends AppCompatActivity {
             Toast.makeText(HomeScreen.this, "LOCATION PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
         }
 
+        if(AccessSharedPrefs.getSavedDistance(this).length() != 0) {
+            TextView recentWalkSteps = findViewById(R.id.recentSteps);
+            String steps = AccessSharedPrefs.getSavedSteps(this) + "Steps";
+            recentWalkSteps.setText(steps);
+            TextView recentWalkDist = findViewById(R.id.recentDist);
+            recentWalkDist.setText(AccessSharedPrefs.getSavedDistance(this));
+            TextView recentTimeView = findViewById(R.id.recentTime);
+            recentTimeView.setText(AccessSharedPrefs.getSavedTimer(this));
+            LinearLayout recentWalkStats = findViewById(R.id.recentWalkLayout);
+            recentWalkStats.setVisibility(View.VISIBLE);
+        }
+
+        /*if(AccessSharedPrefs.getWalkStartTime(this) != -1 && !WalkScreen.walking) {
+            Log.d(TAG, "Overwriting time");
+            AccessSharedPrefs.setWalkStartTime(this, -1);
+        }*/
+
         /**
          * Create and start fitnessService
          */
@@ -118,24 +136,6 @@ public class HomeScreen extends AppCompatActivity {
                 return false;
             }
         });
-
-        //if recent walk is found, show recentWalkLaout and set values
-        /*if(AccessSharedPrefs.contains(recent walk) {
-
-            TextView recentWalkSteps = findViewById(R.id.recentSteps);
-            recentWalkSteps.setText(AccessSharedPrefs + "Steps");
-            //maybe change based on ft/miles
-            TextView recentWalkDist = findViewById(R.id.recentDist);
-            recentWalkDist.setText(AccessSharedPrefs + "");
-            TextView recentTimeView = findViewById(R.id.recentTime);
-            String recentTime = calc recent time layout
-            recentTimeView.setText(recentTime);
-            LinearLayout recentWalkStats = findViewById(R.id.recentWalkLayout);
-            recentWalkStats.setVisibility(View.VISIBLE);
-         *
-         *
-         * }*/
-
 
 
         // TODO: STEP BOOST

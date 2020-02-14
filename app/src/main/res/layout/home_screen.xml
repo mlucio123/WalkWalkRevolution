@@ -257,7 +257,8 @@
                 android:id="@+id/recentSteps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Steps Go Here">
+                android:text="Steps Go Here"
+                android:textColor="#FFFFFF">
             </TextView>
 
         </LinearLayout>
@@ -283,7 +284,8 @@
                 android:id="@+id/recentDist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dist Goes Here">>
+                android:text="Dist Goes Here"
+                android:textColor="#FFFFFF">
             </TextView>
 
         </LinearLayout>
@@ -309,7 +311,8 @@
                 android:id="@+id/recentTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time Goes Here">>>
+                android:text="Time Goes Here"
+                android:textColor="#FFFFFF">
             </TextView>
 
         </LinearLayout>

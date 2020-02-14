@@ -78,6 +78,41 @@ public class AccessSharedPrefs {
         return prefs.getBoolean("walkStatus", false);
     }
 
+    public static void saveWalk(Context context, String timer, String steps, String distance) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString("distance", distance);
+        editor.putString("timer", timer);
+        editor.putString("steps", steps);
+
+        editor.apply();
+    }
+
+    public static String getSavedSteps(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("steps"))
+            return prefs.getString("steps", "");
+
+        return "";
+    }
+
+    public static String getSavedDistance(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("distance"))
+            return prefs.getString("distance", "");
+
+        return "";
+    }
+
+    public static String getSavedTimer(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("timer"))
+            return prefs.getString("timer", "");
+
+        return "";
+    }
+
 
     /*public static void setFirstName(Context context) {
         return setUp(context).getString("firstname", "");
