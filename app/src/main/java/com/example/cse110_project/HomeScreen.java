@@ -125,6 +125,7 @@ public class HomeScreen extends AppCompatActivity {
                 long dailyDistance = fitnessService.getDailyDistance();
                 textSteps.setText(String.valueOf(dailySteps) + " Steps");
                 distance.setText(String.valueOf(dailyDistance) + " Miles");
+                estimatedDistance.setText(String.valueOf(dailyDistance) + " Miles");
             }
         });
 
