@@ -11,8 +11,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataType;
-import com.google.android.gms.fitness.request.DataReadRequest;
-import com.google.android.gms.fitness.result.DataReadResponse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.fitness.data.Subscription;
@@ -35,7 +33,6 @@ public class GoogleFitAdapter implements FitnessService {
 
     /**
      * Method: GoogleFitAdapter (Activity activity, boolean is_test)
-     *
      * Description: GoogleFitAdapter Constructor
      *
      * @param activity
@@ -48,7 +45,6 @@ public class GoogleFitAdapter implements FitnessService {
 
     /**
      * Method: setup()
-     *
      * Description: setup fitnessService by setting fitnessOptions,
      * sign in account, and check account permissions
      */
@@ -82,7 +78,6 @@ public class GoogleFitAdapter implements FitnessService {
 
     /**
      * Method:getRequestCode()
-     *
      * Description: get request code, check request_OK flag
      */
     @Override
@@ -93,7 +88,6 @@ public class GoogleFitAdapter implements FitnessService {
 
     /**
      * Method:startRecording()
-     *
      * Description: subscribe to record step count and distance
      */
     @Override
@@ -138,7 +132,6 @@ public class GoogleFitAdapter implements FitnessService {
 
     /**
      * Method:listActiveSubscriptions()
-     *
      * Description: return a list of subscriptions (step_count and distance_cummulative)
      */
     @Override
@@ -162,25 +155,46 @@ public class GoogleFitAdapter implements FitnessService {
     }
 
 
+    /**
+     * Method: getDailySteps()
+     * Description: Return current daily steps. This is a public method
+     * that should be called in other activities.
+     */
     @Override
     public long getDailySteps(){
         getGoogleDailySteps();
         return this.steps;
     }
 
+
+    /**
+     * Method: getDailyDistance()
+     * Description: Return current daily distance. This is a public method
+     * that should be called in other activities.
+     */
     @Override
     public long getDailyDistance(){
         getGoogleDailyDistance();
         return this.distance;
     }
 
-    /* Helper Functions */
 
+
+    /* Helper Functions */
+    /**
+     * Method: setDailySteps()
+     * Description: Update member variable this.step.
+     */
     private void setDailySteps(long steps){
         Log.d(TAG, "Total Daily Steps: " + steps);
         this.steps = steps;
     }
 
+
+    /**
+     * Method: getGoogleDailySteps()
+     * Description: Get daily steps from google api.
+     */
     private void getGoogleDailySteps(){
         Fitness.getHistoryClient(activity, account)
                 .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
@@ -206,11 +220,21 @@ public class GoogleFitAdapter implements FitnessService {
                         });
     }
 
+
+    /**
+     * Method: setDailyDistance()
+     * Description: Update member variable this.distance.
+     */
     private void setDailyDistance(long distance){
         Log.d(TAG, "Total Daily Distance: " + distance);
         this.distance = distance;
     }
 
+
+    /**
+     * Method: getGoogleDailyDistance()
+     * Description: Get daily distance from google api.
+     */
     private void getGoogleDailyDistance(){
         Fitness.getHistoryClient(activity, account)
                 .readDailyTotal(DataType.TYPE_DISTANCE_DELTA)
