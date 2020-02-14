@@ -47,7 +47,7 @@
             android:background="@color/white"
             android:textColor="@color/colorAccent"
             android:textSize="25sp"
-            android:autofillHints="" />
+            android:autofillHints="" tools:targetApi="o" />
 
     </LinearLayout>
 
@@ -127,6 +127,7 @@
             android:textSize="25sp" />
 
         <EditText
+            android:id="@+id/userHeightInch"
             android:layout_width="40sp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_bold"
