@@ -85,7 +85,7 @@ public class HomeScreen extends AppCompatActivity {
         /**
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, false);
+        fitnessService = FitnessServiceFactory.create(this, true);
         fitnessService.setup();
         fitnessService.startRecording();
 
