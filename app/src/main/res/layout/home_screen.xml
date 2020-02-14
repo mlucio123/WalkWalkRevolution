@@ -254,7 +254,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/stepsViewHome"
+                android:id="@+id/recentSteps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Steps Go Here">
@@ -280,7 +280,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/distViewHome"
+                android:id="@+id/recentDist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dist Goes Here">>
@@ -306,7 +306,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/timeViewHome"
+                android:id="@+id/recentTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Time Goes Here">>>
