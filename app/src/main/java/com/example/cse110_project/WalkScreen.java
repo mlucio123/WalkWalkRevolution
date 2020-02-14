@@ -85,10 +85,9 @@ public class WalkScreen extends AppCompatActivity {
 
         if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1 && !walking) {
             walking = true;
-            Log.d(TAG, "YOU SAVED A TIME");
             setOnWalkUI();
             startTime = AccessSharedPrefs.getWalkStartTime(WalkScreen.this);
-            Log.d(TAG, "Using start time: " + String.valueOf(startTime));
+            Log.d(TAG, "SAVED TIME RETRIEVED: " + startTime);
             mChronometer.setBase(startTime);
             mChronometer.start();
             mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -98,7 +97,6 @@ public class WalkScreen extends AppCompatActivity {
                     setChronoText(time);
                 }
             });
-            Log.d(TAG, "AFTER START");
         }
 
         textSteps = findViewById(R.id.stepView);
@@ -196,7 +194,7 @@ public class WalkScreen extends AppCompatActivity {
                 startTime = SystemClock.elapsedRealtime();
                 mChronometer.setBase(startTime);
                 AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
-                Log.d(TAG, "after saved time");
+                Log.d(TAG, "SAVED START TIME: " + startTime);
 
                 mChronometer.start();
                 setChronoText(mChronometer.getBase() - SystemClock.elapsedRealtime());
@@ -214,6 +212,7 @@ public class WalkScreen extends AppCompatActivity {
         doneWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                walking = false;
                 AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 Intent intent = new Intent(WalkScreen.this, RouteScreen.class);
                 startActivity(intent);
@@ -299,11 +298,8 @@ public class WalkScreen extends AppCompatActivity {
         Intent newIntent = new Intent(this, this.getClass());
         switch(item.getItemId()) {
             case R.id.navigation_home:
-                if(walking) {
-                    Log.d(TAG, "saving when moving to home");
-                    AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
-
-                } else {
+                if(!walking) {
+                    Log.d(TAG, "NOT SAVING TO HOME");
                     AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 }
                 newIntent = new Intent(this, HomeScreen.class);
@@ -311,11 +307,8 @@ public class WalkScreen extends AppCompatActivity {
                 startActivity(newIntent);
                 break;
             case R.id.navigation_routes:
-                if(walking) {
-                    Log.d(TAG, "saving when moving to route");
-                    AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
-
-                } else {
+                if(!walking) {
+                    Log.d(TAG, "NOT SAVING TO ROUTE");
                     AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 }
                 newIntent = new Intent(this, RouteScreen.class);
