@@ -17,9 +17,10 @@
 
         <TextView
             android:id="@+id/walkPageTitle"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/lato"
             android:text="@string/walkPageTitle"
@@ -27,20 +28,21 @@
             android:textColor="@color/colorText"
             android:textSize="45sp" />
 
+
         <Button
             android:id="@+id/boostBtn"
-            android:layout_width="0dp"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="40sp"
             android:background="@drawable/btn_rounded"
+            android:backgroundTint="@color/stop"
             android:drawableStart="@drawable/ic_add_white_24dp"
             android:drawablePadding="5dp"
-            android:paddingLeft="40dp"
-            android:layout_weight="1"
-            android:paddingRight="40dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="ADD TIME"
-            android:layout_marginEnd="5sp"
-            android:backgroundTint="@color/stop"
             android:textColor="#FFFFFF"
             android:textSize="15sp" />
 
@@ -66,7 +68,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
     <LinearLayout

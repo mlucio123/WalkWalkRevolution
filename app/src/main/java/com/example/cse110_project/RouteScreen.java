@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -75,45 +76,23 @@ public class RouteScreen extends AppCompatActivity {
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         rc.getRoutes(deviceID, new MyCallback() {
-            @Override
-            public void getRoutes(ArrayList<Route> routes) {
-                currentRoutes = routes;
-                Log.d("TAG", "SIZE IS = " + routes.size());
+                    @Override
+                    public void getRoutes(ArrayList<Route> routes) {
+                        currentRoutes = routes;
+                        Log.d("TAG", "SIZE IS = " + routes.size());
 
-                for(int i = 0; i < routes.size(); i++){
-                    Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
+                        for (int i = 0; i < routes.size(); i++) {
+                            Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
 
-                    // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
+                            // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
 
-//                    Button newButton = new Button(RouteScreen.this);
-////                    newButton.setText(routes.get(i).getName());
-////                    newButton.setBackgroundColor(0xFF99D6D6);
-//                    newButton.setTag(routes.get(i));
-//
-//                    dummyRoute = routes.get(i);
-//
-//                    newButton.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            Intent intent = new Intent(RouteScreen.this, WalkScreen.class);
-//                            Route dummy = (Route) view.getTag();
-//                            intent.putExtra("routeID", dummy.getId());
-//                            intent.putExtra("routeName", dummy.getName());
-//                            intent.putExtra("routeStart", dummy.getStartingPoint());
-//                            intent.putExtra("routeNotes", dummy.getNotes());
-//                            intent.putExtra("lastCompletedTime", dummy.getLastCompletedTime());
-//                            intent.putExtra("lastCompletedSteps", dummy.getLastCompletedSteps());
-//                            intent.putExtra("lastCompletedDistance", dummy.getLastCompletedDistance());
-//                            startActivity(intent);
-//                        }
-//                    });
-                    dummyRoute = routes.get(i);
+                            dummyRoute = routes.get(i);
 
-                    addElement(dummyRoute);
-                }
+                            addElement(dummyRoute);
 
-            }
-        });
+                        }
+                    }
+                });
 
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -125,15 +104,6 @@ public class RouteScreen extends AppCompatActivity {
             }
         });
 
-//        invis = findViewById(R.id.invisibleRel);
-//        invis.setVisibility(View.GONE);
-//        expandBtn = findViewById(R.id.expandBtn);
-//        expandBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                toggle_contents(expandBtn, invis);
-//            }
-//        });
     }
 
     public void toggle_contents(Button exp, RelativeLayout hide){
@@ -146,21 +116,34 @@ public class RouteScreen extends AppCompatActivity {
         }
     }
 
+
     public void addElement(Route routeEntry){
-        int fontColor = Color.parseColor("#ffffffff");
+        int fontColor = Color.parseColor("#FFFFFFFF");
+
+        /* Rounded button drawable */
         Drawable draw = getDrawable(R.drawable.rounded_edges);
 
+        /* Linear Layouts containers */
+
+        /* route contain --> outer most layer */
         LinearLayout routeContain = findViewById(R.id.routeContain);
+
+        /* container --> holds all views within routeContain */
         LinearLayout container = new LinearLayout(this);
+
+        /* container parameter, setting height and width */
         LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
+
+        /* layout configuration for container */
         container.setOrientation(LinearLayout.VERTICAL);
         container.setPaddingRelative(30, 25, 30, 25);
         container.setLayoutParams(containerParams);
         container.setBackground(draw);
 
+        /* title of each route */
         LinearLayout titleEntry = new LinearLayout(this);
         titleEntry.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -169,6 +152,7 @@ public class RouteScreen extends AppCompatActivity {
         ));
         titleEntry.setOrientation(LinearLayout.HORIZONTAL);
 
+        /* title label text view creation with styling */
         TextView title = new TextView(this);
         title.setText("Route Name:");
         title.setTextColor(fontColor);
@@ -178,6 +162,7 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f
         ));
 
+        /* title value text view creation with styling */
         TextView titleDisplay = new TextView(this);
         titleDisplay.setText(routeEntry.getName());
         titleDisplay.setTextColor(fontColor);
@@ -187,7 +172,23 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
         ));
 
+        /* fav button */
+        ImageView favDisplay =  new ImageView(this);
+        favDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        Drawable favImage = getDrawable(R.drawable.ic_favorite_border_black_24dp);
+        Drawable favBackgroundFalse = getDrawable(R.drawable.btn_black);
+        Drawable favBackgroundTrue = getDrawable(R.drawable.btn_red);
+        favDisplay.setImageDrawable(favImage);
+        if (routeEntry.getFavorite()){
+            favDisplay.setBackground(favBackgroundTrue);
+        } else {
+            favDisplay.setBackground(favBackgroundFalse);
+        }
 
+        /* start position row */
         LinearLayout startEntry = new LinearLayout(this);
         titleEntry.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -195,6 +196,7 @@ public class RouteScreen extends AppCompatActivity {
                 1f
         ));
         startEntry.setOrientation(LinearLayout.HORIZONTAL);
+
 
         TextView start = new TextView(this);
         start.setText("Start Position:");
@@ -214,6 +216,13 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
         ));
 
+
+        int fontSmall = 14;
+        int smallColor = Color.parseColor("#FF868686");
+
+        /* HIDDEN EXPANDABLE SECTION -- containing other features */
+        // TODO : check whether last completion stats exist and insert to row
+
         final LinearLayout hidden = new LinearLayout(this);
         hidden.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -222,32 +231,131 @@ public class RouteScreen extends AppCompatActivity {
         hidden.setOrientation(LinearLayout.VERTICAL);
         hidden.setVisibility(View.GONE);
 
+        /* TAG HOLDER LAYOUT */
         LinearLayout tagHolder = new LinearLayout(this);
         tagHolder.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
+        tagHolder.setOrientation(LinearLayout.HORIZONTAL);
         TextView tags = new TextView(this);
         tags.setText("Tags:");
+
+
         tags.setTextSize(20);
         tags.setTextColor(fontColor);
 
         TextView tagsDisplay = new TextView(this);
-//        Object[] tagString = parseTags(routeEntry.getTags());
-        /*
-        if (tagString.length > 0){
-            for(int i = 0; i < tagString.length; i++){
-
-            }
-        }
-
-         */
-
-//        tagsDisplay.setText(Arrays.toString(tagString));
-//        tagsDisplay.setTextSize(20);
-//        tagsDisplay.setTextColor(fontColor);
 
 
+        /* PUT TAGS TO STRINGS */
+        Object[] tagString = parseTags(routeEntry.getTags());
+        tagsDisplay.setText(Arrays.toString(tagString));
+        tagsDisplay.setTextSize(fontSmall);
+        tagsDisplay.setTextColor(smallColor);
+        tagsDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.4f
+        ));
+
+
+
+        /* LAST TIME COMPLETION */
+        LinearLayout timeHolder = new LinearLayout(this);
+        timeHolder.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        timeHolder.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView time = new TextView(this);
+        time.setText("Time:");
+        time.setTextSize(fontSmall);
+        time.setTextColor(smallColor);
+        time.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+        TextView timeDisplay = new TextView(this);
+        timeDisplay.setText(routeEntry.getLastCompletedTime());
+        timeDisplay.setTextSize(fontSmall);
+        timeDisplay.setTextColor(smallColor);
+        timeDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+        timeHolder.addView(time);
+        timeHolder.addView(timeDisplay);
+
+
+        /* LAST COMPLETED DISTANCE LAYOUT */
+        LinearLayout distHolder = new LinearLayout(this);
+        distHolder.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        distHolder.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView distance = new TextView(this);
+        distance.setText("Distance:");
+        distance.setTextSize(fontSmall);
+        distance.setTextColor(smallColor);
+        distance.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+
+        TextView distanceDisplay = new TextView(this);
+        distanceDisplay.setText(routeEntry.getLastCompletedDistance());
+        distanceDisplay.setTextSize(fontSmall);
+        distanceDisplay.setTextColor(smallColor);
+        distanceDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.4f
+        ));
+        distHolder.addView(distance);
+        distHolder.addView(distanceDisplay);
+
+
+        /* LAST COMPLETED STEPS LAYOUT */
+        LinearLayout stepHolder = new LinearLayout(this);
+        stepHolder.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        stepHolder.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView steps = new TextView(this);
+        steps.setText("Steps:");
+        steps.setTextSize(fontSmall);
+        steps.setTextColor(smallColor);
+        steps.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.6f
+        ));
+
+        TextView stepDisplay = new TextView(this);
+        stepDisplay.setText(routeEntry.getLastCompletedSteps());
+        stepDisplay.setTextSize(fontSmall);
+        stepDisplay.setTextColor(smallColor);
+        stepDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.4f
+        ));
+        stepHolder.addView(steps);
+        stepHolder.addView(stepDisplay);
+
+
+        //     BUTTON SECTION
+
+        /* EXPANDABLE BUTTON FOR MORE FEATURES */
         final Button expand = new Button(this);
         expand.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -265,19 +373,24 @@ public class RouteScreen extends AppCompatActivity {
                 }
             }
         });
+
+        LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
         Drawable buttonBack = getDrawable(R.drawable.btn_rounded);
 
         expand.setBackground(buttonBack);
         expand.setText("Expand");
         expand.setTextSize(14);
-        int black = Color.parseColor("#ff000000");
-        expand.setTextColor(black);
+//        int black = Color.parseColor("#ff000000");
+        expand.setTextColor(fontColor);
         expand.setVisibility(View.VISIBLE);
 
         LinearLayout btnHolder = new LinearLayout(this);
 
-        btnHolder.addView(expand);
-
+        /* START ROUTE BUTTON */
         final Button newButton = new Button(RouteScreen.this);
         newButton.setBackground(buttonBack);
         newButton.setLayoutParams(new LinearLayout.LayoutParams(
@@ -287,7 +400,7 @@ public class RouteScreen extends AppCompatActivity {
         newButton.setText("Start this Route");
         newButton.setTag(routeEntry);
         newButton.setVisibility(View.VISIBLE);
-
+        newButton.setTextColor(fontColor);
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -304,34 +417,37 @@ public class RouteScreen extends AppCompatActivity {
             }
         });
 
-
-        LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-
-
         btnParams.setMargins(150, 50, 150, 0);
+
         btnHolder.setLayoutParams(btnParams);
         newButton.setLayoutParams(btnParams);
+
+
+
+        // ADD COMPLETED ELEMENTS
+        btnHolder.addView(expand);
 
         tagHolder.addView(tags);
         tagHolder.addView(tagsDisplay);
         hidden.addView(tagHolder);
+        hidden.addView(timeHolder);
+        hidden.addView(distHolder);
+        hidden.addView(stepHolder);
+        hidden.addView(newButton);
         startEntry.addView(start);
         startEntry.addView(startDisplay);
         titleEntry.addView(title);
         titleEntry.addView(titleDisplay);
+        titleEntry.addView(favDisplay);
         container.addView(titleEntry);
         container.addView(startEntry);
         container.addView(hidden);
         container.addView(btnHolder);
-        container.addView(newButton);
         routeContain.addView(container);
     }
 
 
-    protected Object[] parseTags(boolean[] tags) {
+    public Object[] parseTags(boolean[] tags) {
         //boolean[] tags ={out, loop, flat, hills, even, rough, street, trail, easy, medium, hard};
         List<String> tagList = new ArrayList<String>();
         if (tags[0]) {

@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25sp"
+        android:layout_marginBottom="15sp"
         android:fontFamily="@font/lato"
         android:text="@string/route"
         android:textColor="@color/colorText"
@@ -33,7 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
             <LinearLayout
                 android:orientation="vertical"
                 android:id="@+id/routeContain"
@@ -42,7 +42,6 @@
 
 
             </LinearLayout>
-
 
         </LinearLayout>
 

@@ -162,7 +162,60 @@ public class RouteCollection {
                 notes = qry.getData().get("notes").toString();
             }
 
-            newRoute = new Route(title, start_position);
+
+            boolean out = false;
+            boolean loop= false;
+            boolean flat= false;
+            boolean hills= false;
+            boolean even= false;
+            boolean rough= false;
+            boolean street= false;
+            boolean trail= false;
+            boolean easy= false;
+            boolean medium= false;
+            boolean hard= false;
+            boolean favorite= false;
+
+            if(qry.getData().get("out") != null){
+                out = Boolean.parseBoolean(qry.getData().get("out").toString());
+            }
+            if(qry.getData().get("loop") != null){
+                loop = Boolean.parseBoolean(qry.getData().get("loop").toString());
+            }
+            if(qry.getData().get("flat") != null){
+                flat = Boolean.parseBoolean(qry.getData().get("flat").toString());
+            }
+            if(qry.getData().get("hills") != null){
+                hills = Boolean.parseBoolean(qry.getData().get("hills").toString());
+            }
+            if(qry.getData().get("even") != null){
+                even  = Boolean.parseBoolean(qry.getData().get("even").toString());
+            }
+            if(qry.getData().get("rough") != null){
+                rough = Boolean.parseBoolean(qry.getData().get("rough").toString());
+            }
+            if(qry.getData().get("street") != null){
+                street = Boolean.parseBoolean(qry.getData().get("street").toString());
+            }
+            if(qry.getData().get("trail") != null){
+                trail = Boolean.parseBoolean(qry.getData().get("trail").toString());
+            }
+            if(qry.getData().get("easy") != null){
+                easy = Boolean.parseBoolean(qry.getData().get("easy").toString());
+            }
+            if(qry.getData().get("medium") != null){
+                medium = Boolean.parseBoolean(qry.getData().get("medium").toString());
+            }
+            if(qry.getData().get("hard") != null){
+                hard = Boolean.parseBoolean(qry.getData().get("hard").toString());
+            }
+            if(qry.getData().get("favorite") != null){
+                favorite = Boolean.parseBoolean(qry.getData().get("favorite").toString());
+            }
+
+            boolean[] tags ={out, loop, flat, hills, even, rough, street, trail, easy, medium, hard, favorite};
+            newRoute = new Route(title, start_position, tags, notes);
+
             newRoute.setNotes(notes);
             newRoute.setId(qry.getId().toString());
 
@@ -194,7 +247,6 @@ public class RouteCollection {
             }
 
             newRoute.setId(id);
-
             return newRoute;
 
         } catch (Exception e) {
