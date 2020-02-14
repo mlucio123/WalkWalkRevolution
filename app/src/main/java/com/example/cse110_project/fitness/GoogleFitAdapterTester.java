@@ -34,4 +34,9 @@ public class GoogleFitAdapterTester implements FitnessService {
         return 0;
     }
 
+    @Override
+    public long getDailyDistance(){
+        return 0;
+    }
+
 }

@@ -6,7 +6,9 @@ public interface FitnessService {
     void listActiveSubscriptions();
     void startRecording();
     long getDailySteps();
+    long getDailyDistance();
     int getRequestCode();
+
 //    void updateStepCount();
 //    void readHistoryData();
 }

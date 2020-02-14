@@ -25,6 +25,7 @@ public class GoogleFitAdapter implements FitnessService {
     private GoogleSignInAccount account;
     private FitnessOptions fitnessOptions;
     private long steps;
+    private long distance;
 
     /* Static variables */
     // TODO: might have problem(**)
@@ -167,9 +168,16 @@ public class GoogleFitAdapter implements FitnessService {
         return this.steps;
     }
 
+    @Override
+    public long getDailyDistance(){
+        getGoogleDailyDistance();
+        return this.distance;
+    }
+
+    /* Helper Functions */
 
     private void setDailySteps(long steps){
-        Log.d(TAG, "Total steps: " + steps);
+        Log.d(TAG, "Total Daily Steps: " + steps);
         this.steps = steps;
     }
 
@@ -187,6 +195,36 @@ public class GoogleFitAdapter implements FitnessService {
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
 
                                 setDailySteps(total);
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "There was a problem getting the step count.", e);
+                            }
+                        });
+    }
+
+    private void setDailyDistance(long distance){
+        Log.d(TAG, "Total Daily Distance: " + distance);
+        this.distance = distance;
+    }
+
+    private void getGoogleDailyDistance(){
+        Fitness.getHistoryClient(activity, account)
+                .readDailyTotal(DataType.TYPE_DISTANCE_DELTA)
+                .addOnSuccessListener(
+                        new OnSuccessListener<DataSet>() {
+                            @Override
+                            public void onSuccess(DataSet dataSet) {
+                                Log.d(TAG, "DISTANCE_DELTA_DATASET: " + dataSet.toString());
+                                long total =
+                                        dataSet.isEmpty()
+                                                ? 0
+                                                : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
+
+                                setDailyDistance(total);
                             }
                         })
                 .addOnFailureListener(
