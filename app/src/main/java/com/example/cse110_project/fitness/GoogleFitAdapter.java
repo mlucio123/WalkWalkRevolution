@@ -11,6 +11,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataType;
+import com.google.android.gms.fitness.request.DataReadRequest;
+import com.google.android.gms.fitness.result.DataReadResponse;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.fitness.data.Subscription;
@@ -155,6 +157,16 @@ public class GoogleFitAdapter implements FitnessService {
                     }
                 });
 
+    }
+
+    @Override
+    public void readHistory(){
+//        DataReadRequest dataReadRequest = DataReadRequest.Builder()
+//                .setTimeRange(startTime.getMillis(), endTime.getMillis(), TimeUnit.MILLISECONDS)
+//                .bucketByTime(1, TimeUnit.HOURS)
+//                .aggregate(DataType.TYPE_LOCATION_SAMPLE, DataType.AGGREGATE_LOCATION_BOUNDING_BOX)
+//                .build();
+        return;
     }
 
 
