@@ -8,22 +8,43 @@
     android:background="@color/colorBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/walkPageTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:text="@string/walkPageTitle"
-        android:textAlignment="center"
-        android:fontFamily="@font/lato"
-        android:textColor="@color/colorText"
-        android:textSize="45sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/walkPageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato"
+            android:text="@string/walkPageTitle"
+            android:textAlignment="center"
+            android:textColor="@color/colorText"
+            android:textSize="45sp" />
+
+        <Button
+            android:id="@+id/boostBtn"
+            android:layout_width="0dp"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_rounded"
+            android:drawableStart="@drawable/ic_add_white_24dp"
+            android:drawablePadding="5dp"
+            android:paddingLeft="40dp"
+            android:layout_weight="1"
+            android:paddingRight="40dp"
+            android:text="ADD TIME"
+            android:layout_marginEnd="5sp"
+            android:backgroundTint="@color/stop"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 
 
     <TextView
@@ -262,11 +283,9 @@
         android:layout_marginTop="5dp"
         android:format="00:00:00"
         android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
         android:fontFamily="@font/lato"
         android:textColor="@color/colorText"
         android:textSize="72sp"
-        android:layout_below="@id/walkPageTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/walkPageTitle" />

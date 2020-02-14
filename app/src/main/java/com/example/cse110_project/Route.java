@@ -1,8 +1,17 @@
 package com.example.cse110_project;
 
-import android.util.Log;
+import android.content.Context;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.FirebaseApp;
+/*
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.core.Context;
+*/
+import android.util.Log;
+
 //import com.google.firebase.database.DatabaseReference;
 //import com.google.firebase.database.FirebaseDatabase;
 //import com.google.firebase.database.core.Context;
@@ -19,6 +28,7 @@ public class Route extends Observable {
     private String startingPoint;
     private boolean[] tags;
     private String extraNotes;
+    private boolean favorite1;
     private boolean favorite;
 
     private boolean out, loop;
@@ -41,12 +51,11 @@ public class Route extends Observable {
         this.lastCompletedTime = this.lastCompletedSteps = this.lastCompletedDistance = "";
     }
 
-    public Route( String name, String startingPoint, boolean[] tags, boolean favorite, String extraNotes) {
-            this.name = name;
-            this.startingPoint = startingPoint;
-            this.tags = tags;
-            this.extraNotes = extraNotes;
-            this.favorite = favorite;
+    public Route( String name, String startingPoint, boolean[] tags,  String extraNotes) {
+        this.name = name;
+        this.startingPoint = startingPoint;
+        this.tags = tags;
+        this.extraNotes = extraNotes;
     }
 
     public void setId(String id){ this.id = id; }
@@ -60,6 +69,8 @@ public class Route extends Observable {
     public String getStartingPoint(){
         return this.startingPoint;
     }
+
+    public boolean[] getTags() { return this.tags; }
 
     public String getNotes() { return this.extraNotes; }
 

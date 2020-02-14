@@ -9,6 +9,7 @@
     <string name="steps_title">Steps:</string>
     <string name="default_zero">0</string>
     <string name="distance">Distance:</string>
+    <string name="showTimeLabel">Time:</string>
     <string name="estimates">Estimates:</string>
     <string name="large_distance">100000 Miles</string>
     <string name="title_activity_intentional_walk_screen">IntentionalWalkScreen</string>
@@ -38,8 +39,7 @@
     <string name="milesStr">Miles</string>
     <string name="feetStr">Feet</string>
     <string name="space"> </string>
-
-
+    <string name="recentWalkTitle">Your Recent Walk</string>
     <string name="route_form_title">Enter Route Info</string>
     <string name="enter_route_name">Enter Route Name</string>
     <string name="submitRoute">Submit Route info</string>

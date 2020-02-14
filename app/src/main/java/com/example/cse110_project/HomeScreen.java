@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.math.BigDecimal;
@@ -117,6 +119,24 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
+        //if recent walk is found, show recentWalkLaout and set values
+        /*if(AccessSharedPrefs.contains(recent walk) {
+
+            TextView recentWalkSteps = findViewById(R.id.recentSteps);
+            recentWalkSteps.setText(AccessSharedPrefs + "Steps");
+            //maybe change based on ft/miles
+            TextView recentWalkDist = findViewById(R.id.recentDist);
+            recentWalkDist.setText(AccessSharedPrefs + "");
+            TextView recentTimeView = findViewById(R.id.recentTime);
+            String recentTime = calc recent time layout
+            recentTimeView.setText(recentTime);
+            LinearLayout recentWalkStats = findViewById(R.id.recentWalkLayout);
+            recentWalkStats.setVisibility(View.VISIBLE);
+         *
+         *
+         * }*/
+
+
 
         // TODO: STEP BOOST
 
@@ -202,6 +222,7 @@ public class HomeScreen extends AppCompatActivity {
                 break;
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
+                newIntent.putExtra("actFlag", "Home");
                 startActivity(newIntent);
                 break;
             default:
@@ -236,11 +257,6 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
 
     public void setDistance(long distanceValue){
         distance.setText(String.valueOf(distanceValue) + " Miles");

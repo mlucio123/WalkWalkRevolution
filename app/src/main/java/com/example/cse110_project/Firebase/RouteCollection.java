@@ -170,6 +170,8 @@ public class RouteCollection {
             String steps;
             String distance;
 
+
+
             if(qry.getData().get("lastCompletedTime") != null ){
                 time = qry.getData().get("lastCompletedTime").toString();
                 if(time != null){
