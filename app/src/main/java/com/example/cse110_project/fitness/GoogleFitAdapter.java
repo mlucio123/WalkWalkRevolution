@@ -88,42 +88,6 @@ public class GoogleFitAdapter implements FitnessService {
 
 
     /**
-     * Method:listActiveSubscriptions()
-     *
-     * Description: return a list of subscriptions (step_count and distance_cummulative)
-     */
-    @Override
-    public void listActiveSubscriptions() {
-
-        // List STEP_COUNT active subs
-        Fitness.getRecordingClient(activity, GoogleSignIn.getLastSignedInAccount(activity))
-                .listSubscriptions(DataType.TYPE_STEP_COUNT_CUMULATIVE)
-                .addOnSuccessListener(new OnSuccessListener<List<Subscription>>() {
-                    @Override
-                    public void onSuccess(List<Subscription> subscriptions) {
-                        for (Subscription sc : subscriptions) {
-                            DataType dt = sc.getDataType();
-                            Log.i(TAG, "Active subscription for data type: " + dt.getName());
-                        }
-                    }
-                });
-
-        // List STEP_COUNT_CUMMULATIVE active subs
-        Fitness.getRecordingClient(activity, GoogleSignIn.getLastSignedInAccount(activity))
-                .listSubscriptions(DataType.TYPE_DISTANCE_CUMULATIVE)
-                .addOnSuccessListener(new OnSuccessListener<List<Subscription>>() {
-                    @Override
-                    public void onSuccess(List<Subscription> subscriptions) {
-                        for (Subscription sc : subscriptions) {
-                            DataType dt = sc.getDataType();
-                            Log.i(TAG, "Active subscription for data type: " + dt.getName());
-                        }
-                    }
-                });
-    }
-
-
-    /**
      * Method:startRecording()
      *
      * Description: subscribe to record step count and distance
@@ -166,4 +130,33 @@ public class GoogleFitAdapter implements FitnessService {
                     }
                 });
     }
+
+
+    /**
+     * Method:listActiveSubscriptions()
+     *
+     * Description: return a list of subscriptions (step_count and distance_cummulative)
+     */
+    @Override
+    public void listActiveSubscriptions() {
+
+        // List STEP_COUNT active subs
+        Fitness.getRecordingClient(activity, GoogleSignIn.getLastSignedInAccount(activity))
+                .listSubscriptions()
+                .addOnSuccessListener(new OnSuccessListener<List<Subscription>>() {
+                    @Override
+                    public void onSuccess(List<Subscription> subscriptions) {
+                        for (Subscription sc : subscriptions) {
+                            String dataType = sc.getDataType().getName();
+                            String debugString =  sc.toDebugString();
+                            String logMsg = String.format("Active subscription: [DataType]: %s; [DebugString]: %s", dataType, debugString);
+                            Log.i(TAG, logMsg);
+                        }
+                    }
+                });
+
+    }
+
+
+
 }

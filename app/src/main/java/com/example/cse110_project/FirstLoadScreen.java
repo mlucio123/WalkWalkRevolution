@@ -18,7 +18,6 @@ public class FirstLoadScreen extends AppCompatActivity {
     private EditText lastName;
     private EditText heightFt;
     private EditText heightInch;
-    private String fitnessServiceKey = "GOOGLE_FIT";
 
     // Error msg for form validation
     public static final String FORM_VALIDATION_SUCCESSFUL = "SUCCESS";
@@ -66,14 +65,9 @@ public class FirstLoadScreen extends AppCompatActivity {
 
     }
 
-//    public void setFitnessServiceKey(String fitnessServiceKey) {
-//        this.fitnessServiceKey = fitnessServiceKey;
-//    }
-
     /*
      * Function: validateFormInput
      * Description: Validate Form Input, return error messages
-     * TODO: return error messages
      */
     private String validateFormInput(EditText firstName, EditText lastName, EditText heightFt, EditText heightInch){
 
