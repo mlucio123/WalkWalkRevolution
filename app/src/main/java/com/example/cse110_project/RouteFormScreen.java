@@ -246,15 +246,15 @@ public class RouteFormScreen extends AppCompatActivity {
                     newRoute.setTags(tags);
                     newRoute.setNotes(notes.getText().toString());
 
-                    if (timer != null || timer.length() != 0){
+                    if (timer != null && timer.length() != 0){
                         newRoute.setLastCompletedTime(timer);
                     }
 
-                    if (steps != null || steps.length() != 0){
+                    if (steps != null && steps.length() != 0){
                         newRoute.setLastCompletedSteps(steps);
                     }
 
-                    if (distance != null || distance.length() != 0){
+                    if (distance != null && distance.length() != 0){
                         newRoute.setLastCompletedDistance(distance);
                     }
 

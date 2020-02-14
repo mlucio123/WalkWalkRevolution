@@ -222,7 +222,7 @@ public class WalkScreen extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     RouteCollection rc = new RouteCollection();
-                    rc.updateRoute(routeID, timer, steps, distance);
+                    rc.updateRouteStats(routeID, timer, steps, distance);
                     Toast.makeText(WalkScreen.this, "You successfully updated your walk.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(WalkScreen.this, RouteScreen.class);
                     startActivity(intent);

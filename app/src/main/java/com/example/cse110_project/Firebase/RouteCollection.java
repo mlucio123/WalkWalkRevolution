@@ -67,7 +67,7 @@ public class RouteCollection {
 
 
     /* Update walking stats to existing routes */
-    public void updateRoute(String id, String lastCompletedTime, String lastCompletedSteps, String lastCompletedDistance) {
+    public void updateRouteStats(String id, String lastCompletedTime, String lastCompletedSteps, String lastCompletedDistance) {
 
         db.collection("routes").document(id)
                 .update(
@@ -77,6 +77,24 @@ public class RouteCollection {
                 );
     }
 
+
+    /* Delete selected Route by ID */
+    public void deleteRoute(String id) {
+        db.collection("routes").document(id)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Route is deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting rooute", e);
+                    }
+                });
+    }
 
     /* Get routes for current device */
     public void getRoutes(String deviceID, final MyCallback myCallback){
