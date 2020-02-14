@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -83,6 +84,11 @@ public class HomeScreen extends AppCompatActivity {
         } else {
             Toast.makeText(HomeScreen.this, "LOCATION PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
         }
+
+        /*if(AccessSharedPrefs.getWalkStartTime(this) != -1 && !WalkScreen.walking) {
+            Log.d(TAG, "Overwriting time");
+            AccessSharedPrefs.setWalkStartTime(this, -1);
+        }*/
 
         /**
          * Create and start fitnessService

@@ -62,7 +62,7 @@ public class WalkScreen extends AppCompatActivity {
     private TextView textDistance;
     private FitnessService fitnessService;
 
-    private boolean walking;
+    public static boolean walking;
     private boolean testing;
 
     @Override
@@ -83,7 +83,7 @@ public class WalkScreen extends AppCompatActivity {
         boostTimeBtn = findViewById(R.id.boostBtn);
         endButton.setVisibility(View.GONE);
 
-        if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1) {
+        if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1 && !walking) {
             walking = true;
             Log.d(TAG, "YOU SAVED A TIME");
             setOnWalkUI();
@@ -214,7 +214,7 @@ public class WalkScreen extends AppCompatActivity {
         doneWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(walking) AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 Intent intent = new Intent(WalkScreen.this, RouteScreen.class);
                 startActivity(intent);
             }
@@ -302,12 +302,17 @@ public class WalkScreen extends AppCompatActivity {
         Intent newIntent = new Intent(this, this.getClass());
         switch(item.getItemId()) {
             case R.id.navigation_home:
-                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                if(walking)
+                    AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                else AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 newIntent = new Intent(this, HomeScreen.class);
                 newIntent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                 startActivity(newIntent);
                 break;
             case R.id.navigation_routes:
+                if(walking)
+                    AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                else AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
                 newIntent = new Intent(this, RouteScreen.class);
                 startActivity(newIntent);
