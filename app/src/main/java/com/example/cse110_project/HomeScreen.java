@@ -119,11 +119,12 @@ public class HomeScreen extends AppCompatActivity {
         btnUpdateSteps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: ADD update StepCount() and readHistoryData()
-                fitnessService.listActiveSubscriptions();
 
-//                fitnessService.updateStepCount();
-//                fitnessService.readHistoryData();
+                // Update steps and distance
+                long dailySteps = fitnessService.getDailySteps();
+                long dailyDistance = fitnessService.getDailyDistance();
+                textSteps.setText(String.valueOf(dailySteps) + " Steps");
+                distance.setText(String.valueOf(dailyDistance) + " Miles");
             }
         });
 
