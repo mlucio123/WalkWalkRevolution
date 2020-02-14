@@ -45,12 +45,14 @@ public class HomeScreen extends AppCompatActivity {
 //    private com.example.cse110_project.fitness_deprecated.FitnessService fitnessService;
     private FitnessService fitnessService;
 
+
     /* Static Variables */
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final String TAG = "HomeScreen";
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
+    private static final Boolean USE_GOOGLE_FIT_TESTER = false;
 
 
     /* Member functions */
@@ -105,7 +107,7 @@ public class HomeScreen extends AppCompatActivity {
         /**
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, true);
+        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
         fitnessService.setup();
         fitnessService.startRecording();
 

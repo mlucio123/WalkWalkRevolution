@@ -70,9 +70,9 @@ public class GoogleFitAdapter implements FitnessService {
                     fitnessOptions);
         } else {
 //            list active subscriptions
+            Log.i(TAG, "SETUP IS WORKING");
             listActiveSubscriptions();
         }
-
     }
 
 
@@ -127,6 +127,8 @@ public class GoogleFitAdapter implements FitnessService {
                         Log.i(TAG, "There was a problem subscribing to distance.", e);
                     }
                 });
+        Log.i(TAG, "START RECORDING IS WORKING");
+        listActiveSubscriptions();
     }
 
 
