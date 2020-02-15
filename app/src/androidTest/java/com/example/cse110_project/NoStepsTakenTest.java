@@ -10,6 +10,7 @@ import android.view.ViewParent;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.example.cse110_project.fitness_deprecated.FitnessService;
 import com.example.cse110_project.fitness_deprecated.FitnessServiceFactory;
@@ -20,6 +21,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -44,6 +46,21 @@ public class NoStepsTakenTest {
     @Rule
     public ActivityTestRule<FirstLoadScreen> mActivityTestRule = new ActivityTestRule<>(FirstLoadScreen.class);
 
+
+    @Rule
+    public GrantPermissionRule mGrantPermissionRule =
+            GrantPermissionRule.grant(
+                    "android.permission.ACCESS_FINE_LOCATION",
+                    "android.permission.ACCESS_COARSE_LOCATION",
+                    "android.permission.INTERNET");
+
+    @BeforeClass
+    public static void setup() {
+        HomeScreen.USE_GOOGLE_FIT_TESTER = true;
+    }
+
+
+
     @Before
     @After
     public void clearSharedPrefs() {
@@ -62,7 +79,7 @@ public class NoStepsTakenTest {
             }
         });
 
-        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+//        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(

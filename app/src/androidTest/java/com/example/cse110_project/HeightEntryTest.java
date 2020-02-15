@@ -1,8 +1,6 @@
 package com.example.cse110_project;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -11,18 +9,15 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
-
-import com.example.cse110_project.fitness_deprecated.FitnessService;
-import com.example.cse110_project.fitness_deprecated.FitnessServiceFactory;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -37,39 +32,33 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
-public class HomeScreenTest {
-
-    private static final String TEST_SERVICE = "TEST_SERVICE";
+@RunWith(AndroidJUnit4.class)
+public class HeightEntryTest {
 
     @Rule
-    public ActivityTestRule<FirstLoadScreen> mActivityTestRule = new ActivityTestRule<>(FirstLoadScreen.class);
-
-    @Before
-    @After
-    public void clearSharedPrefs() {
-        SharedPreferences.Editor editor = mActivityTestRule.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE).edit();
-        editor.clear();
-        editor.apply();
-    }
-
+    public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
 
     @Rule
     public GrantPermissionRule mGrantPermissionRule =
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
+    @BeforeClass
+    public static void setup() {
+        HomeScreen.USE_GOOGLE_FIT_TESTER = true;
+    }
+
     @Test
-    //Check that steps are correct when updated
-    public void homeScreenTest() {
-
-        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(HomeScreen homeScreen) {
-                return new TestFitnessService(homeScreen);
-            }
-        });
-
-        //mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+    public void heightEntryTest() {
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.firstLoadTitle), withText("Welcome to WWR!"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        textView.check(matches(withText("Welcome to WWR!")));
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
@@ -79,7 +68,7 @@ public class HomeScreenTest {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Connor"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Howard"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.userLastName),
@@ -89,7 +78,7 @@ public class HomeScreenTest {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("p"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("Lin"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.userHeightFt),
@@ -99,7 +88,7 @@ public class HomeScreenTest {
                                         3),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("8"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.userHeightInch),
@@ -109,7 +98,7 @@ public class HomeScreenTest {
                                         3),
                                 3),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("4"), closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("9"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -121,35 +110,15 @@ public class HomeScreenTest {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.homeDailyStepsCount), withText("0 Steps"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        2),
-                                1),
-                        isDisplayed()));
-        textView.check(matches(withText("0 Steps")));
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.buttonUpdateSteps), withText("Update Steps"),
+        ViewInteraction textView3 = onView(
+                allOf(withId(R.id.homeTitle), withText("Home"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                6),
+                                0),
                         isDisplayed()));
-        appCompatButton2.perform(click());
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.homeDailyStepsCount),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        2),
-                                1),
-                        isDisplayed()));
-        textView2.check(matches(withText("323 Steps")));
+        textView3.check(matches(withText("Home")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -170,35 +139,4 @@ public class HomeScreenTest {
             }
         };
     }
-
-    private class TestFitnessService implements FitnessService {
-        private static final String TAG = "[TestFitnessService]: ";
-        private HomeScreen homeScreen;
-
-        public TestFitnessService(HomeScreen stepCountActivity) {
-            this.homeScreen = stepCountActivity;
-        }
-
-        @Override
-        public int getRequestCode() {
-            return 0;
-        }
-
-        @Override
-        public void readHistoryData() {
-
-        }
-
-        @Override
-        public void setup() {
-            System.out.println(TAG + "setup");
-        }
-
-        @Override
-        public void updateStepCount() {
-            System.out.println(TAG + "updateStepCount");
-            homeScreen.setStepCount(323);
-        }
-    }
-
 }

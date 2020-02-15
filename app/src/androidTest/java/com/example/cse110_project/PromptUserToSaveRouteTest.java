@@ -70,7 +70,7 @@ public class PromptUserToSaveRouteTest {
             }
         });
 
-        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+        //mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),

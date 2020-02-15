@@ -55,7 +55,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    private static Boolean USE_GOOGLE_FIT_TESTER = false;
+    public static Boolean USE_GOOGLE_FIT_TESTER = true;
 
 
     /* Member functions */
@@ -109,14 +109,22 @@ public class HomeScreen extends AppCompatActivity {
 
         /* TEST MODE BUTTON */
         testModeBtn = findViewById(R.id.testMode);
+        if(USE_GOOGLE_FIT_TESTER) {
+            testModeBtn.setText("TEST");
+        } else {
+            testModeBtn.setText("NORMAL");
+        }
+
         testModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 USE_GOOGLE_FIT_TESTER = !USE_GOOGLE_FIT_TESTER;
 
                 if (USE_GOOGLE_FIT_TESTER) {
+                    testModeBtn.setText("TEST");
                     Toast.makeText(HomeScreen.this, "TEST MODE: ON", Toast.LENGTH_SHORT).show();
                 } else {
+                    testModeBtn.setText("NORMAL");
                     Toast.makeText(HomeScreen.this, "TEST MODE: OFF", Toast.LENGTH_SHORT).show();
                 }
             }
