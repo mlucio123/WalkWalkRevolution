@@ -38,6 +38,7 @@ public class HomeScreen extends AppCompatActivity {
     private Button addRouteBtn;
     private Button btnUpdateSteps;
     private Button btnBoost;
+    private Button testModeBtn;
     private Chronometer mChronometer;
     private TextView distance;
     private TextView estimatedDistance;
@@ -52,7 +53,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    private static final Boolean USE_GOOGLE_FIT_TESTER = true;
+    private static Boolean USE_GOOGLE_FIT_TESTER = false;
 
 
     /* Member functions */
@@ -103,6 +104,16 @@ public class HomeScreen extends AppCompatActivity {
             Log.d(TAG, "Overwriting time");
             AccessSharedPrefs.setWalkStartTime(this, -1);
         }*/
+
+        /* TEST MODE BUTTON */
+        testModeBtn = findViewById(R.id.testMode);
+        testModeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                USE_GOOGLE_FIT_TESTER = !USE_GOOGLE_FIT_TESTER;
+            }
+        });
+
 
         /**
          * Create and start fitnessService
