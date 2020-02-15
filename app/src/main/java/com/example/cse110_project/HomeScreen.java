@@ -52,7 +52,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    private static final Boolean USE_GOOGLE_FIT_TESTER = false;
+    private static final Boolean USE_GOOGLE_FIT_TESTER = true;
 
 
     /* Member functions */
@@ -89,7 +89,7 @@ public class HomeScreen extends AppCompatActivity {
 
         if(AccessSharedPrefs.getSavedDistance(this).length() != 0) {
             TextView recentWalkSteps = findViewById(R.id.recentSteps);
-            String steps = AccessSharedPrefs.getSavedSteps(this) + "Steps";
+            String steps = AccessSharedPrefs.getSavedSteps(this);
             recentWalkSteps.setText(steps);
             TextView recentWalkDist = findViewById(R.id.recentDist);
             recentWalkDist.setText(AccessSharedPrefs.getSavedDistance(this));
@@ -227,6 +227,7 @@ public class HomeScreen extends AppCompatActivity {
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
                 newIntent.putExtra("actFlag", "Home");
+                newIntent.putExtra("is_test", USE_GOOGLE_FIT_TESTER);
                 startActivity(newIntent);
                 break;
             default:

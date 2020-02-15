@@ -222,8 +222,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5sp"
-        android:layout_marginLeft="5sp"
-        android:layout_marginRight="5sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
         style="?android:attr/buttonBarStyle"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal">
