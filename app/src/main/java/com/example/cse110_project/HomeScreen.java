@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.math.BigDecimal;
@@ -38,7 +40,7 @@ public class HomeScreen extends AppCompatActivity {
     private Button addRouteBtn;
     private Button btnUpdateSteps;
     private Button btnBoost;
-    private Button testModeBtn;
+    private Switch testModeBtn;
     private Chronometer mChronometer;
     private TextView distance;
     private TextView estimatedDistance;
@@ -111,6 +113,12 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 USE_GOOGLE_FIT_TESTER = !USE_GOOGLE_FIT_TESTER;
+
+                if (USE_GOOGLE_FIT_TESTER) {
+                    Toast.makeText(HomeScreen.this, "TEST MODE: ON", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(HomeScreen.this, "TEST MODE: OFF", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
