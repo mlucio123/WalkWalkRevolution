@@ -32,7 +32,6 @@ public class WalkScreen extends AppCompatActivity {
     private Chronometer mChronometer;
     private BottomNavigationView bottomNavigationView;
     private long walkTime;
-    Walk currentWalk;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final String TAG = "HomeScreen";
@@ -63,7 +62,6 @@ public class WalkScreen extends AppCompatActivity {
                 startButton.setVisibility(View.GONE);
                 endButton.setVisibility(View.VISIBLE);
                 mChronometer.setBase(SystemClock.elapsedRealtime());
-                currentWalk = new Walk(mChronometer.getBase());
                 mChronometer.start();
                 mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
                     @Override
@@ -97,7 +95,6 @@ public class WalkScreen extends AppCompatActivity {
             public void onClick(View v) {
                 //save walk + stats, show prompt
                 walkTime = SystemClock.elapsedRealtime() - mChronometer.getBase();
-                currentWalk.setEndTime(walkTime);
                 startButton.setVisibility(View.VISIBLE);
                 endButton.setVisibility(View.GONE);
                 mChronometer.stop();
