@@ -17,7 +17,7 @@ public class AccessSharedPrefs {
         return context.getSharedPreferences("user_info", Context.MODE_PRIVATE);
     }
 
-    public static void setUserInfo(Context context, String fName, String lName, int feet, int inch ) {
+    public static void setUserInfo(Context context, String fName, String lName, int feet, int inch) {
         SharedPreferences prefs = setUp(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("firstname", fName);
@@ -33,7 +33,7 @@ public class AccessSharedPrefs {
         return setUp(context).getString("firstname", "");
 
     }
-    public static String geLasttName(Context context) {
+    public static String getLastName(Context context) {
         return setUp(context).getString("firstname", "");
 
     }
@@ -111,6 +111,11 @@ public class AccessSharedPrefs {
             return prefs.getString("timer", "");
 
         return "";
+    }
+
+    public static void clearSharedPrefs(Context context) {
+        SharedPreferences prefs = setUp(context);
+        //SharedPreferences.Editor
     }
 
 
