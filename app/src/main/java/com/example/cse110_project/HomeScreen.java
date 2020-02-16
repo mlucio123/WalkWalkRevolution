@@ -55,7 +55,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    public static Boolean USE_GOOGLE_FIT_TESTER = false;
+    public static Boolean USE_GOOGLE_FIT_TESTER = true;
 
 
     /* Member functions */

@@ -53,6 +53,7 @@ public class SBMT6Test {
     public void setSharedPrefs() {
         HomeScreen.USE_GOOGLE_FIT_TESTER = true;
         WalkScreen.USE_TEST_SERVICE = true;
+        RouteScreen.testing = true;
         Log.d("SAVING", "PREFS");
         AccessSharedPrefs.setUserInfo(mActivityTestRule.getActivity(), "Connor",
                 "Prendiville", 6, 0);
@@ -76,6 +77,8 @@ public class SBMT6Test {
                                 2),
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
+
+        SystemClock.sleep(10000);
 
         ViewInteraction button = onView(
                 allOf(withText("Expand"),

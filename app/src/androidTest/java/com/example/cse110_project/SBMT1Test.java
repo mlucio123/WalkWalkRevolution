@@ -49,6 +49,7 @@ public class SBMT1Test {
                     "android.permission.ACCESS_FINE_LOCATION");
 
     @Before
+    @Rule
     public void clearSharedPreferences() {
         mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
                          .edit().clear().apply();
