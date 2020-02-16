@@ -71,7 +71,7 @@ public class GoogleFitAdapter implements FitnessService {
         } else {
 //            list active subscriptions
             Log.i(TAG, "SETUP IS WORKING");
-            listActiveSubscriptions();
+            startRecording();
         }
     }
 

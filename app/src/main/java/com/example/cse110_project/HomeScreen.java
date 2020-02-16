@@ -109,7 +109,6 @@ public class HomeScreen extends AppCompatActivity {
          */
         fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
         fitnessService.setup();
-        fitnessService.startRecording();
 
         // initialize text views
         textSteps = findViewById(R.id.homeDailyStepsCount);

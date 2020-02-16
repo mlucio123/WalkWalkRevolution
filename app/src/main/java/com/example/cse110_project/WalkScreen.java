@@ -57,6 +57,7 @@ public class WalkScreen extends AppCompatActivity {
     private TextView routeLastcompletedDistance;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+    private static final Boolean USE_GOOGLE_FIT_TESTER = false;
     private static final int FEET_IN_MILE = 5280;
     private TextView textSteps;
     private TextView textDistance;
@@ -73,7 +74,7 @@ public class WalkScreen extends AppCompatActivity {
         /*
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, false);
+        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
         fitnessService.setup();
 
         startButton = findViewById(R.id.startWalkMaterial);
