@@ -8,35 +8,286 @@
     android:background="@color/colorBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/walkPageTitle"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/lato"
+            android:text="@string/walkPageTitle"
+            android:textAlignment="center"
+            android:textColor="@color/colorText"
+            android:textSize="45sp" />
+
+
+        <Button
+            android:id="@+id/boostBtn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="40sp"
+            android:background="@drawable/btn_rounded"
+            android:backgroundTint="@color/stop"
+            android:drawableStart="@drawable/ic_add_white_24dp"
+            android:drawablePadding="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="ADD TIME"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+
     <TextView
-        android:id="@+id/walkPageTitle"
+        android:id="@+id/route_summary_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:text="@string/walkPageTitle"
-        android:textAlignment="center"
-        android:fontFamily="@font/lato"
         android:textColor="@color/colorText"
-        android:textSize="45sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="15sp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="30sp"
+        android:text="@string/route_summary_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/route_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="30sp"
+            android:layout_marginRight="30sp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:text="@string/route_name"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/routeTitleWalkScreen"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:text="@string/route_name"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="30sp"
+            android:layout_marginRight="30sp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:text="@string/start_position"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/routeStartWalkScreen"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:text="@string/start_position"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/routeCompletedTimeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="30sp"
+            android:visibility="gone"
+            android:layout_marginRight="30sp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/routeCompletedTimeTitle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:text="Last Time"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/routeCompletedTime"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:text="@string/route_name"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/routeCompletedStepsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="30sp"
+            android:layout_marginRight="30sp"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/routeCompletedStepsTitle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:text="Last Steps"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/routeCompletedSteps"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/routeCompletedDistanceLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="30sp"
+            android:visibility="gone"
+            android:layout_marginRight="30sp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+
+            <TextView
+                android:id="@+id/routeCompletedDistanceTitle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:text="Last Distance"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/routeCompletedDistance"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="30sp"
+            android:layout_marginRight="30sp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:text="@string/notes_label"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
+
+
+            <TextView
+                android:id="@+id/routeNotesWalkScreen"
+                android:layout_width="180sp"
+                android:layout_height="50sp"
+                android:background="@color/white"
+                android:scrollbars="vertical"
+                android:fontFamily="@font/lato"
+                android:text="@string/route_name"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    </LinearLayout>
+
+    </ScrollView>
+
 
     <Chronometer
         android:id="@+id/timerDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="5dp"
         android:format="00:00:00"
         android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
         android:fontFamily="@font/lato"
         android:textColor="@color/colorText"
         android:textSize="72sp"
-        android:layout_below="@id/walkPageTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/walkPageTitle" />
@@ -45,7 +296,7 @@
         android:id="@+id/stepInformation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
+        android:layout_marginTop="5sp"
         android:layout_marginLeft="30sp"
         android:layout_marginRight="30sp"
         android:orientation="horizontal"
@@ -59,7 +310,7 @@
             android:layout_weight="1"
             android:text="@string/steps_title"
             android:textColor="@color/colorText"
-            android:textSize="35sp" />
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/stepView"
@@ -68,7 +319,7 @@
             android:fontFamily="@font/lato_bold"
             android:text="@string/default_zero"
             android:textColor="@color/colorAccent"
-            android:textSize="25sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -89,7 +340,7 @@
             android:fontFamily="@font/lato"
             android:text="@string/distance"
             android:textColor="@color/colorText"
-            android:textSize="35sp" />
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/distanceView"
@@ -98,14 +349,14 @@
             android:fontFamily="@font/lato_bold"
             android:text="@string/large_distance"
             android:textColor="@color/colorAccent"
-            android:textSize="25sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/startStopContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15sp"
+        android:layout_marginTop="5sp"
         android:orientation="vertical">
 
         <Button
@@ -113,14 +364,14 @@
             android:layout_width="350sp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="25sp"
+            android:layout_marginTop="15sp"
             android:background="@drawable/btn_rounded"
             android:backgroundTint="@color/stop"
             android:drawableStart="@drawable/ic_add_white_24dp"
             android:drawablePadding="5dp"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:text="@string/endWalkLabel"
             android:textColor="@color/colorText"
             android:textSize="20sp" />
@@ -130,7 +381,7 @@
             android:layout_width="350sp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="25sp"
+            android:layout_marginTop="15sp"
             android:background="@drawable/btn_rounded"
             android:drawableStart="@drawable/ic_add_white_24dp"
             android:drawablePadding="5dp"
@@ -145,7 +396,7 @@
             android:layout_width="350sp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="25sp"
+            android:layout_marginTop="20sp"
             android:background="@drawable/btn_rounded"
             android:drawableStart="@drawable/ic_check_white_24dp"
             android:drawablePadding="5dp"
@@ -156,9 +407,7 @@
             android:textSize="20sp" />
 
 
-    </LinearLayout
- >
-
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/frameLayout"

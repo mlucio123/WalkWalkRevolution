@@ -1,36 +1,20 @@
 package com.example.cse110_project;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cse110_project.Firebase.RouteCollection;
-import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.FitnessServiceFactory;
-import com.example.cse110_project.fitness.GoogleFitAdapter;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class RouteFormScreen extends AppCompatActivity {
 
@@ -59,14 +43,15 @@ public class RouteFormScreen extends AppCompatActivity {
     private boolean easy;
     private boolean medium;
     private boolean hard;
+    private boolean favorite;
     public Route newRoute; // Public for now for testing
 
     private EditText routeName;
     private EditText startPosition;
+    private EditText notes;
 
     private String fitnessServiceKey = "GOOGLE_FIT";
-    boolean favorite = false;
-
+    private String TAG = "ROUTE FORM: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +60,8 @@ public class RouteFormScreen extends AppCompatActivity {
 
         routeName = findViewById(R.id.routeName);
         startPosition = findViewById(R.id.routeStart);
+
+        notes = findViewById(R.id.notesText);
 
         cancelBtn = findViewById(R.id.cancelBtn);
         submitBtn = findViewById(R.id.submitBtn);
@@ -93,7 +80,6 @@ public class RouteFormScreen extends AppCompatActivity {
         rTypeTrail = findViewById(R.id.routeTypeTrail);
         rSurfaceEven = findViewById(R.id.surfaceEven);
         rSurfaceRough = findViewById(R.id.surfaceRough);
-
 
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,32 +223,46 @@ public class RouteFormScreen extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-
+        /* Submit on click listener */
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (routeName.getText().toString().equals("")) {
-                    Toast.makeText(RouteFormScreen.this, "You did not fill in route name.", Toast.LENGTH_SHORT).show();
+                if (routeName.getText().toString().equals("") || startPosition.getText().toString().equals("")) {
+                    Toast.makeText(RouteFormScreen.this, "Please fill out all form sections", Toast.LENGTH_SHORT).show();
                 } else {
 
                     // TODO CREATE OBJ OF CORRESPONDING MESSAGES AND SEND TO FIREBASE
-                    boolean[] tags ={out, loop, flat, hills, even, rough, street, trail, easy, medium, hard};
+                    boolean[] tags ={out, loop, flat, hills, even, rough, street, trail, easy, medium, hard, favorite};
+
+                    Log.d(TAG, "REsult : " + out + flat + hills + even + rough + street + trail + easy + medium + hard);
+
+                    String timer = getIntent().getStringExtra("completedTime");
+                    String steps = getIntent().getStringExtra("stepCount");
+                    String distance = getIntent().getStringExtra("distance");
 
                     newRoute = new Route(routeName.getText().toString(), startPosition.getText().toString(),
-                            tags, favorite, "");
+                            tags, "");
+                    newRoute.setTags(tags);
+                    newRoute.setNotes(notes.getText().toString());
+
+                    if (timer != null && timer.length() != 0){
+                        newRoute.setLastCompletedTime(timer);
+                    }
+
+                    if (steps != null && steps.length() != 0){
+                        newRoute.setLastCompletedSteps(steps);
+                    }
+
+                    if (distance != null && distance.length() != 0){
+                        newRoute.setLastCompletedDistance(distance);
+                    }
 
                     RouteCollection rc = new RouteCollection();
                     String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                     rc.addRoute(newRoute, deviceID);
+
+                    Toast.makeText(RouteFormScreen.this, "Form Submitted!", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(RouteFormScreen.this, RouteScreen.class);
                     intent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);

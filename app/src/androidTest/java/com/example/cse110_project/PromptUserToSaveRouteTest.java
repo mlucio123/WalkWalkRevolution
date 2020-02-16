@@ -13,8 +13,8 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.fitness_deprecated.FitnessService;
+import com.example.cse110_project.fitness_deprecated.FitnessServiceFactory;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
