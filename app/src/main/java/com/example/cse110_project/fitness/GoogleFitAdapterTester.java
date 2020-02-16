@@ -39,4 +39,7 @@ public class GoogleFitAdapterTester implements FitnessService {
         return 0;
     }
 
+    @Override
+    public void listSensorSubscriptions(){}
+
 }
