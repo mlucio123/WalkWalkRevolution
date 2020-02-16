@@ -41,7 +41,6 @@ android:
 branches:
   only:
     - "master"
-    - "StoryTest2"
 
 jobs:
   include:
