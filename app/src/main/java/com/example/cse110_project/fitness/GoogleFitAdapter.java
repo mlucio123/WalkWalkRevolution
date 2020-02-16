@@ -138,7 +138,7 @@ public class GoogleFitAdapter implements FitnessService {
         Fitness.getSensorsClient(activity, account)
                 .findDataSources(
                         new DataSourcesRequest.Builder()
-                                .setDataTypes(DataType.TYPE_LOCATION_SAMPLE)
+                                .setDataTypes(DataType.TYPE_STEP_COUNT_CUMULATIVE)
                                 .setDataSourceTypes(DataSource.TYPE_RAW)
                                 .build())
                 .addOnSuccessListener(
