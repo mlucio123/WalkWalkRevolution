@@ -1,6 +1,7 @@
 package com.example.cse110_project;
 
 
+import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -47,6 +48,7 @@ public class HomeScreenTest2 {
 
     @Test
     public void homeScreenTest2() {
+        SystemClock.sleep(2000);
         ViewInteraction button = onView(
                 allOf(withId(R.id.getStartedBtn),
                         childAtPosition(

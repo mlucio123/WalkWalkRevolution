@@ -16,12 +16,14 @@ import androidx.test.runner.AndroidJUnit4;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -47,11 +49,6 @@ public class SBMT2Test {
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
-    @BeforeClass
-    public static void setup() {
-
-    }
-
     @Before
     public void setSharedPrefs() {
         HomeScreen.USE_GOOGLE_FIT_TESTER = true;
@@ -61,8 +58,15 @@ public class SBMT2Test {
                 "Prendiville", 6, 0);
     }
 
+    @After
+    public void clearSharedPreferences() {
+        mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
+                .edit().clear().apply();
+    }
+
     @Test
     public void sBMT2() {
+        SystemClock.sleep(2000);
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.startBtn), withText("START WALK"),
                         childAtPosition(
