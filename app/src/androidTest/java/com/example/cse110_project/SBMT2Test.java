@@ -104,7 +104,7 @@ public class SBMT2Test {
                                         withClassName(is("android.widget.LinearLayout")),
                                         1),
                                 1)));
-        appCompatEditText5.perform(scrollTo(), replaceText("Espresso"), closeSoftKeyboard());
+        appCompatEditText5.perform(scrollTo(), replaceText("Regular Walk"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText6 = onView(
                 allOf(withId(R.id.routeStart),
@@ -113,7 +113,7 @@ public class SBMT2Test {
                                         withClassName(is("android.widget.LinearLayout")),
                                         2),
                                 1)));
-        appCompatEditText6.perform(scrollTo(), replaceText("Esspresso"), closeSoftKeyboard());
+        appCompatEditText6.perform(scrollTo(), replaceText("Stresseman and Bragg"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.submitBtn), withText("Submit"),
