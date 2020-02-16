@@ -66,7 +66,7 @@ public class SBMT4Test {
 
     @Test
     public void sBMT4Test() {
-        SystemClock.sleep(10000);
+        SystemClock.sleep(2000);
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.navigation_routes), withContentDescription("Route"),
                         childAtPosition(

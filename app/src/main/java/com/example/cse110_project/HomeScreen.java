@@ -55,7 +55,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    public static Boolean USE_GOOGLE_FIT_TESTER = true;
+    public static Boolean USE_GOOGLE_FIT_TESTER = false;
 
 
     /* Member functions */
@@ -69,7 +69,7 @@ public class HomeScreen extends AppCompatActivity {
          * Accessibility Check: shared pref and location access
          */
         // check for shared pref access
-        if( AccessSharedPrefs.getFirstName(this).length() == 0 ) {
+        if( AccessSharedPrefs.getFirstName(this).length() == 0 && !USE_GOOGLE_FIT_TESTER) {
             launchFirstLoadScreen();
         } else {
             Toast.makeText(HomeScreen.this, "SharedPreference FOUND " +
@@ -101,11 +101,6 @@ public class HomeScreen extends AppCompatActivity {
             LinearLayout recentWalkStats = findViewById(R.id.recentWalkLayout);
             recentWalkStats.setVisibility(View.VISIBLE);
         }
-
-        /*if(AccessSharedPrefs.getWalkStartTime(this) != -1 && !WalkScreen.walking) {
-            Log.d(TAG, "Overwriting time");
-            AccessSharedPrefs.setWalkStartTime(this, -1);
-        }*/
 
         /* TEST MODE BUTTON */
         testModeBtn = findViewById(R.id.testMode);
