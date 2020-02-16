@@ -23,6 +23,7 @@ import org.w3c.dom.Text;
 
 import static android.content.Context.MODE_PRIVATE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)
 public class HomeScreenUnitTest {
@@ -50,69 +51,28 @@ public class HomeScreenUnitTest {
     private void init(HomeScreen homeScreen) {
 
         getStartedBtn = homeScreen.findViewById(R.id.getStartedBtn);
-        firstName = (EditText) homeScreen.findViewById(R.id.userFirstName);
-        lastName = (EditText) homeScreen.findViewById(R.id.userLastName);
-        heightFt = (EditText) homeScreen.findViewById(R.id.userHeightFt);
-        heightInch = (EditText) homeScreen.findViewById(R.id.userHeightInch);
+
+        pageTitle = homeScreen.findViewById(R.id.homeTitle);
+        stepCount = homeScreen.findViewById(R.id.homeDailyStepsCount);
+        distanceCount = homeScreen.findViewById(R.id.homeDailyDistanceCount);
+        estimatedDistanceCount = homeScreen.findViewById(R.id.homeDailyEstimateCount);
+
     }
 
+
     @Test
-    public void testFirstName() {
+    public void testComponentExists() {
         scenario.onActivity(homeScreen -> {
+
             init(homeScreen);
-            //SharedPreferences pref = firstLoadScreen.getSharedPreferences("user_info",MODE_PRIVATE);
-            firstName.setText("Amy");
-            lastName.setText("Bell");
-            heightFt.setText("6");
-            heightInch.setText("7");
-            //getStartedBtn.performClick();
-            //assertEquals("Amy", pref.getString("firstname", ""));
-            assertEquals("Amy", firstName.getText().toString());
+            assertEquals(pageTitle.getText().toString(), "Home");
+            assertNotNull(stepCount.getText().toString());
+            assertNotNull(distanceCount.getText().toString());
+            assertNotNull(estimatedDistanceCount.getText().toString());
+
         });
     }
 
-    @Test
-    public void testLastName() {
-        scenario.onActivity(firstLoadScreen -> {
-            init(firstLoadScreen);
-            //SharedPreferences pref = firstLoadScreen.getSharedPreferences("user_info",MODE_PRIVATE);
-            firstName.setText("Amy");
-            lastName.setText("Bell");
-            heightFt.setText("6");
-            heightInch.setText("7");
-            //getStartedBtn.performClick();
-            //assertEquals("Amy", pref.getString("firstname", ""));
-            assertEquals("Bell", lastName.getText().toString());
-        });
-    }
 
-    @Test
-    public void testFt() {
-        scenario.onActivity(firstLoadScreen -> {
-            init(firstLoadScreen);
-            //SharedPreferences pref = firstLoadScreen.getSharedPreferences("user_info",MODE_PRIVATE);
-            firstName.setText("Amy");
-            lastName.setText("Bell");
-            heightFt.setText("6");
-            heightInch.setText("7");
-            //getStartedBtn.performClick();
-            //assertEquals("Amy", pref.getString("firstname", ""));
-            assertEquals("6", heightFt.getText().toString());
-        });
-    }
 
-    @Test
-    public void testInch() {
-        scenario.onActivity(firstLoadScreen -> {
-            init(firstLoadScreen);
-            //SharedPreferences pref = firstLoadScreen.getSharedPreferences("user_info",MODE_PRIVATE);
-            firstName.setText("Amy");
-            lastName.setText("Bell");
-            heightFt.setText("6");
-            heightInch.setText("7");
-            //getStartedBtn.performClick();
-            //assertEquals("Amy", pref.getString("firstname", ""));
-            assertEquals("7", heightInch.getText().toString());
-        });
-    }
 }
