@@ -65,6 +65,7 @@ public class WalkScreen extends AppCompatActivity {
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final int FEET_IN_MILE = 5280;
+    public static boolean USE_TEST_SERVICE = false;
     private TextView textSteps;
     private TextView textDistance;
     private FitnessService fitnessService;
@@ -92,7 +93,7 @@ public class WalkScreen extends AppCompatActivity {
 
         endButton.setVisibility(View.GONE);
 
-        testing = getIntent().getBooleanExtra("is_test", false);
+        testing = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
 
         if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1 && !walking) {
             walking = true;

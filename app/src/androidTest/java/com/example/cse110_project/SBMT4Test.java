@@ -2,6 +2,7 @@ package com.example.cse110_project;
 
 
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -17,7 +18,6 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,17 +27,19 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class HeightEntryTest {
+public class SBMT4Test {
 
     @Rule
     public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
@@ -47,12 +49,15 @@ public class HeightEntryTest {
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
-    @BeforeClass
-    public static void setup() {
+    @Before
+    public void setSharedPrefs() {
         HomeScreen.USE_GOOGLE_FIT_TESTER = true;
+        WalkScreen.USE_TEST_SERVICE = true;
+        Log.d("SAVING", "PREFS");
+        AccessSharedPrefs.setUserInfo(mActivityTestRule.getActivity(), "Connor",
+                "Prendiville", 6, 0);
     }
 
-    @Before
     @After
     public void clearSharedPreferences() {
         mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
@@ -60,77 +65,55 @@ public class HeightEntryTest {
     }
 
     @Test
-    public void heightEntryTest() {
-        SystemClock.sleep(2000);
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.firstLoadTitle), withText("Welcome to WWR!"),
+    public void sBMT4Test() {
+        SystemClock.sleep(10000);
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.navigation_routes), withContentDescription("Route"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.bottom_navigation),
+                                        0),
+                                2),
+                        isDisplayed()));
+        bottomNavigationItemView.perform(click());
+
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.addRouteBtn), withText("ADD ROUTE"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                0),
+                                2),
                         isDisplayed()));
-        textView.check(matches(withText("Welcome to WWR!")));
+        appCompatButton2.perform(click());
 
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.userFirstName),
+        ViewInteraction appCompatEditText7 = onView(
+                allOf(withId(R.id.routeName),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         1),
-                                1),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText("Howard"), closeSoftKeyboard());
+                                1)));
+        appCompatEditText7.perform(scrollTo(), replaceText("New Route"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.userLastName),
+        ViewInteraction appCompatEditText8 = onView(
+                allOf(withId(R.id.routeStart),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         2),
-                                1),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("Lin"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userHeightFt),
+                                1)));
+        appCompatEditText8.perform(scrollTo(), replaceText("New Routes"), closeSoftKeyboard());
+        int routesNum = RouteScreen.getRouteNumber();
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.submitBtn), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        3),
-                                1),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.userHeightInch),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        3),
-                                3),
-                        isDisplayed()));
-        appCompatEditText4.perform(replaceText("9"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.getStartedBtn), withText("Get Started"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                4),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.homeTitle), withText("Home"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView3.check(matches(withText("Home")));
+                                        10),
+                                1)));
+        appCompatButton3.perform(scrollTo(), click());
+        assertEquals(routesNum+1, RouteScreen.getRouteNumber());
     }
 
     private static Matcher<View> childAtPosition(

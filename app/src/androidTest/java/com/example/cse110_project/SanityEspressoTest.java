@@ -1,8 +1,7 @@
 package com.example.cse110_project;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -12,9 +11,6 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
-
-import com.example.cse110_project.fitness_deprecated.FitnessService;
-import com.example.cse110_project.fitness_deprecated.FitnessServiceFactory;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -26,6 +22,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -40,38 +37,26 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PromptUserToSaveRouteTest {
-
-    private static final String TEST_SERVICE = "TEST_SERVICE";
+public class SanityEspressoTest {
 
     @Rule
-    public ActivityTestRule<FirstLoadScreen> mActivityTestRule = new ActivityTestRule<>(FirstLoadScreen.class);
-
-    @Before
-    @After
-    public void clearSharedPrefs() {
-        SharedPreferences.Editor editor = mActivityTestRule.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE).edit();
-        editor.clear();
-        editor.apply();
-    }
+    public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
 
     @Rule
     public GrantPermissionRule mGrantPermissionRule =
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
+    @Before
+    @After
+    public void clearSharedPreferences() {
+        mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
+                .edit().clear().apply();
+    }
+
     @Test
-    public void promptUserToSaveRoute() {
-
-        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(HomeScreen homeScreen) {
-                return new TestFitnessService(homeScreen);
-            }
-        });
-
-        //mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
-
+    public void sanityEspressoTest() {
+        SystemClock.sleep(5000);
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(
@@ -122,57 +107,45 @@ public class PromptUserToSaveRouteTest {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.startBtn), withText("START WALK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
-
         ViewInteraction textView = onView(
-                allOf(withId(R.id.walkPageTitle), withText("Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView.check(matches(withText("Walk")));
-
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.startWalkMaterial), withText("Start Walking!"),
-                        childAtPosition(
-                                allOf(withId(R.id.startStopContainer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                1),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
-
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.doneWalkBtn), withText("Done"),
-                        childAtPosition(
-                                allOf(withId(R.id.startStopContainer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                4)),
-                                2),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.newRouteTitle), withText("New Route"),
+                allOf(withId(R.id.homeDailyStepsCount), withText("0 Steps"),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                        2),
+                                1),
+                        isDisplayed()));
+        textView.check(matches(withText("0 Steps")));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.homeDailyDistanceCount), withText("0 Miles"),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                        3),
+                                1),
+                        isDisplayed()));
+        textView2.check(matches(withText("0 Miles")));
+
+        ViewInteraction textView3 = onView(
+                allOf(withId(R.id.homeDailyEstimateCount), withText("0 Miles"),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                        4),
+                                1),
+                        isDisplayed()));
+        textView3.check(matches(withText("0 Miles")));
+
+        ViewInteraction textView4 = onView(
+                allOf(withId(R.id.homeTitle), withText("Home"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
                                         0),
                                 0),
                         isDisplayed()));
-        textView2.check(matches(withText("New Route")));
+        textView4.check(matches(withText("Home")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -192,38 +165,5 @@ public class PromptUserToSaveRouteTest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
-    }
-
-    private class TestFitnessService implements FitnessService {
-
-        private static final String TAG = "[TestFitnessService]: ";
-        private HomeScreen homeScreen;
-
-        public TestFitnessService(HomeScreen stepCountActivity) {
-            this.homeScreen = stepCountActivity;
-        }
-
-        @Override
-        public int getRequestCode() {
-            return 0;
-        }
-
-        @Override
-        public void readHistoryData() {
-
-        }
-
-        @Override
-        public void setup() {
-            System.out.println(TAG + "setup");
-        }
-
-        @Override
-        public void updateStepCount() {
-            System.out.println(TAG + "updateStepCount");
-            homeScreen.setStepCount(323);
-
-        }
-
     }
 }
