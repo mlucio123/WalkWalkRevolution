@@ -169,6 +169,8 @@ public class GoogleFitAdapter implements FitnessService {
     @Override
     public void listActiveSubscriptions() {
 
+        if(GoogleSignIn.getLastSignedInAccount(activity) == null) return;
+
         // List STEP_COUNT active subs
         Fitness.getRecordingClient(activity, GoogleSignIn.getLastSignedInAccount(activity))
                 .listSubscriptions()
