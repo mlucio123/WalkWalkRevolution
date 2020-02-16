@@ -54,7 +54,7 @@ public class FirstLoadScreenUnitTest {
             heightInch.setText("7");
             //getStartedBtn.performClick();
             //assertEquals("Amy", pref.getString("firstname", ""));
-            assertEquals("Amy", firstName.getText());
+            assertEquals("Amy", firstName.getText().toString());
         });
     }
 
@@ -69,7 +69,7 @@ public class FirstLoadScreenUnitTest {
             heightInch.setText("7");
             //getStartedBtn.performClick();
             //assertEquals("Amy", pref.getString("firstname", ""));
-            assertEquals("Bell", lastName.getText());
+            assertEquals("Bell", lastName.getText().toString());
         });
     }
 
@@ -84,7 +84,7 @@ public class FirstLoadScreenUnitTest {
             heightInch.setText("7");
             //getStartedBtn.performClick();
             //assertEquals("Amy", pref.getString("firstname", ""));
-            assertEquals("6", heightFt.getText());
+            assertEquals("6", heightFt.getText().toString());
         });
     }
 
@@ -99,7 +99,7 @@ public class FirstLoadScreenUnitTest {
             heightInch.setText("7");
             //getStartedBtn.performClick();
             //assertEquals("Amy", pref.getString("firstname", ""));
-            assertEquals("7", heightInch.getText());
+            assertEquals("7", heightInch.getText().toString());
         });
     }
 }

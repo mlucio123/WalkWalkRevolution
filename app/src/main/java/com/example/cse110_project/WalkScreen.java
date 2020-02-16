@@ -2,6 +2,7 @@
 package com.example.cse110_project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,12 @@ import android.widget.Toast;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness.GoogleFitAdapter;
+import com.example.cse110_project.fitness.GoogleFitAdapterTester;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
 
 public class WalkScreen extends AppCompatActivity {
 
@@ -35,6 +41,7 @@ public class WalkScreen extends AppCompatActivity {
     private Chronometer mChronometer;
     private BottomNavigationView bottomNavigationView;
     private Button boostTimeBtn;
+    private Button boostStepBtn;
     private long walkTime;
     private long addedWalkTime;
     private long startTime;
@@ -58,11 +65,12 @@ public class WalkScreen extends AppCompatActivity {
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final int FEET_IN_MILE = 5280;
+    public static boolean USE_TEST_SERVICE = false;
     private TextView textSteps;
     private TextView textDistance;
     private FitnessService fitnessService;
 
-    private boolean walking;
+    public static boolean walking;
     private boolean testing;
 
     @Override
@@ -81,14 +89,17 @@ public class WalkScreen extends AppCompatActivity {
         doneWalkButton = findViewById(R.id.doneWalkBtn);
         mChronometer = findViewById(R.id.timerDisplay);
         boostTimeBtn = findViewById(R.id.boostBtn);
+        boostStepBtn = findViewById(R.id.boostStepBtn);
+
         endButton.setVisibility(View.GONE);
 
-        if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1) {
+        testing = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
+
+        if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1 && !walking) {
             walking = true;
-            Log.d(TAG, "YOU SAVED A TIME");
             setOnWalkUI();
             startTime = AccessSharedPrefs.getWalkStartTime(WalkScreen.this);
-            Log.d(TAG, "Using start time: " + String.valueOf(startTime));
+            Log.d(TAG, "SAVED TIME RETRIEVED: " + startTime);
             mChronometer.setBase(startTime);
             mChronometer.start();
             mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -98,7 +109,6 @@ public class WalkScreen extends AppCompatActivity {
                     setChronoText(time);
                 }
             });
-            Log.d(TAG, "AFTER START");
         }
 
         textSteps = findViewById(R.id.stepView);
@@ -196,7 +206,7 @@ public class WalkScreen extends AppCompatActivity {
                 startTime = SystemClock.elapsedRealtime();
                 mChronometer.setBase(startTime);
                 AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
-                Log.d(TAG, "after saved time");
+                Log.d(TAG, "SAVED START TIME: " + startTime);
 
                 mChronometer.start();
                 setChronoText(mChronometer.getBase() - SystemClock.elapsedRealtime());
@@ -214,7 +224,8 @@ public class WalkScreen extends AppCompatActivity {
         doneWalkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(walking) AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                walking = false;
+                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 Intent intent = new Intent(WalkScreen.this, RouteScreen.class);
                 startActivity(intent);
             }
@@ -235,6 +246,7 @@ public class WalkScreen extends AppCompatActivity {
                 String timer = mChronometer.getText().toString();
                 String steps = textSteps.getText().toString();
                 String distance = textDistance.getText().toString();
+                AccessSharedPrefs.saveWalk(WalkScreen.this, timer, steps, distance);
 
                 if(routeID == null) {
                     Intent intent = new Intent(WalkScreen.this, RouteFormScreen.class);
@@ -260,11 +272,20 @@ public class WalkScreen extends AppCompatActivity {
                     startTime-=FIVE_SECS;
                     mChronometer.setBase(mChronometer.getBase() - FIVE_SECS);
                     setChronoText(SystemClock.elapsedRealtime() - mChronometer.getBase());
-                    return;
                 }
-                long elapsedRealTimeOffset = System.currentTimeMillis() - SystemClock.elapsedRealtime();
-                mChronometer.setBase((addedWalkTime - elapsedRealTimeOffset));
-                setChronoText(mChronometer.getBase());
+            }
+        });
+
+        boostStepBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(walking){
+                    String steps = textSteps.getText().toString();
+
+                    int curr = Integer.parseInt(steps.substring(0,steps.indexOf(" ")));
+                    setStepCount(curr + 500);
+                    GoogleFitAdapterTester.incrementDailySteps();
+                }
             }
         });
 
@@ -279,6 +300,37 @@ public class WalkScreen extends AppCompatActivity {
         });
 
     }
+
+    public void setStepCount(long stepCount) {
+        textSteps.setText(String.valueOf(stepCount) + " Steps");
+
+        // look in storage
+        SharedPreferences sharedpreference_value = getSharedPreferences("user_info",MODE_PRIVATE);
+        int heightFt = sharedpreference_value.getInt("heightFt", -1);
+        int heightInch = sharedpreference_value.getInt("heightInch", -1);
+
+        // calcualte stride length
+        StrideCalculator calc = new StrideCalculator(heightFt, heightInch);
+        double strideLength = calc.getStrideLength();
+        double estimateDistance = stepCount * strideLength;
+
+        BigDecimal bd = new BigDecimal(estimateDistance);
+        bd = bd.round(new MathContext(3));
+        double rounded = bd.doubleValue();
+
+
+        double convert = (estimateDistance * 1.0 / FEET_IN_MILE );
+        bd = new BigDecimal(convert);
+        bd = bd.round(new MathContext(3));
+        rounded = bd.doubleValue();
+        String estDistStr = rounded + " Miles";
+        textDistance.setText(estDistStr);
+        if(testing){
+            GoogleFitAdapterTester.incrementDailyDistance((int) rounded);
+        }
+
+    }
+
 
     public void setChronoText(long newTime) {
         int h = (int) (newTime / 3600000);
@@ -302,13 +354,19 @@ public class WalkScreen extends AppCompatActivity {
         Intent newIntent = new Intent(this, this.getClass());
         switch(item.getItemId()) {
             case R.id.navigation_home:
-                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                if(!walking) {
+                    Log.d(TAG, "NOT SAVING TO HOME");
+                    AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
+                }
                 newIntent = new Intent(this, HomeScreen.class);
                 newIntent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
                 startActivity(newIntent);
                 break;
             case R.id.navigation_routes:
-                AccessSharedPrefs.setWalkStartTime(WalkScreen.this, startTime);
+                if(!walking) {
+                    Log.d(TAG, "NOT SAVING TO ROUTE");
+                    AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
+                }
                 newIntent = new Intent(this, RouteScreen.class);
                 startActivity(newIntent);
                 break;

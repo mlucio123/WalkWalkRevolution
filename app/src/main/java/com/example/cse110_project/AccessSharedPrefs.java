@@ -17,7 +17,7 @@ public class AccessSharedPrefs {
         return context.getSharedPreferences("user_info", Context.MODE_PRIVATE);
     }
 
-    public static void setUserInfo(Context context, String fName, String lName, int feet, int inch ) {
+    public static void setUserInfo(Context context, String fName, String lName, int feet, int inch) {
         SharedPreferences prefs = setUp(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("firstname", fName);
@@ -33,7 +33,7 @@ public class AccessSharedPrefs {
         return setUp(context).getString("firstname", "");
 
     }
-    public static String geLasttName(Context context) {
+    public static String getLastName(Context context) {
         return setUp(context).getString("firstname", "");
 
     }
@@ -76,6 +76,46 @@ public class AccessSharedPrefs {
         SharedPreferences prefs = setUp(context);
         if(!prefs.contains("walkStatus")) return false;
         return prefs.getBoolean("walkStatus", false);
+    }
+
+    public static void saveWalk(Context context, String timer, String steps, String distance) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString("distance", distance);
+        editor.putString("timer", timer);
+        editor.putString("steps", steps);
+
+        editor.apply();
+    }
+
+    public static String getSavedSteps(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("steps"))
+            return prefs.getString("steps", "");
+
+        return "";
+    }
+
+    public static String getSavedDistance(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("distance"))
+            return prefs.getString("distance", "");
+
+        return "";
+    }
+
+    public static String getSavedTimer(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("timer"))
+            return prefs.getString("timer", "");
+
+        return "";
+    }
+
+    public static void clearSharedPrefs(Context context) {
+        SharedPreferences prefs = setUp(context);
+        //SharedPreferences.Editor
     }
 
 
