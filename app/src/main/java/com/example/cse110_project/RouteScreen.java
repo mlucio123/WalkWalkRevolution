@@ -48,6 +48,7 @@ public class RouteScreen extends AppCompatActivity {
     private RelativeLayout invis;
 
     private ArrayList<Route> currentRoutes;
+    private static int routesNum = 0;
 
     private Route dummyRoute;
 
@@ -79,6 +80,7 @@ public class RouteScreen extends AppCompatActivity {
                     @Override
                     public void getRoutes(ArrayList<Route> routes) {
                         currentRoutes = routes;
+                        routesNum = currentRoutes.size();
                         Log.d("TAG", "SIZE IS = " + routes.size());
 
                         for (int i = 0; i < routes.size(); i++) {
@@ -486,8 +488,6 @@ public class RouteScreen extends AppCompatActivity {
         return tagList.toArray();
     }
 
-
-
     private void selectFragment(MenuItem item){
 
         Intent newIntent = new Intent(this, this.getClass());
@@ -504,6 +504,10 @@ public class RouteScreen extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    public static int getRouteNumber() {
+        return routesNum;
     }
 
 }

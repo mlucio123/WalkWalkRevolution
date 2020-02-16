@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.math.BigDecimal;
@@ -38,6 +40,7 @@ public class HomeScreen extends AppCompatActivity {
     private Button addRouteBtn;
     private Button btnUpdateSteps;
     private Button btnBoost;
+    private Switch testModeBtn;
     private Chronometer mChronometer;
     private TextView distance;
     private TextView estimatedDistance;
@@ -52,7 +55,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    private static final Boolean USE_GOOGLE_FIT_TESTER = false;
+    public static Boolean USE_GOOGLE_FIT_TESTER = true;
 
 
     /* Member functions */
@@ -89,7 +92,7 @@ public class HomeScreen extends AppCompatActivity {
 
         if(AccessSharedPrefs.getSavedDistance(this).length() != 0) {
             TextView recentWalkSteps = findViewById(R.id.recentSteps);
-            String steps = AccessSharedPrefs.getSavedSteps(this) + "Steps";
+            String steps = AccessSharedPrefs.getSavedSteps(this);
             recentWalkSteps.setText(steps);
             TextView recentWalkDist = findViewById(R.id.recentDist);
             recentWalkDist.setText(AccessSharedPrefs.getSavedDistance(this));
@@ -103,6 +106,30 @@ public class HomeScreen extends AppCompatActivity {
             Log.d(TAG, "Overwriting time");
             AccessSharedPrefs.setWalkStartTime(this, -1);
         }*/
+
+        /* TEST MODE BUTTON */
+        testModeBtn = findViewById(R.id.testMode);
+        if(USE_GOOGLE_FIT_TESTER) {
+            testModeBtn.setText("TEST");
+        } else {
+            testModeBtn.setText("NORMAL");
+        }
+
+        testModeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                USE_GOOGLE_FIT_TESTER = !USE_GOOGLE_FIT_TESTER;
+
+                if (USE_GOOGLE_FIT_TESTER) {
+                    testModeBtn.setText("TEST");
+                    Toast.makeText(HomeScreen.this, "TEST MODE: ON", Toast.LENGTH_SHORT).show();
+                } else {
+                    testModeBtn.setText("NORMAL");
+                    Toast.makeText(HomeScreen.this, "TEST MODE: OFF", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         /**
          * Create and start fitnessService
@@ -226,6 +253,7 @@ public class HomeScreen extends AppCompatActivity {
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
                 newIntent.putExtra("actFlag", "Home");
+                newIntent.putExtra("is_test", USE_GOOGLE_FIT_TESTER);
                 startActivity(newIntent);
                 break;
             default:

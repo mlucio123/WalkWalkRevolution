@@ -5,6 +5,13 @@ import android.app.Activity;
 public class GoogleFitAdapterTester implements FitnessService {
     private Activity activity;
 
+    private static int dailySteps;
+    private static int dailyDistance;
+
+    private static int currentWalkSteps;
+    private static int currentWalkDistance;
+
+
     public GoogleFitAdapterTester(Activity activity, boolean is_test) {
         this.activity = activity;
     }
@@ -31,12 +38,29 @@ public class GoogleFitAdapterTester implements FitnessService {
 
     @Override
     public long getDailySteps(){
-        return 0;
+        return dailySteps;
     }
 
     @Override
     public long getDailyDistance(){
-        return 0;
+        return dailyDistance;
+    }
+
+
+    public static void incrementDailySteps() {
+        dailySteps += 500;
+    }
+
+    public static void incrementDailyDistance(long distance) {
+        dailyDistance += distance;
+    }
+
+    public static void incrementCurrentWalkSteps() {
+        currentWalkSteps += 500;
+    }
+
+    public static void incrementDailyDistance(int distance) {
+        dailyDistance += distance;
     }
 
     @Override

@@ -49,32 +49,28 @@ public class FirstLoadScreenTest {
     public void testFirstNameDisplay() {
         FirstLoadScreen firstLoadScreen = firstLoadScreenTest.getActivity();
         firstName = (EditText) firstLoadScreen.findViewById(R.id.userFirstName);
-        assertEquals("First Name", firstName.getHint());
+        assertEquals("First Name", firstName.getHint().toString());
     }
 
     @Test
     public void testLastNameDisplay() {
         FirstLoadScreen firstLoadScreen = firstLoadScreenTest.getActivity();
         lastName = (EditText) firstLoadScreen.findViewById(R.id.userLastName);
-        assertEquals("Last Name", lastName.getHint());
+        assertEquals("Last Name", lastName.getHint().toString());
     }
 
     @Test
     public void testFtDisplay() {
         FirstLoadScreen firstLoadScreen = firstLoadScreenTest.getActivity();
         heightFt = (EditText) firstLoadScreen.findViewById(R.id.userHeightFt);
-        assertEquals("0", heightFt.getHint());
+        assertEquals("0", heightFt.getHint().toString());
     }
 
     @Test
     public void testInchDisplay() {
         FirstLoadScreen firstLoadScreen = firstLoadScreenTest.getActivity();
         heightInch = (EditText) firstLoadScreen.findViewById(R.id.userHeightInch);
-        assertEquals("0", heightInch.getHint());
+        assertEquals("0", heightInch.getHint().toString());
     }
-<<<<<<< HEAD
-}
-=======
 
 }
->>>>>>> 950c87e233419c5f2164c6c2551f395cb2ff7f3d

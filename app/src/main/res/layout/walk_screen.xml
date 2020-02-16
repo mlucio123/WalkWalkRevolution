@@ -20,31 +20,12 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/lato"
             android:text="@string/walkPageTitle"
             android:textAlignment="center"
             android:textColor="@color/colorText"
             android:textSize="45sp" />
-
-
-        <Button
-            android:id="@+id/boostBtn"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="40sp"
-            android:background="@drawable/btn_rounded"
-            android:backgroundTint="@color/stop"
-            android:drawableStart="@drawable/ic_add_white_24dp"
-            android:drawablePadding="5dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="ADD TIME"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -317,7 +298,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_bold"
-            android:text="@string/default_zero"
+            android:text="0 Steps"
             android:textColor="@color/colorAccent"
             android:textSize="15sp" />
     </LinearLayout>
@@ -398,6 +379,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20sp"
             android:background="@drawable/btn_rounded"
+            android:visibility="gone"
             android:drawableStart="@drawable/ic_check_white_24dp"
             android:drawablePadding="5dp"
             android:paddingLeft="40dp"
@@ -405,6 +387,53 @@
             android:text="Done"
             android:textColor="@color/colorText"
             android:textSize="20sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="20sp"
+            android:layout_marginRight="50sp"
+            android:layout_marginLeft="50sp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+
+            <Button
+                android:id="@+id/boostStepBtn"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_rounded"
+                android:backgroundTint="@color/stop"
+                android:drawableStart="@drawable/ic_add_white_24dp"
+                android:drawablePadding="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="ADD STEP"
+                android:layout_alignParentStart="true"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+
+
+            <Button
+                android:id="@+id/boostBtn"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_rounded"
+                android:backgroundTint="@color/stop"
+                android:drawableStart="@drawable/ic_add_white_24dp"
+                android:drawablePadding="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="ADD TIME"
+                android:layout_alignParentEnd="true"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+
+
+        </RelativeLayout>
 
 
     </LinearLayout>

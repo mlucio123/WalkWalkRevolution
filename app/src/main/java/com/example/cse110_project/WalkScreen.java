@@ -2,6 +2,7 @@
 package com.example.cse110_project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,12 @@ import android.widget.Toast;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.FitnessService;
+import com.example.cse110_project.fitness.GoogleFitAdapter;
+import com.example.cse110_project.fitness.GoogleFitAdapterTester;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
 
 public class WalkScreen extends AppCompatActivity {
 
@@ -35,6 +41,7 @@ public class WalkScreen extends AppCompatActivity {
     private Chronometer mChronometer;
     private BottomNavigationView bottomNavigationView;
     private Button boostTimeBtn;
+    private Button boostStepBtn;
     private long walkTime;
     private long addedWalkTime;
     private long startTime;
@@ -59,6 +66,7 @@ public class WalkScreen extends AppCompatActivity {
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final Boolean USE_GOOGLE_FIT_TESTER = false;
     private static final int FEET_IN_MILE = 5280;
+    public static boolean USE_TEST_SERVICE = false;
     private TextView textSteps;
     private TextView textDistance;
     private FitnessService fitnessService;
@@ -82,7 +90,11 @@ public class WalkScreen extends AppCompatActivity {
         doneWalkButton = findViewById(R.id.doneWalkBtn);
         mChronometer = findViewById(R.id.timerDisplay);
         boostTimeBtn = findViewById(R.id.boostBtn);
+        boostStepBtn = findViewById(R.id.boostStepBtn);
+
         endButton.setVisibility(View.GONE);
+
+        testing = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
 
         if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1 && !walking) {
             walking = true;
@@ -265,6 +277,19 @@ public class WalkScreen extends AppCompatActivity {
             }
         });
 
+        boostStepBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(walking){
+                    String steps = textSteps.getText().toString();
+
+                    int curr = Integer.parseInt(steps.substring(0,steps.indexOf(" ")));
+                    setStepCount(curr + 500);
+                    GoogleFitAdapterTester.incrementDailySteps();
+                }
+            }
+        });
+
         /* Bottom Navigation Bar */
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -276,6 +301,37 @@ public class WalkScreen extends AppCompatActivity {
         });
 
     }
+
+    public void setStepCount(long stepCount) {
+        textSteps.setText(String.valueOf(stepCount) + " Steps");
+
+        // look in storage
+        SharedPreferences sharedpreference_value = getSharedPreferences("user_info",MODE_PRIVATE);
+        int heightFt = sharedpreference_value.getInt("heightFt", -1);
+        int heightInch = sharedpreference_value.getInt("heightInch", -1);
+
+        // calcualte stride length
+        StrideCalculator calc = new StrideCalculator(heightFt, heightInch);
+        double strideLength = calc.getStrideLength();
+        double estimateDistance = stepCount * strideLength;
+
+        BigDecimal bd = new BigDecimal(estimateDistance);
+        bd = bd.round(new MathContext(3));
+        double rounded = bd.doubleValue();
+
+
+        double convert = (estimateDistance * 1.0 / FEET_IN_MILE );
+        bd = new BigDecimal(convert);
+        bd = bd.round(new MathContext(3));
+        rounded = bd.doubleValue();
+        String estDistStr = rounded + " Miles";
+        textDistance.setText(estDistStr);
+        if(testing){
+            GoogleFitAdapterTester.incrementDailyDistance((int) rounded);
+        }
+
+    }
+
 
     public void setChronoText(long newTime) {
         int h = (int) (newTime / 3600000);
