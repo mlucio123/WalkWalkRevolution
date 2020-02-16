@@ -3,7 +3,12 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
-    testOptions.unitTests.includeAndroidResources = true
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
     defaultConfig {
         applicationId "com.example.cse110_project"
         minSdkVersion 24
@@ -46,9 +51,9 @@ dependencies {
     testImplementation 'androidx.test.ext:junit:1.1.1'
     testImplementation 'androidx.test.ext:truth:1.2.0'
     testImplementation 'androidx.test:rules:1.2.0'
-//    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-//    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
     api 'com.google.android.material:material:1.1.0-alpha06'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.android.material:material:<version>'
