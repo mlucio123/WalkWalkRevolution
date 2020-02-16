@@ -41,6 +41,7 @@ android:
 branches:
   only:
     - "master"
+    - "milestone1_delivery"
 
 jobs:
   include:
