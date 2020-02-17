@@ -21,8 +21,7 @@ import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static java.lang.Integer.valueOf;
 
 @RunWith(AndroidJUnit4.class)
-public class ScreenDisplayUnitTest {
->>>>>>> 76667e30f35301a58d15b995aca2a0b4538e441d:app/src/test/java/com/example/cse110_project/ScreenDisplayUnitTest.java
+public class ScreenDisplayTester {
     private Intent intent;
 
     @Before
