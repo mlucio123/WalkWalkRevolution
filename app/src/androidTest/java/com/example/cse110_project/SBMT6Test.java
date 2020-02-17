@@ -19,6 +19,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,11 +50,15 @@ public class SBMT6Test {
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
-    @Before
-    public void setSharedPrefs() {
+    @BeforeClass
+    public static void setUp() {
         HomeScreen.USE_GOOGLE_FIT_TESTER = true;
         WalkScreen.USE_TEST_SERVICE = true;
         RouteScreen.testing = true;
+    }
+
+    @Before
+    public void setSharedPrefs() {
         Log.d("SAVING", "PREFS");
         AccessSharedPrefs.setUserInfo(mActivityTestRule.getActivity(), "Connor",
                 "Prendiville", 6, 0);
@@ -128,7 +133,7 @@ public class SBMT6Test {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        SystemClock.sleep(10000);
+        SystemClock.sleep(5000);
 
         ViewInteraction button = onView(
                 allOf(withText("Expand"),
