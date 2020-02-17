@@ -8,6 +8,8 @@ public interface FitnessService {
     long getDailySteps();
     long getDailyDistance();
     int getRequestCode();
+    void incrementDailySteps();
+    void incrementDailyDistance(int distance);
     void listSensorSubscriptions();
 
 //    void updateStepCount();
