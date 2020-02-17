@@ -263,6 +263,8 @@ public class HomeScreen extends AppCompatActivity {
     // start intent to walk screen
     public void launchWalk() {
         Intent intent = new Intent(this, WalkScreen.class);
+        intent.putExtra("is_test", USE_GOOGLE_FIT_TESTER);
+
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

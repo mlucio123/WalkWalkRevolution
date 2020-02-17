@@ -82,7 +82,8 @@ public class WalkScreen extends AppCompatActivity {
         /*
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        boolean is_test = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
+        fitnessService = FitnessServiceFactory.create(this, is_test);
         fitnessService.setup();
 
         startButton = findViewById(R.id.startWalkMaterial);
@@ -94,7 +95,6 @@ public class WalkScreen extends AppCompatActivity {
 
         endButton.setVisibility(View.GONE);
 
-        testing = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
 
         if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1 && !walking) {
             walking = true;
