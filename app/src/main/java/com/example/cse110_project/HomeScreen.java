@@ -70,7 +70,7 @@ public class HomeScreen extends AppCompatActivity {
          * Accessibility Check: shared pref and location access
          */
         // check for shared pref access
-        if( AccessSharedPrefs.getFirstName(this).length() == 0 && !USE_GOOGLE_FIT_TESTER) {
+        if( AccessSharedPrefs.getFirstName(this).length() == 0 ) {
             launchFirstLoadScreen();
         } else {
             Toast.makeText(HomeScreen.this, "SharedPreference FOUND " +

@@ -82,7 +82,7 @@ public class WalkScreen extends AppCompatActivity {
         /*
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        fitnessService = FitnessServiceFactory.create(this, USE_TEST_SERVICE);
         fitnessService.setup();
 
         startButton = findViewById(R.id.startWalkMaterial);
