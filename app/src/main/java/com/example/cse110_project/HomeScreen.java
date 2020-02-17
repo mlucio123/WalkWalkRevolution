@@ -103,6 +103,12 @@ public class HomeScreen extends AppCompatActivity {
             recentWalkStats.setVisibility(View.VISIBLE);
         }
 
+        /**
+         * Create and start fitnessService
+         */
+        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        fitnessService.setup();
+
         /* TEST MODE BUTTON */
         testModeBtn = findViewById(R.id.testMode);
         if(USE_GOOGLE_FIT_TESTER) {
@@ -115,7 +121,8 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 USE_GOOGLE_FIT_TESTER = !USE_GOOGLE_FIT_TESTER;
-
+                fitnessService = FitnessServiceFactory.create(HomeScreen.this, USE_GOOGLE_FIT_TESTER);
+                fitnessService.setup();
                 if (USE_GOOGLE_FIT_TESTER) {
                     testModeBtn.setText("TEST");
                     Toast.makeText(HomeScreen.this, "TEST MODE: ON", Toast.LENGTH_SHORT).show();
@@ -127,11 +134,7 @@ public class HomeScreen extends AppCompatActivity {
         });
 
 
-        /**
-         * Create and start fitnessService
-         */
-        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
-        fitnessService.setup();
+
 
         // initialize text views
         textSteps = findViewById(R.id.homeDailyStepsCount);
