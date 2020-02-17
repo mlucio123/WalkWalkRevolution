@@ -1,4 +1,6 @@
 package com.example.cse110_project.fitness;
+import com.example.cse110_project.AccessSharedPrefs;
+
 
 import android.app.Activity;
 
@@ -18,7 +20,12 @@ public class GoogleFitAdapterTester implements FitnessService {
 
     @Override
     public void setup(){
+        if( AccessSharedPrefs.getDailyStepsTester(activity) == -1 || AccessSharedPrefs.getDailyDistanceTester(activity) == -1) {
+            AccessSharedPrefs.saveDailyStatsTester(activity, 0, 0);
+        }
 
+        dailyDistance = AccessSharedPrefs.getDailyDistanceTester(activity);
+        dailySteps = AccessSharedPrefs.getDailyStepsTester(activity);
     }
 
     @Override
@@ -38,30 +45,37 @@ public class GoogleFitAdapterTester implements FitnessService {
 
     @Override
     public long getDailySteps(){
+        dailySteps = AccessSharedPrefs.getDailyStepsTester(activity);
         return dailySteps;
     }
 
     @Override
     public long getDailyDistance(){
+        dailyDistance = AccessSharedPrefs.getDailyDistanceTester(activity);
         return dailyDistance;
     }
 
 
-    public static void incrementDailySteps() {
+    public void incrementDailySteps() {
+        dailyDistance = AccessSharedPrefs.getDailyDistanceTester(activity);
+        dailySteps = AccessSharedPrefs.getDailyStepsTester(activity);
         dailySteps += 500;
+        AccessSharedPrefs.saveDailyStatsTester(activity, dailySteps, dailyDistance);
+
     }
 
-    public static void incrementDailyDistance(long distance) {
+    public void incrementDailyDistance(int distance) {
+
+        dailyDistance = AccessSharedPrefs.getDailyDistanceTester(activity);
+        dailySteps = AccessSharedPrefs.getDailyStepsTester(activity);
         dailyDistance += distance;
+        AccessSharedPrefs.saveDailyStatsTester(activity, dailySteps, dailyDistance);
     }
 
     public static void incrementCurrentWalkSteps() {
         currentWalkSteps += 500;
     }
 
-    public static void incrementDailyDistance(int distance) {
-        dailyDistance += distance;
-    }
 
     @Override
     public void listSensorSubscriptions(){}
