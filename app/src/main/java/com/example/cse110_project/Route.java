@@ -77,6 +77,8 @@ public class Route extends Observable {
 
     public String getNotes() { return this.extraNotes; }
 
+    public void setFavorite(boolean isFav) { this.favorite = isFav; }
+
     public void setTags(boolean[] tags){
         this.out = tags[0];
         this.loop = tags[1];
