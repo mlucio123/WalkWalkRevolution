@@ -115,7 +115,55 @@ public class AccessSharedPrefs {
 
     public static void clearSharedPrefs(Context context) {
         SharedPreferences prefs = setUp(context);
-        //SharedPreferences.Editor
+        SharedPreferences.Editor edit= prefs.edit();
+        edit.clear();
+        edit.apply();
+    }
+
+//    public static void saveDailyStatsTester(Context context, int dailySteps, int dailyDistance) {
+//        SharedPreferences prefs = setUp(context);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putInt("dailyDistanceTester", dailyDistance);
+//        editor.putInt("dailyStepsTester", dailySteps);
+//        editor.apply();
+//    }
+//
+//
+//    public static int getDailyStepsTester(Context context){
+//        SharedPreferences prefs = setUp(context);
+//        if(prefs.contains("dailyStepsTester"))
+//            return prefs.getInt("dailyStepsTester", -1);
+//        return -1;
+//    }
+//
+//    public static int getDailyDistanceTester(Context context){
+//        SharedPreferences prefs = setUp(context);
+//        if(prefs.contains("dailyDistanceTester"))
+//            return prefs.getInt("dailyDistanceTester", -1);
+//        return -1;
+//    }
+
+    public static void saveDailyStatsTester(Context context, int dailySteps, int dailyDistance) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("dailyDistanceTester", dailyDistance);
+        editor.putInt("dailyStepsTester", dailySteps);
+        editor.apply();
+    }
+
+
+    public static int getDailyStepsTester(Context context){
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("dailyStepsTester"))
+            return prefs.getInt("dailyStepsTester", -1);
+        return -1;
+    }
+
+    public static int getDailyDistanceTester(Context context){
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("dailyDistanceTester"))
+            return prefs.getInt("dailyDistanceTester", -1);
+        return -1;
     }
 
 

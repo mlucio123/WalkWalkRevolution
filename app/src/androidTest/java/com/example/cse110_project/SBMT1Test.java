@@ -3,10 +3,12 @@ package com.example.cse110_project;
 
 import android.content.SharedPreferences;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -40,8 +42,16 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class SBMT1Test {
 
+    private static final String TAG = "SBMT1Test: ";
+
     @Rule
-    public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
+    public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<HomeScreen>(HomeScreen.class) {
+        @Override
+        protected void beforeActivityLaunched() {
+            AccessSharedPrefs.clearSharedPrefs(InstrumentationRegistry.getInstrumentation().getTargetContext());
+            super.beforeActivityLaunched();
+        }
+    };
 
     @Rule
     public GrantPermissionRule mGrantPermissionRule =
@@ -49,15 +59,16 @@ public class SBMT1Test {
                     "android.permission.ACCESS_FINE_LOCATION");
 
     @Before
-    @Rule
+    @After
     public void clearSharedPreferences() {
+        Log.d(TAG, "Clearing shared preferences");
         mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
-                         .edit().clear().apply();
+                .edit().clear().apply();
     }
 
     @Test
     public void sBMT1Test() {
-        SystemClock.sleep(5000);
+        SystemClock.sleep(1000);
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(

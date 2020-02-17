@@ -1,5 +1,6 @@
 package com.example.cse110_project.Firebase;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,7 +29,7 @@ public class RouteCollection {
 
     FirebaseFirestore db;
     private final String TAG = "FirebaseRoutes";
-    ArrayList<Route> qryRoutes;
+    public ArrayList<Route> qryRoutes;
     ArrayList<QueryDocumentSnapshot> qryDocs;
 
     /* Initialize firebase instance */
@@ -39,6 +41,12 @@ public class RouteCollection {
             Log.d(TAG, "Success");
         }
         this.qryRoutes = new ArrayList<Route>();
+    }
+
+
+    /* Initialize Firebase App */
+    public static void initFirebase(Context context) {
+        FirebaseApp.initializeApp(context);
     }
 
 
@@ -218,6 +226,8 @@ public class RouteCollection {
 
             newRoute.setNotes(notes);
             newRoute.setId(qry.getId().toString());
+
+            newRoute.setFavorite(favorite);
 
             String time;
             String steps;

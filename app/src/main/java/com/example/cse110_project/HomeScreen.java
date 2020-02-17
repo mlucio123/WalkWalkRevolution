@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -69,7 +70,7 @@ public class HomeScreen extends AppCompatActivity {
          * Accessibility Check: shared pref and location access
          */
         // check for shared pref access
-        if( AccessSharedPrefs.getFirstName(this).length() == 0 && !USE_GOOGLE_FIT_TESTER) {
+        if( AccessSharedPrefs.getFirstName(this).length() == 0 ) {
             launchFirstLoadScreen();
         } else {
             Toast.makeText(HomeScreen.this, "SharedPreference FOUND " +
@@ -102,6 +103,12 @@ public class HomeScreen extends AppCompatActivity {
             recentWalkStats.setVisibility(View.VISIBLE);
         }
 
+        /**
+         * Create and start fitnessService
+         */
+        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        fitnessService.setup();
+
         /* TEST MODE BUTTON */
         testModeBtn = findViewById(R.id.testMode);
         if(USE_GOOGLE_FIT_TESTER) {
@@ -110,10 +117,18 @@ public class HomeScreen extends AppCompatActivity {
             testModeBtn.setText("NORMAL");
         }
 
+        /**
+         * Create and start fitnessService
+         */
+        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        fitnessService.setup();
+
         testModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 USE_GOOGLE_FIT_TESTER = !USE_GOOGLE_FIT_TESTER;
+                fitnessService = FitnessServiceFactory.create(HomeScreen.this, USE_GOOGLE_FIT_TESTER);
+                fitnessService.setup();
 
                 if (USE_GOOGLE_FIT_TESTER) {
                     testModeBtn.setText("TEST");
@@ -126,12 +141,7 @@ public class HomeScreen extends AppCompatActivity {
         });
 
 
-        /**
-         * Create and start fitnessService
-         */
-        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
-        fitnessService.setup();
-        fitnessService.startRecording();
+
 
         // initialize text views
         textSteps = findViewById(R.id.homeDailyStepsCount);
@@ -260,6 +270,8 @@ public class HomeScreen extends AppCompatActivity {
     // start intent to walk screen
     public void launchWalk() {
         Intent intent = new Intent(this, WalkScreen.class);
+        intent.putExtra("is_test", USE_GOOGLE_FIT_TESTER);
+
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

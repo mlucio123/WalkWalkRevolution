@@ -64,6 +64,7 @@ public class WalkScreen extends AppCompatActivity {
     private TextView routeLastcompletedDistance;
 
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+    private static final Boolean USE_GOOGLE_FIT_TESTER = false;
     private static final int FEET_IN_MILE = 5280;
     public static boolean USE_TEST_SERVICE = false;
     private TextView textSteps;
@@ -71,7 +72,7 @@ public class WalkScreen extends AppCompatActivity {
     private FitnessService fitnessService;
 
     public static boolean walking;
-    private boolean testing;
+    private boolean is_test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,8 @@ public class WalkScreen extends AppCompatActivity {
         /*
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, false);
+        is_test = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
+        fitnessService = FitnessServiceFactory.create(this, is_test);
         fitnessService.setup();
 
         startButton = findViewById(R.id.startWalkMaterial);
@@ -93,7 +95,6 @@ public class WalkScreen extends AppCompatActivity {
 
         endButton.setVisibility(View.GONE);
 
-        testing = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
 
         if(AccessSharedPrefs.getWalkStartTime(WalkScreen.this) != -1 && !walking) {
             walking = true;
@@ -284,7 +285,7 @@ public class WalkScreen extends AppCompatActivity {
 
                     int curr = Integer.parseInt(steps.substring(0,steps.indexOf(" ")));
                     setStepCount(curr + 500);
-                    GoogleFitAdapterTester.incrementDailySteps();
+                    fitnessService.incrementDailySteps();
                 }
             }
         });
@@ -323,10 +324,11 @@ public class WalkScreen extends AppCompatActivity {
         bd = new BigDecimal(convert);
         bd = bd.round(new MathContext(3));
         rounded = bd.doubleValue();
+        rounded = Math.abs(rounded);
         String estDistStr = rounded + " Miles";
         textDistance.setText(estDistStr);
-        if(testing){
-            GoogleFitAdapterTester.incrementDailyDistance((int) rounded);
+        if(is_test){
+            fitnessService.incrementDailyDistance((int) rounded);
         }
 
     }

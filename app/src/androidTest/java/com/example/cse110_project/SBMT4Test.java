@@ -18,6 +18,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,10 +50,15 @@ public class SBMT4Test {
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
-    @Before
-    public void setSharedPrefs() {
+    @BeforeClass
+    public static void setUp() {
         HomeScreen.USE_GOOGLE_FIT_TESTER = true;
         WalkScreen.USE_TEST_SERVICE = true;
+    }
+
+
+    @Before
+    public void setSharedPrefs() {
         Log.d("SAVING", "PREFS");
         AccessSharedPrefs.setUserInfo(mActivityTestRule.getActivity(), "Connor",
                 "Prendiville", 6, 0);
@@ -66,6 +72,56 @@ public class SBMT4Test {
 
     @Test
     public void sBMT4Test() {
+        SystemClock.sleep(2000);
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.userFirstName),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatEditText.perform(replaceText("Connor"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.userLastName),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        2),
+                                1),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("P"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.userHeightFt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                1),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("6"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.userHeightInch),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
+                                3),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("0"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.getStartedBtn), withText("Get Started"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
+        appCompatButton.perform(click());
         SystemClock.sleep(2000);
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.navigation_routes), withContentDescription("Route"),
