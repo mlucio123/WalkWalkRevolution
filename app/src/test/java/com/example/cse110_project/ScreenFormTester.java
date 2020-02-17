@@ -1,3 +1,4 @@
+
 package com.example.cse110_project;
 
 import android.app.Activity;
@@ -47,7 +48,7 @@ public class ScreenFormTester {
     public void testFormPopulatesRoute() {
         final String name = "exampleName";
         final String location = "exampleLocation";
-                ActivityScenario<RouteFormScreen> scenario = ActivityScenario.launch(intent);
+        ActivityScenario<RouteFormScreen> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(new ActivityScenario.ActivityAction<RouteFormScreen>() {
             @Override
             public void perform(RouteFormScreen activity) {

@@ -66,6 +66,8 @@ public class RouteScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.route_screen);
 
+        RouteCollection.initFirebase(this);
+
         currentRoutes = new ArrayList<Route>();
 
         final Intent intent = new Intent(this, RouteFormScreen.class);
@@ -194,18 +196,16 @@ public class RouteScreen extends AppCompatActivity {
 
         /* fav button */
         ImageView favDisplay =  new ImageView(this);
-        favDisplay.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-        Drawable favImage = getDrawable(R.drawable.ic_favorite_border_black_24dp);
-        Drawable favBackgroundFalse = getDrawable(R.drawable.btn_black);
-        Drawable favBackgroundTrue = getDrawable(R.drawable.btn_red);
-        favDisplay.setImageDrawable(favImage);
+
         if (routeEntry.getFavorite()){
+            favDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            Drawable favImage = getDrawable(R.drawable.ic_favorite_border_black_24dp);
+            Drawable favBackgroundTrue = getDrawable(R.drawable.btn_red);
+            favDisplay.setImageDrawable(favImage);
             favDisplay.setBackground(favBackgroundTrue);
-        } else {
-            favDisplay.setBackground(favBackgroundFalse);
         }
 
         /* start position row */
@@ -460,7 +460,12 @@ public class RouteScreen extends AppCompatActivity {
         startEntry.addView(startDisplay);
         titleEntry.addView(title);
         titleEntry.addView(titleDisplay);
-        titleEntry.addView(favDisplay);
+        if (routeEntry.getFavorite()) {
+            Log.d("ROUTE SCREEN: ", routeEntry.getId() + " IS FAVORITE ");
+            titleEntry.addView(favDisplay);
+        } else {
+            Log.d("ROUTE SCREEN: ", routeEntry.getId() + " IS NOT FAVORITE ");
+        }
         container.addView(titleEntry);
         container.addView(startEntry);
         container.addView(hidden);
@@ -506,6 +511,9 @@ public class RouteScreen extends AppCompatActivity {
             tagList.add("Hard");
         }
 
+        if (tags[11]) {
+            tagList.add("Favorite");
+        }
 
         return tagList.toArray();
     }
