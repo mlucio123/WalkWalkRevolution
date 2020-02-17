@@ -2,6 +2,7 @@ package com.example.cse110_project;
 import android.app.Activity;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -39,6 +40,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import io.opencensus.resource.Resource;
+
+import static java.lang.Integer.parseInt;
+import static java.lang.Integer.valueOf;
 
 public class RouteScreen extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
@@ -173,6 +179,7 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
         ));
+        titleDisplay.setId(valueOf("1404"));
 
         /* fav button */
         ImageView favDisplay =  new ImageView(this);

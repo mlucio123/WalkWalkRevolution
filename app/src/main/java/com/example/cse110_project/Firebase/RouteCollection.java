@@ -27,7 +27,7 @@ public class RouteCollection {
 
     FirebaseFirestore db;
     private final String TAG = "FirebaseRoutes";
-    ArrayList<Route> qryRoutes;
+    public ArrayList<Route> qryRoutes;
     ArrayList<QueryDocumentSnapshot> qryDocs;
 
     /* Initialize firebase instance */
