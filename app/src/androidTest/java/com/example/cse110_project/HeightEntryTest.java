@@ -53,6 +53,11 @@ public class HeightEntryTest {
     }
 
     @Before
+    public void clearSharedPreferencesBefore() {
+        mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
+                .edit().clear().apply();
+    }
+
     @After
     public void clearSharedPreferences() {
         mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
@@ -61,7 +66,7 @@ public class HeightEntryTest {
 
     @Test
     public void heightEntryTest() {
-        SystemClock.sleep(2000);
+        SystemClock.sleep(5000);
         ViewInteraction textView = onView(
                 allOf(withId(R.id.firstLoadTitle), withText("Welcome to WWR!"),
                         childAtPosition(

@@ -324,6 +324,7 @@ public class WalkScreen extends AppCompatActivity {
         bd = new BigDecimal(convert);
         bd = bd.round(new MathContext(3));
         rounded = bd.doubleValue();
+        rounded = Math.abs(rounded);
         String estDistStr = rounded + " Miles";
         textDistance.setText(estDistStr);
         if(testing){
