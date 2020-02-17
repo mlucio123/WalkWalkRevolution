@@ -412,6 +412,33 @@ public class RouteScreen extends AppCompatActivity {
 
         LinearLayout btnHolder = new LinearLayout(this);
 
+
+        /* DELETE ROUTE BUTTON */
+
+        Drawable buttonBackRed = getDrawable(R.drawable.btn_rounded_red);
+        final Button deleteBtn = new Button(RouteScreen.this);
+        deleteBtn.setBackground(buttonBackRed);
+        deleteBtn.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        deleteBtn.setText("Delete Route");
+        deleteBtn.setTag(routeEntry);
+        deleteBtn.setVisibility(View.VISIBLE);
+        deleteBtn.setTextColor(fontColor);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RouteCollection rc = new RouteCollection();
+                Route curr = (Route) v.getTag();
+                rc.deleteRoute(curr.getId());
+                Toast.makeText(RouteScreen.this, "You successfully deleted the route.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(RouteScreen.this, RouteScreen.class);
+                startActivity(intent);
+            }
+        });
+
+
         /* START ROUTE BUTTON */
         final Button newButton = new Button(RouteScreen.this);
         newButton.setBackground(buttonBack);
@@ -443,6 +470,7 @@ public class RouteScreen extends AppCompatActivity {
 
         btnHolder.setLayoutParams(btnParams);
         newButton.setLayoutParams(btnParams);
+        deleteBtn.setLayoutParams(btnParams);
 
 
 
@@ -456,6 +484,7 @@ public class RouteScreen extends AppCompatActivity {
         hidden.addView(distHolder);
         hidden.addView(stepHolder);
         hidden.addView(newButton);
+        hidden.addView(deleteBtn);
         startEntry.addView(start);
         startEntry.addView(startDisplay);
         titleEntry.addView(title);
