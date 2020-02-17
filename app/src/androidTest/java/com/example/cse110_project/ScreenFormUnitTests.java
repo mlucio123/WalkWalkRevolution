@@ -2,13 +2,9 @@ package com.example.cse110_project;
 
 import android.content.Intent;
 import android.provider.Settings;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.cse110_project.Firebase.RouteCollection;
@@ -16,28 +12,18 @@ import com.example.cse110_project.Firebase.RouteCollection;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-import static java.lang.Integer.parseInt;
 import static java.lang.Integer.valueOf;
 
-@RunWith(AndroidJUnit4.class)
-public class ScreenDisplayUnitTest {
+public class ScreenFormUnitTests {
     private Intent intent;
 
     @Before
     public void setUp() {
         intent = new Intent(getApplicationContext(), RouteScreen.class);
-    }
-
-    @Before
-    public void addRoute(){
-
-
-
     }
 
     @Rule
