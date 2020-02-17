@@ -55,6 +55,7 @@ public class RouteScreen extends AppCompatActivity {
 
     private ArrayList<Route> currentRoutes;
     private static int routesNum = 0;
+    public static boolean testing = false;
 
     private Route dummyRoute;
 
@@ -85,6 +86,16 @@ public class RouteScreen extends AppCompatActivity {
         rc.getRoutes(deviceID, new MyCallback() {
                     @Override
                     public void getRoutes(ArrayList<Route> routes) {
+
+                        if(testing) {
+                            Log.d("ROUTE SCREEN: ", "adding testing route");
+                            Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
+                            //routes.clear();
+                            //routes.add(testRoute);
+                            addElement(testRoute);
+                            return;
+                        }
+
                         currentRoutes = routes;
                         routesNum = currentRoutes.size();
                         Log.d("TAG", "SIZE IS = " + routes.size());
@@ -258,15 +269,17 @@ public class RouteScreen extends AppCompatActivity {
 
 
         /* PUT TAGS TO STRINGS */
-        Object[] tagString = parseTags(routeEntry.getTags());
-        tagsDisplay.setText(Arrays.toString(tagString));
-        tagsDisplay.setTextSize(fontSmall);
-        tagsDisplay.setTextColor(smallColor);
-        tagsDisplay.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.4f
-        ));
+        if(routeEntry.getTags() != null) {
+            Object[] tagString = parseTags(routeEntry.getTags());
+            tagsDisplay.setText(Arrays.toString(tagString));
+            tagsDisplay.setTextSize(fontSmall);
+            tagsDisplay.setTextColor(smallColor);
+            tagsDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    0.4f
+            ));
+        }
 
 
 
@@ -459,6 +472,8 @@ public class RouteScreen extends AppCompatActivity {
     public Object[] parseTags(boolean[] tags) {
         //boolean[] tags ={out, loop, flat, hills, even, rough, street, trail, easy, medium, hard};
         List<String> tagList = new ArrayList<String>();
+
+
         if (tags[0]) {
             tagList.add("Out&Back");
         } else if (tags[1]) {

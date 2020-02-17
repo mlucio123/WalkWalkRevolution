@@ -58,11 +58,11 @@ public class SBMT2Test {
                 "Prendiville", 6, 0);
     }
 
-    @After
+    /*@After
     public void clearSharedPreferences() {
         mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
                 .edit().clear().apply();
-    }
+    }*/
 
     @Test
     public void sBMT2() {

@@ -15,7 +15,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.fitness.data.Subscription;
 import com.google.android.gms.fitness.data.DataSet;
+import com.google.android.gms.fitness.data.DataSource;
 import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.fitness.request.DataSourcesRequest;
 
 public class GoogleFitAdapter implements FitnessService {
     /* Member variables */
@@ -71,7 +73,7 @@ public class GoogleFitAdapter implements FitnessService {
         } else {
 //            list active subscriptions
             Log.i(TAG, "SETUP IS WORKING");
-            listActiveSubscriptions();
+            startRecording();
         }
     }
 
@@ -132,12 +134,42 @@ public class GoogleFitAdapter implements FitnessService {
     }
 
 
+    public void listSensorSubscriptions(){
+        Fitness.getSensorsClient(activity, account)
+                .findDataSources(
+                        new DataSourcesRequest.Builder()
+                                .setDataTypes(DataType.TYPE_STEP_COUNT_CUMULATIVE)
+                                .setDataSourceTypes(DataSource.TYPE_RAW)
+                                .build())
+                .addOnSuccessListener(
+                        new OnSuccessListener<List<DataSource>>() {
+                            @Override
+                            public void onSuccess(List<DataSource> dataSources) {
+                                for (DataSource dataSource : dataSources) {
+                                    Log.i(TAG, "Data source found: " + dataSource.toString());
+                                    Log.i(TAG, "Data Source type: " + dataSource.getDataType().getName());
+                                }
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "failed", e);
+                            }
+                        });
+    }
+
+
+
     /**
      * Method:listActiveSubscriptions()
      * Description: return a list of subscriptions (step_count and distance_cummulative)
      */
     @Override
     public void listActiveSubscriptions() {
+
+        if(GoogleSignIn.getLastSignedInAccount(activity) == null) return;
 
         // List STEP_COUNT active subs
         Fitness.getRecordingClient(activity, GoogleSignIn.getLastSignedInAccount(activity))

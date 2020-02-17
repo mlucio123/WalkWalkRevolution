@@ -63,4 +63,7 @@ public class GoogleFitAdapterTester implements FitnessService {
         dailyDistance += distance;
     }
 
+    @Override
+    public void listSensorSubscriptions(){}
+
 }
