@@ -115,7 +115,7 @@ public class Route extends Observable {
         route.put("title", this.getName());
         route.put("start_position", this.getStartingPoint());
         route.put("out", out);
-        route.put("loop", out);
+        route.put("loop", loop);
         route.put("flat", flat);
         route.put("hills", hills);
         route.put("even", even);
