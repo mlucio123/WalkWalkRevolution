@@ -111,10 +111,18 @@ public class HomeScreen extends AppCompatActivity {
             testModeBtn.setText("NORMAL");
         }
 
+        /**
+         * Create and start fitnessService
+         */
+        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        fitnessService.setup();
+
         testModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 USE_GOOGLE_FIT_TESTER = !USE_GOOGLE_FIT_TESTER;
+                fitnessService = FitnessServiceFactory.create(HomeScreen.this, USE_GOOGLE_FIT_TESTER);
+                fitnessService.setup();
 
                 if (USE_GOOGLE_FIT_TESTER) {
                     testModeBtn.setText("TEST");
@@ -127,11 +135,7 @@ public class HomeScreen extends AppCompatActivity {
         });
 
 
-        /**
-         * Create and start fitnessService
-         */
-        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
-        fitnessService.setup();
+
 
         // initialize text views
         textSteps = findViewById(R.id.homeDailyStepsCount);
