@@ -54,6 +54,7 @@ public class Route extends Observable {
     public Route( String name, String startingPoint, boolean[] tags,  String extraNotes) {
         this.name = name;
         this.startingPoint = startingPoint;
+        setTags(tags);
         this.tags = tags;
         this.extraNotes = extraNotes;
     }
@@ -77,18 +78,18 @@ public class Route extends Observable {
     public String getNotes() { return this.extraNotes; }
 
     public void setTags(boolean[] tags){
-        out = tags[0];
-        loop = tags[1];
-        flat = tags[2];
-        hills = tags[3];
-        even = tags[4];
-        rough = tags[5];
-        street = tags[6];
-        trail = tags[7];
-        easy = tags[8];
-        medium = tags[9];
-        hard = tags[10];
-        favorite = tags[11];
+        this.out = tags[0];
+        this.loop = tags[1];
+        this.flat = tags[2];
+        this.hills = tags[3];
+        this.even = tags[4];
+        this.rough = tags[5];
+        this.street = tags[6];
+        this.trail = tags[7];
+        this.easy = tags[8];
+        this.medium = tags[9];
+        this.hard = tags[10];
+        this.favorite = tags[11];
     }
 
     public void setNotes(String notes){

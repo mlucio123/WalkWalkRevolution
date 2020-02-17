@@ -198,14 +198,12 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        Drawable favImage = getDrawable(R.drawable.ic_favorite_border_black_24dp);
-        Drawable favBackgroundFalse = getDrawable(R.drawable.btn_black);
-        Drawable favBackgroundTrue = getDrawable(R.drawable.btn_red);
-        favDisplay.setImageDrawable(favImage);
+        Drawable favImageWhite = getDrawable(R.drawable.ic_favorite_border_black_24dp);
+        Drawable favImageRed = getDrawable(R.drawable.ic_favorite_border_red);
         if (routeEntry.getFavorite()){
-            favDisplay.setBackground(favBackgroundTrue);
+            favDisplay.setImageDrawable(favImageRed);
         } else {
-            favDisplay.setBackground(favBackgroundFalse);
+            favDisplay.setImageDrawable(favImageWhite);
         }
 
         /* start position row */
