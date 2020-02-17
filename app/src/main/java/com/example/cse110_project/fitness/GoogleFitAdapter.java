@@ -293,4 +293,12 @@ public class GoogleFitAdapter implements FitnessService {
                             }
                         });
     }
+
+    public void incrementDailySteps(){
+
+    }
+    public void incrementDailyDistance(int distance){
+
+    }
+
 }

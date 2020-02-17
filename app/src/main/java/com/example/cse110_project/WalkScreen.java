@@ -82,12 +82,9 @@ public class WalkScreen extends AppCompatActivity {
         /*
          * Create and start fitnessService
          */
-<<<<<<< HEAD
+
         boolean is_test = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
         fitnessService = FitnessServiceFactory.create(this, is_test);
-=======
-        fitnessService = FitnessServiceFactory.create(this, USE_TEST_SERVICE);
->>>>>>> 23c1fdd9db0744259de34361b926eb6ea418dd22
         fitnessService.setup();
 
         startButton = findViewById(R.id.startWalkMaterial);
@@ -289,7 +286,7 @@ public class WalkScreen extends AppCompatActivity {
 
                     int curr = Integer.parseInt(steps.substring(0,steps.indexOf(" ")));
                     setStepCount(curr + 500);
-                    GoogleFitAdapterTester.incrementDailySteps();
+                    fitnessService.incrementDailySteps();
                 }
             }
         });
@@ -332,7 +329,7 @@ public class WalkScreen extends AppCompatActivity {
         String estDistStr = rounded + " Miles";
         textDistance.setText(estDistStr);
         if(testing){
-            GoogleFitAdapterTester.incrementDailyDistance((int) rounded);
+            fitnessService.incrementDailyDistance((int) rounded);
         }
 
     }
