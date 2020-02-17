@@ -1,6 +1,8 @@
 package com.example.cse110_project;
 
 
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -14,18 +16,23 @@ import androidx.test.runner.AndroidJUnit4;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -33,9 +40,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-
-//This test tests functionality of GetStartBtn on FirstLoadScreen, when press the button, it successfully goes to HomeScreen
-public class HomeScreenTest2 {
+public class SBMT6Test {
 
     @Rule
     public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
@@ -45,18 +50,29 @@ public class HomeScreenTest2 {
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
-    @Test
-    public void homeScreenTest2() {
-        ViewInteraction button = onView(
-                allOf(withId(R.id.getStartedBtn),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                4),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
+    @BeforeClass
+    public static void setUp() {
+        HomeScreen.USE_GOOGLE_FIT_TESTER = true;
+        WalkScreen.USE_TEST_SERVICE = true;
+        RouteScreen.testing = true;
+    }
 
+    @Before
+    public void setSharedPrefs() {
+        Log.d("SAVING", "PREFS");
+        AccessSharedPrefs.setUserInfo(mActivityTestRule.getActivity(), "Connor",
+                "Prendiville", 6, 0);
+    }
+
+    @After
+    public void clearSharedPreferences() {
+        mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
+                .edit().clear().apply();
+    }
+
+    @Test
+    public void sBMT6() {
+        SystemClock.sleep(5000);
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(
@@ -65,7 +81,7 @@ public class HomeScreenTest2 {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("f"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Connor"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.userLastName),
@@ -75,19 +91,9 @@ public class HomeScreenTest2 {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("l"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("P"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userLastName), withText("l"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                1),
-                        isDisplayed()));
-        appCompatEditText3.perform(pressImeActionButton());
-
-        ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.userHeightFt),
                         childAtPosition(
                                 childAtPosition(
@@ -95,9 +101,9 @@ public class HomeScreenTest2 {
                                         3),
                                 1),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("5"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("6"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText5 = onView(
+        ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.userHeightInch),
                         childAtPosition(
                                 childAtPosition(
@@ -105,17 +111,7 @@ public class HomeScreenTest2 {
                                         3),
                                 3),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("6"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.userHeightInch), withText("6"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        3),
-                                3),
-                        isDisplayed()));
-        appCompatEditText6.perform(pressImeActionButton());
+        appCompatEditText4.perform(replaceText("0"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -126,16 +122,59 @@ public class HomeScreenTest2 {
                                 4),
                         isDisplayed()));
         appCompatButton.perform(click());
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.homeTitle), withText("Home"),
+        SystemClock.sleep(3000);
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.navigation_routes), withContentDescription("Route"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.content),
+                                        withId(R.id.bottom_navigation),
                                         0),
+                                2),
+                        isDisplayed()));
+        bottomNavigationItemView.perform(click());
+
+        SystemClock.sleep(5000);
+
+        ViewInteraction button = onView(
+                allOf(withText("Expand"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        3),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Home")));
+        button.perform(click());
+
+        ViewInteraction button2 = onView(
+                allOf(withText("Start this Route"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        2),
+                                4),
+                        isDisplayed()));
+        button2.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.routeTitleWalkScreen), withText("Regular Walk"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.route_summary),
+                                        0),
+                                1),
+                        isDisplayed()));
+        textView.check(matches(withText("Regular Walk")));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.walkPageTitle), withText("Walk"),
+                        childAtPosition(
+                                allOf(withId(R.id.headerLayout),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        textView2.check(matches(withText("Walk")));
     }
 
     private static Matcher<View> childAtPosition(

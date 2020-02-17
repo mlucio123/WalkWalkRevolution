@@ -4,12 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -17,54 +18,66 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
-import com.example.cse110_project.fitness.GoogleFitAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.example.cse110_project.StrideCalculator;
+
+
 
 public class HomeScreen extends AppCompatActivity {
 
+    /* Member Variables */
     private BottomNavigationView bottomNavigationView;
     private Button startWalkBtn;
     private Button addRouteBtn;
-    private Chronometer mChronometer;
     private Button btnUpdateSteps;
     private Button btnBoost;
-
+    private Switch testModeBtn;
+    private Chronometer mChronometer;
     private TextView distance;
     private TextView estimatedDistance;
+    private TextView textSteps;
+//    private com.example.cse110_project.fitness_deprecated.FitnessService fitnessService;
+    private FitnessService fitnessService;
 
 
+    /* Static Variables */
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final String TAG = "HomeScreen";
     private static final int FEET_IN_MILE = 5280;
-    private TextView textSteps;
-    private com.example.cse110_project.fitness.FitnessService fitnessService;
-
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
+    public static Boolean USE_GOOGLE_FIT_TESTER = true;
 
 
+    /* Member functions */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Assign layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
 
-        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(HomeScreen stepCountActivity) {
-                return new GoogleFitAdapter(stepCountActivity);
-            }
-        });
+        /**
+         * Accessibility Check: shared pref and location access
+         */
+        // check for shared pref access
+        if( AccessSharedPrefs.getFirstName(this).length() == 0 ) {
+            launchFirstLoadScreen();
+        } else {
+            Toast.makeText(HomeScreen.this, "SharedPreference FOUND " +
+                    AccessSharedPrefs.getFirstName(this), Toast.LENGTH_SHORT).show();
+        }
 
+        // Check for location access
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -75,33 +88,78 @@ public class HomeScreen extends AppCompatActivity {
             Toast.makeText(HomeScreen.this, "PERMISSION NONE", Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(HomeScreen.this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeScreen.this, "LOCATION PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
         }
 
-        if( AccessSharedPrefs.getFirstName(this).length() == 0 ) {
-            launchFirstLoadScreen();
-        } else {
-            Toast.makeText(HomeScreen.this, "SharedPreference FOUND " +
-                    AccessSharedPrefs.getFirstName(this), Toast.LENGTH_SHORT).show();
+        if(AccessSharedPrefs.getSavedDistance(this).length() != 0) {
+            TextView recentWalkSteps = findViewById(R.id.recentSteps);
+            String steps = AccessSharedPrefs.getSavedSteps(this);
+            recentWalkSteps.setText(steps);
+            TextView recentWalkDist = findViewById(R.id.recentDist);
+            recentWalkDist.setText(AccessSharedPrefs.getSavedDistance(this));
+            TextView recentTimeView = findViewById(R.id.recentTime);
+            recentTimeView.setText(AccessSharedPrefs.getSavedTimer(this));
+            LinearLayout recentWalkStats = findViewById(R.id.recentWalkLayout);
+            recentWalkStats.setVisibility(View.VISIBLE);
         }
+
+        /**
+         * Create and start fitnessService
+         */
+        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        fitnessService.setup();
+
+        /* TEST MODE BUTTON */
+        testModeBtn = findViewById(R.id.testMode);
+        if(USE_GOOGLE_FIT_TESTER) {
+            testModeBtn.setText("TEST");
+        } else {
+            testModeBtn.setText("NORMAL");
+        }
+
+        /**
+         * Create and start fitnessService
+         */
+        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        fitnessService.setup();
+
+        testModeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                USE_GOOGLE_FIT_TESTER = !USE_GOOGLE_FIT_TESTER;
+                fitnessService = FitnessServiceFactory.create(HomeScreen.this, USE_GOOGLE_FIT_TESTER);
+                fitnessService.setup();
+
+                if (USE_GOOGLE_FIT_TESTER) {
+                    testModeBtn.setText("TEST");
+                    Toast.makeText(HomeScreen.this, "TEST MODE: ON", Toast.LENGTH_SHORT).show();
+                } else {
+                    testModeBtn.setText("NORMAL");
+                    Toast.makeText(HomeScreen.this, "TEST MODE: OFF", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
 
         // initialize text views
         textSteps = findViewById(R.id.homeDailyStepsCount);
         distance = findViewById(R.id.homeDailyDistanceCount);
         estimatedDistance = findViewById(R.id.homeDailyEstimateCount);
 
-        // google fit initialize
-        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
-
-        fitnessService.setup();
-
         // update button for step count
         btnUpdateSteps = findViewById(R.id.buttonUpdateSteps);
         btnUpdateSteps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fitnessService.updateStepCount();
-                fitnessService.readHistoryData();
+
+                // Update steps and distance
+                long dailySteps = fitnessService.getDailySteps();
+                long dailyDistance = fitnessService.getDailyDistance();
+                textSteps.setText(String.valueOf(dailySteps) + " Steps");
+                distance.setText(String.valueOf(dailyDistance) + " Miles");
+                estimatedDistance.setText(String.valueOf(dailyDistance) + " Miles");
             }
         });
 
@@ -126,6 +184,7 @@ public class HomeScreen extends AppCompatActivity {
 
                 int curr = Integer.parseInt(steps.substring(0,steps.indexOf(" ")));
                 setStepCount(curr + 500);
+
             }
         });
 
@@ -164,6 +223,25 @@ public class HomeScreen extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+//       If authentication was required during google fit setup, this will be called after the user authenticates
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == fitnessService.getRequestCode()) {
+                fitnessService.listActiveSubscriptions();
+//                 TODO: updateStep ..
+//                fitnessService.updateStepCount();
+//                fitnessService.readHistoryData();
+            }
+            Log.d(TAG, "RESULT_OK");
+
+        } else {
+            Log.e(TAG, "ERROR, google fit result code: " + resultCode);
+        }
+    }
+
 
     // method used to navigate across navigation bar
 
@@ -180,6 +258,8 @@ public class HomeScreen extends AppCompatActivity {
                 break;
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
+                newIntent.putExtra("actFlag", "Home");
+                newIntent.putExtra("is_test", USE_GOOGLE_FIT_TESTER);
                 startActivity(newIntent);
                 break;
             default:
@@ -187,10 +267,11 @@ public class HomeScreen extends AppCompatActivity {
         }
     }
 
-
     // start intent to walk screen
     public void launchWalk() {
         Intent intent = new Intent(this, WalkScreen.class);
+        intent.putExtra("is_test", USE_GOOGLE_FIT_TESTER);
+
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
@@ -216,24 +297,6 @@ public class HomeScreen extends AppCompatActivity {
         });
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-//       If authentication was required during google fit setup, this will be called after the user authenticates
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == fitnessService.getRequestCode()) {
-                fitnessService.updateStepCount();
-                fitnessService.readHistoryData();
-            }
-        } else {
-            Log.e(TAG, "ERROR, google fit result code: " + resultCode);
-        }
-    }
-
-
-
     public void setDistance(long distanceValue){
         distance.setText(String.valueOf(distanceValue) + " Miles");
     }
@@ -258,6 +321,7 @@ public class HomeScreen extends AppCompatActivity {
         if (estimateDistance < FEET_IN_MILE){
             //String estDistStr = rounded + "@string/space" + "@string/feetStr";
             estimatedDistance.setText(rounded + " Feet");
+            distance.setText(rounded + " Feet");
         } else {
             double convert = (estimateDistance * 1.0 / FEET_IN_MILE );
             bd = new BigDecimal(convert);
@@ -265,6 +329,7 @@ public class HomeScreen extends AppCompatActivity {
             rounded = bd.doubleValue();
             String estDistStr = rounded + "@string/space" + "@string/milesStr";
             estimatedDistance.setText(rounded + " Miles");
+            distance.setText(rounded + " Miles");
         }
 
     }
@@ -273,4 +338,5 @@ public class HomeScreen extends AppCompatActivity {
         Intent intent = new Intent(this, FirstLoadScreen.class);
         startActivity(intent);
     }
+
 }

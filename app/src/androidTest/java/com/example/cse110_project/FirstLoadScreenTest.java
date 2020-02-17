@@ -8,6 +8,8 @@ import android.widget.EditText;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,50 +29,40 @@ public class FirstLoadScreenTest {
     private EditText heightFt;
     private EditText heightInch;
 
-/*    @Test
-    public void testSharedPref() {
-        FirstLoadScreen firstLoadScreen = firstLoadScreenTest.getActivity();
-        SharedPreferences pref = firstLoadScreen.getSharedPreferences("user_info",MODE_PRIVATE);
-        getStartedBtn = firstLoadScreen.findViewById(R.id.getStartedBtn);
-        firstName = (EditText) firstLoadScreen.findViewById(R.id.userFirstName);
-        lastName = (EditText) firstLoadScreen.findViewById(R.id.userLastName);
-        heightFt = (EditText) firstLoadScreen.findViewById(R.id.userHeightFt);
-        heightInch = (EditText) firstLoadScreen.findViewById(R.id.userHeightInch);
-        firstName.setText("Amy");
-        lastName.setText("Bell");
-        heightFt.setText("6");
-        heightInch.setText("7");
-        getStartedBtn.performClick();
-        assertEquals("Amy", pref.getString("firstname", ""));
-
-    }*/
+    @Before
+    @After
+    public void clearSharedPreferences() {
+        firstLoadScreenTest.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
+                .edit().clear().apply();
+    }
 
     @Test
     public void testFirstNameDisplay() {
         FirstLoadScreen firstLoadScreen = firstLoadScreenTest.getActivity();
         firstName = (EditText) firstLoadScreen.findViewById(R.id.userFirstName);
-        assertEquals("First Name", firstName.getHint());
+        assertEquals("First Name", firstName.getHint().toString());
     }
 
     @Test
     public void testLastNameDisplay() {
         FirstLoadScreen firstLoadScreen = firstLoadScreenTest.getActivity();
         lastName = (EditText) firstLoadScreen.findViewById(R.id.userLastName);
-        assertEquals("Last Name", lastName.getHint());
+        assertEquals("Last Name", lastName.getHint().toString());
     }
 
     @Test
     public void testFtDisplay() {
         FirstLoadScreen firstLoadScreen = firstLoadScreenTest.getActivity();
         heightFt = (EditText) firstLoadScreen.findViewById(R.id.userHeightFt);
-        assertEquals("0", heightFt.getHint());
+        assertEquals("0", heightFt.getHint().toString());
     }
 
     @Test
     public void testInchDisplay() {
         FirstLoadScreen firstLoadScreen = firstLoadScreenTest.getActivity();
         heightInch = (EditText) firstLoadScreen.findViewById(R.id.userHeightInch);
-        assertEquals("0", heightInch.getHint());
+        assertEquals("0", heightInch.getHint().toString());
     }
 
 }
+

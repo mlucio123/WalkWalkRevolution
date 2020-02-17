@@ -1,6 +1,7 @@
 package com.example.cse110_project;
 
 
+import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -14,14 +15,17 @@ import androidx.test.runner.AndroidJUnit4;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -33,7 +37,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class HomeScreenTestUI {
+public class HeightEntryTest {
 
     @Rule
     public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
@@ -43,8 +47,36 @@ public class HomeScreenTestUI {
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
+    @BeforeClass
+    public static void setup() {
+        HomeScreen.USE_GOOGLE_FIT_TESTER = true;
+    }
+
+    @Before
+    public void clearSharedPreferencesBefore() {
+        mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
+                .edit().clear().apply();
+    }
+
+    @After
+    public void clearSharedPreferences() {
+        mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
+                .edit().clear().apply();
+    }
+
     @Test
-    public void homeScreenTestUI() {
+    public void heightEntryTest() {
+        SystemClock.sleep(5000);
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.firstLoadTitle), withText("Welcome to WWR!"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        textView.check(matches(withText("Welcome to WWR!")));
+
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(
@@ -53,7 +85,7 @@ public class HomeScreenTestUI {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("f"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Howard"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.userLastName),
@@ -63,19 +95,9 @@ public class HomeScreenTestUI {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("l"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("Lin"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userLastName), withText("l"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                1),
-                        isDisplayed()));
-        appCompatEditText3.perform(pressImeActionButton());
-
-        ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.userHeightFt),
                         childAtPosition(
                                 childAtPosition(
@@ -83,9 +105,9 @@ public class HomeScreenTestUI {
                                         3),
                                 1),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("5"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText5 = onView(
+        ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.userHeightInch),
                         childAtPosition(
                                 childAtPosition(
@@ -93,17 +115,7 @@ public class HomeScreenTestUI {
                                         3),
                                 3),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("6"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.userHeightInch), withText("6"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        3),
-                                3),
-                        isDisplayed()));
-        appCompatEditText6.perform(pressImeActionButton());
+        appCompatEditText4.perform(replaceText("9"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -115,7 +127,7 @@ public class HomeScreenTestUI {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        ViewInteraction textView = onView(
+        ViewInteraction textView3 = onView(
                 allOf(withId(R.id.homeTitle), withText("Home"),
                         childAtPosition(
                                 childAtPosition(
@@ -123,37 +135,7 @@ public class HomeScreenTestUI {
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Home")));
-
-        ViewInteraction button = onView(
-                allOf(withId(R.id.startBtn),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.startBtn), withText("START WALK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.walkPageTitle), withText("Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView2.check(matches(withText("Walk")));
+        textView3.check(matches(withText("Home")));
     }
 
     private static Matcher<View> childAtPosition(

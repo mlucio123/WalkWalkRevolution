@@ -2,8 +2,16 @@ package com.example.cse110_project.fitness;
 
 
 public interface FitnessService {
-    int getRequestCode();
     void setup();
-    void updateStepCount();
-    void readHistoryData();
+    void listActiveSubscriptions();
+    void startRecording();
+    long getDailySteps();
+    long getDailyDistance();
+    int getRequestCode();
+    void incrementDailySteps();
+    void incrementDailyDistance(int distance);
+    void listSensorSubscriptions();
+
+//    void updateStepCount();
+//    void readHistoryData();
 }

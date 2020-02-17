@@ -1,76 +1,120 @@
 package com.example.cse110_project.fitness;
 
 import androidx.annotation.NonNull;
-import android.util.Log;
 
-import com.example.cse110_project.HomeScreen;
+import android.app.Activity;
+import android.util.Log;
+import java.util.*;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
-import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
-import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-
-import com.example.cse110_project.HomeScreen;
+import com.google.android.gms.fitness.data.Subscription;
+import com.google.android.gms.fitness.data.DataSet;
+import com.google.android.gms.fitness.data.DataSource;
+import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.fitness.request.DataSourcesRequest;
 
 public class GoogleFitAdapter implements FitnessService {
+    /* Member variables */
+    private Activity activity;
+    private GoogleSignInAccount account;
+    private FitnessOptions fitnessOptions;
+    private long steps;
+    private long distance;
+
+    /* Static variables */
+    // TODO: might have problem(**)
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private final String TAG = "GoogleFitAdapter";
-    private GoogleSignInAccount account;
 
-    private HomeScreen activity;
 
-    public GoogleFitAdapter(HomeScreen activity) {
+    /**
+     * Method: GoogleFitAdapter (Activity activity, boolean is_test)
+     * Description: GoogleFitAdapter Constructor
+     *
+     * @param activity
+     * @param is_test
+     */
+    public GoogleFitAdapter(Activity activity, boolean is_test) {
         this.activity = activity;
     }
 
 
+    /**
+     * Method: setup()
+     * Description: setup fitnessService by setting fitnessOptions,
+     * sign in account, and check account permissions
+     */
+    @Override
     public void setup() {
-        FitnessOptions fitnessOptions = FitnessOptions.builder()
+        // Create fitness Option object (add data type e.g. step count)
+        fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .addDataType(DataType.TYPE_DISTANCE_DELTA, FitnessOptions.ACCESS_READ)
                 .addDataType(DataType.AGGREGATE_DISTANCE_DELTA, FitnessOptions.ACCESS_READ)
                 .build();
 
-
+        // Sign in account
         account = GoogleSignIn.getAccountForExtension(activity, fitnessOptions);
+
+        // Check Account Permissions
         if (!GoogleSignIn.hasPermissions(account, fitnessOptions)) {
             GoogleSignIn.requestPermissions(
-                    activity, // your activity
+                    activity,
                     GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
-                    account,
+                    GoogleSignIn.getLastSignedInAccount(activity),
                     fitnessOptions);
         } else {
-            updateStepCount();
+//            list active subscriptions
+            Log.i(TAG, "SETUP IS WORKING");
             startRecording();
         }
     }
 
-    private void startRecording() {
+
+    /**
+     * Method:getRequestCode()
+     * Description: get request code, check request_OK flag
+     */
+    @Override
+    public int getRequestCode() {
+        return GOOGLE_FIT_PERMISSIONS_REQUEST_CODE;
+    }
+
+
+    /**
+     * Method:startRecording()
+     * Description: subscribe to record step count and distance
+     */
+    @Override
+    public void startRecording() {
         if (account == null) {
             return;
         }
 
+        // Subscribe to STEP_COUNT data
         Fitness.getRecordingClient(activity, account)
                 .subscribe(DataType.TYPE_STEP_COUNT_CUMULATIVE)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.i(TAG, "Successfully subscribed!");
+                        Log.i(TAG, "Successfully subscribed to Step Count!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.i(TAG, "There was a problem subscribing.");
+                        Log.i(TAG, "There was a problem subscribing to Step Count.");
                     }
                 });
 
+        // Subscribe to DISTANCE_CUMULATIVE data
         Fitness.getRecordingClient(activity, account)
                 .subscribe(DataType.TYPE_DISTANCE_CUMULATIVE)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -85,32 +129,120 @@ public class GoogleFitAdapter implements FitnessService {
                         Log.i(TAG, "There was a problem subscribing to distance.", e);
                     }
                 });
+        Log.i(TAG, "START RECORDING IS WORKING");
+        listActiveSubscriptions();
+    }
+
+
+    public void listSensorSubscriptions(){
+        Fitness.getSensorsClient(activity, account)
+                .findDataSources(
+                        new DataSourcesRequest.Builder()
+                                .setDataTypes(DataType.TYPE_STEP_COUNT_CUMULATIVE)
+                                .setDataSourceTypes(DataSource.TYPE_RAW)
+                                .build())
+                .addOnSuccessListener(
+                        new OnSuccessListener<List<DataSource>>() {
+                            @Override
+                            public void onSuccess(List<DataSource> dataSources) {
+                                for (DataSource dataSource : dataSources) {
+                                    Log.i(TAG, "Data source found: " + dataSource.toString());
+                                    Log.i(TAG, "Data Source type: " + dataSource.getDataType().getName());
+                                }
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "failed", e);
+                            }
+                        });
+    }
+
+
+
+    /**
+     * Method:listActiveSubscriptions()
+     * Description: return a list of subscriptions (step_count and distance_cummulative)
+     */
+    @Override
+    public void listActiveSubscriptions() {
+
+        if(GoogleSignIn.getLastSignedInAccount(activity) == null) return;
+
+        // List STEP_COUNT active subs
+        Fitness.getRecordingClient(activity, GoogleSignIn.getLastSignedInAccount(activity))
+                .listSubscriptions()
+                .addOnSuccessListener(new OnSuccessListener<List<Subscription>>() {
+                    @Override
+                    public void onSuccess(List<Subscription> subscriptions) {
+                        for (Subscription sc : subscriptions) {
+                            String dataType = sc.getDataType().getName();
+                            String debugString =  sc.toDebugString();
+                            String logMsg = String.format("Active subscription: [DataType]: %s; [DebugString]: %s", dataType, debugString);
+                            Log.i(TAG, logMsg);
+                        }
+                    }
+                });
+
     }
 
 
     /**
-     * Reads the current daily step total, computed from midnight of the current day on the device's
-     * current timezone.
+     * Method: getDailySteps()
+     * Description: Return current daily steps. This is a public method
+     * that should be called in other activities.
      */
-    public void updateStepCount() {
-        if (account == null) {
-            return;
-        }
+    @Override
+    public long getDailySteps(){
+        getGoogleDailySteps();
+        return this.steps;
+    }
 
+
+    /**
+     * Method: getDailyDistance()
+     * Description: Return current daily distance. This is a public method
+     * that should be called in other activities.
+     */
+    @Override
+    public long getDailyDistance(){
+        getGoogleDailyDistance();
+        return this.distance;
+    }
+
+
+
+    /* Helper Functions */
+    /**
+     * Method: setDailySteps()
+     * Description: Update member variable this.step.
+     */
+    private void setDailySteps(long steps){
+        Log.d(TAG, "Total Daily Steps: " + steps);
+        this.steps = steps;
+    }
+
+
+    /**
+     * Method: getGoogleDailySteps()
+     * Description: Get daily steps from google api.
+     */
+    private void getGoogleDailySteps(){
         Fitness.getHistoryClient(activity, account)
                 .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
                 .addOnSuccessListener(
                         new OnSuccessListener<DataSet>() {
                             @Override
                             public void onSuccess(DataSet dataSet) {
-                                Log.d(TAG, dataSet.toString());
+                                Log.d(TAG, "STEP_COUNT_DATASET: " + dataSet.toString());
                                 long total =
                                         dataSet.isEmpty()
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
 
-                                activity.setStepCount(total);
-                                Log.d(TAG, "Total steps: " + total);
+                                setDailySteps(total);
                             }
                         })
                 .addOnFailureListener(
@@ -123,35 +255,50 @@ public class GoogleFitAdapter implements FitnessService {
     }
 
 
-    @Override
-    public int getRequestCode() {
-        return GOOGLE_FIT_PERMISSIONS_REQUEST_CODE;
+    /**
+     * Method: setDailyDistance()
+     * Description: Update member variable this.distance.
+     */
+    private void setDailyDistance(long distance){
+        Log.d(TAG, "Total Daily Distance: " + distance);
+        this.distance = distance;
     }
 
-    public void readHistoryData() {
-        // Invoke the History API to fetch the data with the query
 
+    /**
+     * Method: getGoogleDailyDistance()
+     * Description: Get daily distance from google api.
+     */
+    private void getGoogleDailyDistance(){
         Fitness.getHistoryClient(activity, account)
                 .readDailyTotal(DataType.TYPE_DISTANCE_DELTA)
-                .addOnSuccessListener(new OnSuccessListener<DataSet>() {
-                    @Override
-                    public void onSuccess(DataSet dataSet) {
-                        Log.d(TAG, "==================");
-                        Log.d(TAG, dataSet.toString());
-                        long total =
-                                dataSet.isEmpty()
-                                        ? 0
-                                        : dataSet.getDataPoints().get(0).getValue(Field.FIELD_DISTANCE).asInt();
-                        Log.d(TAG, "DISTANCE: " + total);
-                        activity.setDistance(total);
-                    }
-                })
+                .addOnSuccessListener(
+                        new OnSuccessListener<DataSet>() {
+                            @Override
+                            public void onSuccess(DataSet dataSet) {
+                                Log.d(TAG, "DISTANCE_DELTA_DATASET: " + dataSet.toString());
+                                long total =
+                                        dataSet.isEmpty()
+                                                ? 0
+                                                : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
+
+                                setDailyDistance(total);
+                            }
+                        })
                 .addOnFailureListener(
                         new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.d(TAG, "There was a problem getting the distance.", e);
+                                Log.d(TAG, "There was a problem getting the step count.", e);
                             }
                         });
     }
+
+    public void incrementDailySteps(){
+
+    }
+    public void incrementDailyDistance(int distance){
+
+    }
+
 }

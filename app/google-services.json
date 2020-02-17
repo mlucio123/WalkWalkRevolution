@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "496462903674",
+    "firebase_url": "https://cse110-wwr.firebaseio.com",
+    "project_id": "cse110-wwr",
+    "storage_bucket": "cse110-wwr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496462903674:android:9b5cd500bb671361d77ec3",
+        "android_client_info": {
+          "package_name": "com.example.cse110_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496462903674-nb9n0e1utoo5jsqsdpo6g60tdk0a1aar.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBruLtluOH8bWfIEPoC31W21IJn-TQtx14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "496462903674-nb9n0e1utoo5jsqsdpo6g60tdk0a1aar.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
