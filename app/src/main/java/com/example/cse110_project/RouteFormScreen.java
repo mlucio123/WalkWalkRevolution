@@ -280,12 +280,10 @@ public class RouteFormScreen extends AppCompatActivity {
             Drawable drawable = getDrawable(R.drawable.btn_circular_selected);
             target.setBackground(drawable);
             bools[0] = true;
-            if(bools[1]){
                 bools[1] = false;
                 parallel.setTextColor(white);
                 Drawable draw = getDrawable(R.drawable.btn_circular);
                 parallel.setBackground(draw);
-            }
         } else{
             target.setTextColor(white);
             Drawable drawable = getDrawable(R.drawable.btn_circular);
@@ -302,7 +300,6 @@ public class RouteFormScreen extends AppCompatActivity {
             Drawable drawable = getDrawable(R.drawable.btn_circular_selected);
             target.setBackground(drawable);
             bools[0] = true;
-            if(bools[1] || bools[2]){
                 bools[1] = false;
                 bools[2] = false;
                 Drawable draw = getDrawable(R.drawable.btn_circular);
@@ -310,7 +307,6 @@ public class RouteFormScreen extends AppCompatActivity {
                 parallel1.setBackground(draw);
                 parallel2.setTextColor(white);
                 parallel2.setBackground(draw);
-            }
         } else{
             target.setTextColor(white);
             Drawable drawable = getDrawable(R.drawable.btn_circular);
