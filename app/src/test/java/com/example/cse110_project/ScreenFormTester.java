@@ -3,6 +3,7 @@ package com.example.cse110_project;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,8 +22,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-//import org.robolectric.Robolectric;
-//import org.robolectric.shadows.ShadowToast;
+import org.robolectric.Robolectric;
+import org.robolectric.shadows.ShadowToast;
 
 
 import java.util.ArrayList;
@@ -37,7 +38,10 @@ public class ScreenFormTester {
 
     @Before
     public void setUp() {
+
         intent = new Intent(getApplicationContext(), RouteFormScreen.class);
+        RouteCollection.initFirebase(getApplicationContext());
+
     }
 
     @Rule
@@ -47,32 +51,40 @@ public class ScreenFormTester {
     public void testFormPopulatesRoute() {
         final String name = "exampleName";
         final String location = "exampleLocation";
-                ActivityScenario<RouteFormScreen> scenario = ActivityScenario.launch(intent);
-        scenario.onActivity(new ActivityScenario.ActivityAction<RouteFormScreen>() {
-            @Override
-            public void perform(RouteFormScreen activity) {
-                EditText nameText = activity.findViewById(R.id.routeName);
-                nameText.setText(name);
+        ActivityScenario<RouteFormScreen> scenario = ActivityScenario.launch(intent);
 
-                EditText locationText = activity.findViewById(R.id.routeStart);
-                locationText.setText(location);
+        scenario.onActivity(activity -> {
 
-                Button submit = activity.findViewById(R.id.submitBtn);
-                submit.performClick();
+//            scenario.onActivity(new ActivityScenario.ActivityAction<RouteFormScreen>() {
+//            @Override
+//            public void perform(RouteFormScreen activity) {
+            EditText nameText = activity.findViewById(R.id.routeName);
+            nameText.setText(name);
 
-                RouteCollection routec = new RouteCollection();
-                ArrayList<Route> routeArr = routec.qryRoutes;
+            EditText locationText = activity.findViewById(R.id.routeStart);
+            locationText.setText(location);
 
-                boolean found = false;
-                for (int i = 0; i < routeArr.size(); i++ ){
-                    if (routeArr.get(i).getName().equals(name)){
-                        found = true;
-                    }
+            Button submit = activity.findViewById(R.id.submitBtn);
+            submit.performClick();
+            RouteCollection routec = new RouteCollection();
+            ArrayList<Route> routeArr = routec.qryRoutes;
+
+            boolean found = false;
+            for (int i = 0; i < routeArr.size(); i++) {
+                if (routeArr.get(i).getName().equals(name)) {
+                    found = true;
                 }
-                assert(found);
+                Log.d("TESTER: ", "FOR LOOP RAN " + i + " times.");
             }
+
+            Log.d("TESTER: ", "SIZE IS " + routeArr.size());
+            assert (found);
+//            }
+//        });
         });
     }
+
+    /*
 
     @Test
     public void testFormPopulatesRouteTags() {
@@ -124,5 +136,6 @@ public class ScreenFormTester {
         });
     }
 
+    */
 
 }
