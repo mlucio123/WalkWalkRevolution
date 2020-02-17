@@ -3,7 +3,17 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-    testOptions.unitTests.includeAndroidResources = true
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            all {
+                testLogging {
+                    events "passed", "skipped", "failed"
+                    exceptionFormat "full"
+                }
+            }
+        }
+    }
     defaultConfig {
         applicationId "com.example.cse110_project"
         minSdkVersion 24
