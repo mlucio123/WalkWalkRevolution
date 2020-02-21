@@ -1,49 +1,31 @@
 package com.example.cse110_project;
-import android.app.Activity;
 
-import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.util.SparseBooleanArray;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-
 import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.opencensus.resource.Resource;
-
-import static java.lang.Integer.parseInt;
 import static java.lang.Integer.valueOf;
 
 public class RouteScreen extends AppCompatActivity {

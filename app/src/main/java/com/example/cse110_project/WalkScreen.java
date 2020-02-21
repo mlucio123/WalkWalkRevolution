@@ -4,10 +4,6 @@ package com.example.cse110_project;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.SystemClock;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -19,11 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.cse110_project.Firebase.RouteCollection;
-import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.GoogleFitAdapter;
-import com.example.cse110_project.fitness.GoogleFitAdapterTester;
+import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;
@@ -146,9 +143,9 @@ public class WalkScreen extends AppCompatActivity {
 
         LinearLayout layout = findViewById(R.id.route_summary);
 
-        Log.d("WALKSCREEN", "THIS IS " +  lastTime);
-        Log.d("WALKSCREEN", "THIS IS " + lastSteps);
-        Log.d("WALKSCREEN", "THIS IS " + lastDistance);
+        Log.d(TAG, "THIS IS " +  lastTime);
+        Log.d(TAG, "THIS IS " + lastSteps);
+        Log.d(TAG, "THIS IS " + lastDistance);
 
 
         if(title == null && start == null && notes == null){
@@ -238,7 +235,7 @@ public class WalkScreen extends AppCompatActivity {
                 walking = false;
                 AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 walkTime = SystemClock.elapsedRealtime() - mChronometer.getBase();
-                Log.d("Walktime is: ", String.valueOf(walkTime));
+                Log.d(TAG, "Walktime is: " + walkTime);
                 startButton.setVisibility(View.VISIBLE);
                 endButton.setVisibility(View.GONE);
                 mChronometer.stop();
