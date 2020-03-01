@@ -22,8 +22,8 @@ import android.widget.Toast;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.GoogleFitAdapter;
-import com.example.cse110_project.fitness.GoogleFitAdapterTester;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.StrideCalculator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;

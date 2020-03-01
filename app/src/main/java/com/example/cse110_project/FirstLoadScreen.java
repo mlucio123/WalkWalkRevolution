@@ -3,13 +3,16 @@ package com.example.cse110_project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.cse110_project.Firebase.UserCollection;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.User;
 
 
 public class FirstLoadScreen extends AppCompatActivity {
@@ -19,6 +22,7 @@ public class FirstLoadScreen extends AppCompatActivity {
     private EditText lastName;
     private EditText heightFt;
     private EditText heightInch;
+    private EditText gmail;
 
     // Error msg for form validation
     public static final String FORM_VALIDATION_SUCCESSFUL = "SUCCESS";
@@ -46,12 +50,20 @@ public class FirstLoadScreen extends AppCompatActivity {
                 lastName = (EditText) findViewById(R.id.userLastName);
                 heightFt = (EditText) findViewById(R.id.userHeightFt);
                 heightInch = (EditText) findViewById(R.id.userHeightInch);
-
+                gmail = (EditText) findViewById(R.id.emailEntry);
+                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
                 String res = validateFormInput(firstName, lastName, heightFt, heightInch);
 
                 // TODO: More informative toast message
                 if (res == "SUCCESS") {
+                    User user = new User(deviceID, gmail.getText().toString(), firstName.getText().toString(), lastName.getText().toString());
+                    UserCollection uc = new UserCollection();
+                    user.setHeightFt(heightFt.getText().toString());
+                    user.setHeightInch(heightInch.getText().toString());
+                    uc.addUser(user);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Successfully post to firebase", Toast.LENGTH_SHORT);
+                    toast.show();
                     finish();
                 } else {
                     Context context = getApplicationContext();

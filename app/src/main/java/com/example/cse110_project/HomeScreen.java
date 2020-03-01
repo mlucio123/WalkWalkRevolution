@@ -9,8 +9,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -19,16 +17,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.StrideCalculator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -256,6 +254,10 @@ public class HomeScreen extends AppCompatActivity {
                 newIntent = new Intent(this, RouteScreen.class);
                 startActivity(newIntent);
                 break;
+//            case R.id.navigation_team:
+                //TODO : ADD team screen intent here
+
+//                break;
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
                 newIntent.putExtra("actFlag", "Home");
