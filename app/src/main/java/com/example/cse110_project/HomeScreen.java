@@ -53,7 +53,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    public static Boolean USE_GOOGLE_FIT_TESTER = true;
+    public static Boolean USE_GOOGLE_FIT_TESTER = false;
 
 
     /* Member functions */
@@ -103,7 +103,7 @@ public class HomeScreen extends AppCompatActivity {
         /**
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        fitnessService = FitnessServiceFactory.create(this, false);
         fitnessService.setup();
 
         /* TEST MODE BUTTON */
