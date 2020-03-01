@@ -16,6 +16,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".FirstLoadScreen"></activity>
         <activity android:name=".RouteScreen"></activity>
+        <activity android:name=".NotificationScreen"></activity>
         <activity android:name=".HomeScreen">
             <!--            Set HomeScreen as Main entrance of the APP-->
             <intent-filter>
