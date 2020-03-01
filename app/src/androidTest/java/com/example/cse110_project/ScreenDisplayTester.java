@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.cse110_project.Firebase.RouteCollection;
+import com.example.cse110_project.utils.Route;
 
 import org.junit.Before;
 import org.junit.Rule;
