@@ -41,6 +41,7 @@ public class TeamScreen extends AppCompatActivity {
     private Button createTeamBtn;
     private Button inviteBtn;
     private EditText inviteeEmail;
+    private String TAG = "Team Screen: ";
 
     public static boolean testing = false;
 
@@ -49,6 +50,9 @@ public class TeamScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_screen);
 
+        //TODO: set ui based on whether user is on a team
+
+        Log.d(TAG, "created");
         RouteCollection.initFirebase(this);
         UserCollection.initFirebase(this);
         TeamCollection.initFirebase(this);
@@ -61,7 +65,14 @@ public class TeamScreen extends AppCompatActivity {
         createTeamBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //make new team in database
+                Log.d(TAG, "Making new team");
+                TeamCollection tc = new TeamCollection();
+                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                tc.makeTeam(deviceID);
+                //render team screen ui
+                createTeamBtn.setVisibility(View.GONE);
+                //etc
             }
         });
 
