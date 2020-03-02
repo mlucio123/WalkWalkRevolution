@@ -1,4 +1,4 @@
-package com.example.cse110_project;
+package com.example.cse110_project.utils;
 
 import android.content.Context;
 import android.widget.LinearLayout;

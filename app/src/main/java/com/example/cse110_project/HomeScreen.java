@@ -9,8 +9,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -19,16 +17,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.StrideCalculator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -56,7 +54,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    public static Boolean USE_GOOGLE_FIT_TESTER = true;
+    public static Boolean USE_GOOGLE_FIT_TESTER = false;
 
 
     /* Member functions */
@@ -254,6 +252,10 @@ public class HomeScreen extends AppCompatActivity {
                 break;
             case R.id.navigation_routes:
                 newIntent = new Intent(this, RouteScreen.class);
+                startActivity(newIntent);
+                break;
+            case R.id.navigation_team:
+                newIntent = new Intent(this, TeamScreen.class);
                 startActivity(newIntent);
                 break;
             case R.id.navigation_walk:

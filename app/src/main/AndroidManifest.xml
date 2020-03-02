@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RouteFormScreen"></activity>
+        <activity android:name=".TeamScreen"></activity>
     </application>
 
 </manifest>
