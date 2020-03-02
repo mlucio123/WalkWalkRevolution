@@ -2,6 +2,11 @@ package com.example.cse110_project;
 
 import androidx.test.filters.LargeTest;
 
+<<<<<<< HEAD
+=======
+import com.example.cse110_project.utils.Route;
+
+>>>>>>> origin/teamCollection
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -37,4 +42,8 @@ public class RouteTest {
         assertEquals("Fun Walk", testRoute.getNotes());
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/teamCollection

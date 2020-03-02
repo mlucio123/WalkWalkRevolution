@@ -24,6 +24,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.StrideCalculator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;
@@ -256,6 +258,10 @@ public class HomeScreen extends AppCompatActivity {
                 newIntent = new Intent(this, RouteScreen.class);
                 startActivity(newIntent);
                 break;
+//            case R.id.navigation_team:
+                //TODO : ADD team screen intent here
+
+//                break;
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
                 newIntent.putExtra("actFlag", "Home");

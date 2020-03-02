@@ -21,13 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.example.cse110_project.utils.Route;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
