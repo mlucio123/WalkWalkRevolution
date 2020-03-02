@@ -258,10 +258,10 @@ public class HomeScreen extends AppCompatActivity {
                 newIntent = new Intent(this, RouteScreen.class);
                 startActivity(newIntent);
                 break;
-//            case R.id.navigation_team:
-                //TODO : ADD team screen intent here
-
-//                break;
+            case R.id.navigation_team:
+                newIntent = new Intent(this, TeamScreen.class);
+                startActivity(newIntent);
+                break;
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
                 newIntent.putExtra("actFlag", "Home");

@@ -371,6 +371,14 @@ public class WalkScreen extends AppCompatActivity {
                 newIntent = new Intent(this, RouteScreen.class);
                 startActivity(newIntent);
                 break;
+            case R.id.navigation_team:
+                if(!walking) {
+                    Log.d(TAG, "NOT SAVING TO ROUTE");
+                    AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
+                }
+                newIntent = new Intent(this, TeamScreen.class);
+                startActivity(newIntent);
+                break;
             default:
                 break;
         }
