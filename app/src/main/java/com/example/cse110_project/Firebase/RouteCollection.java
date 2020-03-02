@@ -130,12 +130,6 @@ public class RouteCollection {
                         }
                     }
                 });
-//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                        myCallback.getRoutes(qryRoutes);
-//                    }
-//                });
     }
 
 

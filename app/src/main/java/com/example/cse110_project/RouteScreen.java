@@ -557,6 +557,10 @@ public class RouteScreen extends AppCompatActivity {
                 newIntent = new Intent(this, WalkScreen.class);
                 startActivity(newIntent);
                 break;
+            case R.id.navigation_team:
+                newIntent = new Intent(this, TeamScreen.class);
+                startActivity(newIntent);
+                break;
             default:
                 break;
         }
