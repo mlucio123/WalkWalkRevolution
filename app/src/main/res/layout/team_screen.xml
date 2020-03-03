@@ -63,6 +63,20 @@
 
         <!-- Main content -->
 
+        <Button
+            android:id="@+id/ppWalkBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0sp"
+            android:background="@drawable/btn_rounded"
+            android:drawablePadding="5dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="@string/title_propose_walk_screeen"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"

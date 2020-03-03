@@ -79,7 +79,20 @@ public class TeamScreen extends AppCompatActivity implements MyRecyclerViewAdapt
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
+        Button proposeWalk = (Button) findViewById(R.id.ppWalkBtn);
 
+        proposeWalk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lauchProposeWalkScreen();
+            }
+        });
+
+    }
+
+    public void lauchProposeWalkScreen() {
+        Intent intent = new Intent(this, ProposeWalkScreen.class);
+        startActivity(intent);
     }
 
 

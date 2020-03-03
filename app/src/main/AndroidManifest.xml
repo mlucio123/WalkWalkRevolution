@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cse110_project">
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -10,24 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ProposeWalkScreen"></activity>
         <activity
             android:name=".WalkScreen"
             android:label="@string/title_activity_intentional_walk_screen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".FirstLoadScreen"></activity>
-        <activity android:name=".RouteScreen"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FirstLoadScreen" />
+        <activity android:name=".RouteScreen" />
         <activity android:name=".HomeScreen">
-            <!--            Set HomeScreen as Main entrance of the APP-->
+
+            <!-- Set HomeScreen as Main entrance of the APP -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RouteFormScreen"></activity>
-        <activity android:name=".TeamScreen"></activity>
-        <activity android:name=".AddTeamateScreen"></activity>
-
+        <activity android:name=".RouteFormScreen" />
+        <activity android:name=".TeamScreen" />
+        <activity android:name=".AddTeamateScreen" />
     </application>
 
 </manifest>
