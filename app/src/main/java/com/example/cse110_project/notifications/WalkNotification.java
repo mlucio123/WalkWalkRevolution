@@ -23,10 +23,12 @@ public class WalkNotification implements Notification {
     public Notification.NotifType getType(){
         return type;
     }
+
     @Override
     public String getWalkTitle(){
         return this.walkTitle;
     }
+
     @Override
     public String getFromName(){
         return this.fromName;
