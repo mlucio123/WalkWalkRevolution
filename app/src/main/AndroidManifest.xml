@@ -26,6 +26,8 @@
         </activity>
         <activity android:name=".RouteFormScreen"></activity>
         <activity android:name=".TeamScreen"></activity>
+        <activity android:name=".AddTeamateScreen"></activity>
+
     </application>
 
 </manifest>

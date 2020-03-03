@@ -8,40 +8,18 @@
     android:background="@color/colorBackground"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/teamTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/teamTitle"
-            android:layout_width="227dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="0sp"
-            android:layout_marginBottom="0sp"
-            android:fontFamily="@font/lato"
-            android:text="Team"
-            android:textAlignment="center"
-            android:textColor="@color/colorText"
-            android:textSize="45sp" />
-
-        <Button
-            android:id="@+id/addBtn"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1"
-            android:background="@color/colorBackground"
-            android:text="+"
-            android:textColor="@color/colorText"
-            android:textSize="50sp" />
-    </LinearLayout>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="0sp"
+        android:layout_marginBottom="0sp"
+        android:fontFamily="@font/lato"
+        android:text="Add Your Teamate"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="45sp" />
 
 
     <ScrollView
