@@ -11,16 +11,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.notifications.Notification;
 import com.example.cse110_project.notifications.WalkNotification;
 import com.example.cse110_project.notifications.WalkNotificationBuilder;
 import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
@@ -44,12 +49,45 @@ public class NotificationScreen extends AppCompatActivity {
         });
 
         String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
+        if (currUserID.equals("")) { currUserID = "dummyUser"; }
         Log.d("Notification: ", "This is user's id " + currUserID);
-        chat = FirebaseFirestore.getInstance()
+        chat = FirebaseFirestore.getInstance().collection("users");
+
+        // Create a query against the collection.
+        Query query = chat.whereEqualTo("deviceID", currUserID);
+
+        //retrieve  query results asynchronously using query.get()
+        query.addSnapshotListener((newChatSnapShot, error) -> {
+            for (DocumentSnapshot document : newChatSnapShot.getDocuments()) {
+                CollectionReference invite = document.getReference().collection("invitations");
+                invite.addSnapshotListener((newSnapShot, err) -> {
+                    for(DocumentSnapshot doc : newSnapShot.getDocuments()) {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(doc.get("fromUserID"));
+                        sb.append(":\n");
+                        sb.append(doc.get("teamId"));
+                        sb.append("\n");
+                        sb.append("---\n");
+
+
+                        LinearLayout chatView = findViewById(R.id.notif_container);
+                        TextView t = new TextView(this);
+                        t.setText(sb.toString());
+                        int textColor = Color.parseColor("#FFFFFFFF");
+                        t.setTextColor(textColor);
+                        chatView.addView(t);
+                    }
+                });
+
+            }
+        });
+
+
+   /*     chat = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(currUserID)
                 .collection("invitations");
-        initMessageUpdateListener();
+    */
 
 
         WalkNotificationBuilder walk = new WalkNotificationBuilder()
@@ -61,13 +99,13 @@ public class NotificationScreen extends AppCompatActivity {
 
         Notification example = walk.getNotification();
 //        addWalkElement(example);
-        subscribeToNotificationsTopic();
+ //       subscribeToNotificationsTopic();
     }
 
     private void subscribeToNotificationsTopic() {
         String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
 
-        FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
+   /*     FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
                 .addOnCompleteListener(task -> {
                             String msg = "Subscribed to notifications";
                             if (!task.isSuccessful()) {
@@ -77,6 +115,8 @@ public class NotificationScreen extends AppCompatActivity {
                             Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
                         }
                 );
+
+    */
     }
 
 
@@ -126,9 +166,9 @@ public class NotificationScreen extends AppCompatActivity {
                 List<DocumentChange> documentChanges = newChatSnapShot.getDocumentChanges();
                 documentChanges.forEach(change -> {
                     QueryDocumentSnapshot document = change.getDocument();
-                    sb.append(document.get("from"));
+                    sb.append(document.get("fromUserID"));
                     sb.append(":\n");
-                    sb.append(document.get("text"));
+                    sb.append(document.get("teamId"));
                     sb.append("\n");
                     sb.append("---\n");
                 });
