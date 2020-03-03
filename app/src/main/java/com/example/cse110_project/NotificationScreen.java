@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse110_project.notifications.Notification;
 import com.example.cse110_project.notifications.WalkNotification;
 import com.example.cse110_project.notifications.WalkNotificationBuilder;
+import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,9 +43,11 @@ public class NotificationScreen extends AppCompatActivity {
             }
         });
 
+        String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
+
         chat = FirebaseFirestore.getInstance()
                 .collection("users")
-                .document("dummyUser")
+                .document(currUserID)
                 .collection("invitations");
         initMessageUpdateListener();
 

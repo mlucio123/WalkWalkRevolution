@@ -102,7 +102,7 @@ public class TeamScreen extends AppCompatActivity {
 
                 String email = inviteeEmail.getText().toString();
                 String currUserID = AccessSharedPrefs.getUserID(TeamScreen.this);
-
+                String teamID = AccessSharedPrefs.getTeamID(TeamScreen.this);
                 TeamCollection tc = new TeamCollection();
 
                 tc.sendInvitationEmail(email, teamID, currUserID);
