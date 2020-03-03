@@ -7,7 +7,7 @@ public interface Notification {
         InviteNotification
 
     }
-    String getWalkTitle();
+
     String getFromName();
     NotifType getType();
     String getMessage();
