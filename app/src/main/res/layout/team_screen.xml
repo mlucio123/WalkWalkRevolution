@@ -44,15 +44,16 @@
     </LinearLayout>
 
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/teamateList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/frameLayout"

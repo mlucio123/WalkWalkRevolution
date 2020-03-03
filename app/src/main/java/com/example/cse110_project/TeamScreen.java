@@ -4,11 +4,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
 import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+import java.util.ArrayList;
 
 
 import com.example.cse110_project.Firebase.RouteCollection;
@@ -17,11 +22,13 @@ import com.example.cse110_project.Firebase.UserCollection;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-public class TeamScreen extends AppCompatActivity {
+public class TeamScreen extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
 
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
     private Button addTeamateBtn;
+    private MyRecyclerViewAdapter adapter;
+
 
     public static boolean testing = false;
 
@@ -51,6 +58,28 @@ public class TeamScreen extends AppCompatActivity {
             }
         });
 
+        // data to populate the RecyclerView with
+        ArrayList<String> animalNames = new ArrayList<>();
+        animalNames.add("Horse");
+        animalNames.add("Cow");
+        animalNames.add("Camel");
+        animalNames.add("Sheep");
+        animalNames.add("Goat");
+
+        // set up the RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.teamateList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new MyRecyclerViewAdapter(this, animalNames);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+
+
     }
 
 
@@ -78,6 +107,10 @@ public class TeamScreen extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+    }
 
 
 }
