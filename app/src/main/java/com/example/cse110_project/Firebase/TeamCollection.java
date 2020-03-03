@@ -79,9 +79,10 @@ public class TeamCollection {
 
     }
 
-    public void sendInvitation(String userId, String teamId){
+    public void sendInvitation(String userId, String teamId, String fromUserID){
         Map<String,Object> invitationMap = new HashMap<>();
         invitationMap.put("teamId", teamId);
+        invitationMap.put("fromUserID", fromUserID);
 
         db.collection("users")
                 .document(userId)
@@ -129,7 +130,7 @@ public class TeamCollection {
 
 
     /* Get current user for current device */
-    public void sendInvitationEmail(String email, String teamId) {
+    public void sendInvitationEmail(String email, String teamId, String fromUserID) {
 
         db.collection("users")
                 .whereEqualTo("gmail", email)
@@ -140,7 +141,7 @@ public class TeamCollection {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                sendInvitation(document.getId().toString(), teamId);
+                                sendInvitation(document.getId().toString(), teamId, fromUserID);
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());

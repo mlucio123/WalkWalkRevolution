@@ -62,6 +62,8 @@ public class FirstLoadScreen extends AppCompatActivity {
                     user.setHeightFt(heightFt.getText().toString());
                     user.setHeightInch(heightInch.getText().toString());
                     uc.addUser(user);
+                    String userID = uc.getUserID(deviceID);
+                    AccessSharedPrefs.saveUserID(FirstLoadScreen.this, userID);
                     Toast toast = Toast.makeText(getApplicationContext(), "Successfully post to firebase", Toast.LENGTH_SHORT);
                     toast.show();
                     finish();

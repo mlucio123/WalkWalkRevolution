@@ -126,6 +126,21 @@ public class AccessSharedPrefs {
         editor.apply();
     }
 
+    public static void saveUserID(Context context, String newUserID) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString("UserID", newUserID);
+        edit.apply();
+    }
+
+    public static String getUserID(Context context){
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("UserID"))
+            return prefs.getString("UserID", "");
+        return "";
+    }
+
+
     public static void saveTeamID(Context context, String newTeamID) {
         SharedPreferences prefs = setUp(context);
         SharedPreferences.Editor edit = prefs.edit();
@@ -133,6 +148,12 @@ public class AccessSharedPrefs {
         edit.apply();
     }
 
+    public static String getTeamID(Context context){
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("TeamID"))
+            return prefs.getString("TeamID", "");
+        return "";
+    }
 
     public static int getDailyStepsTester(Context context){
         SharedPreferences prefs = setUp(context);

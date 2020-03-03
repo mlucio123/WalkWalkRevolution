@@ -42,6 +42,7 @@ public class TeamScreen extends AppCompatActivity {
     private Button createTeamBtn;
     private Button inviteBtn;
     private EditText inviteeEmail;
+    private TextView inviteeLabel;
     private String TAG = "Team Screen: ";
 
     public static boolean testing = false;
@@ -61,7 +62,18 @@ public class TeamScreen extends AppCompatActivity {
         createTeamBtn = (Button) findViewById(R.id.createTeam);
         inviteBtn = (Button) findViewById(R.id.inviteMemberBtn);
         inviteeEmail = (EditText) findViewById(R.id.inviteEmail);
+        inviteeLabel = (TextView) findViewById(R.id.inviteEmailLabel);
 
+
+        String teamID = AccessSharedPrefs.getTeamID(TeamScreen.this);
+
+        if (teamID.length() == 0){
+            inviteBtn.setVisibility(View.GONE);
+            inviteeEmail.setVisibility(View.GONE);
+            inviteeLabel.setVisibility(View.GONE);
+        } else {
+            createTeamBtn.setVisibility(View.GONE);
+        }
 
         createTeamBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,9 +83,15 @@ public class TeamScreen extends AppCompatActivity {
                 TeamCollection tc = new TeamCollection();
                 String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 String newTeamId = tc.makeTeam(deviceID);
-                //AccessSharedPrefs.saveTeamID(TeamScreen.this, newTeamId);
+                AccessSharedPrefs.saveTeamID(TeamScreen.this, newTeamId);
+
+                Toast.makeText(TeamScreen.this, "Team Created!", Toast.LENGTH_SHORT).show();
+
                 //render team screen ui
                 createTeamBtn.setVisibility(View.GONE);
+                inviteBtn.setVisibility(View.VISIBLE);
+                inviteeEmail.setVisibility(View.VISIBLE);
+                inviteeLabel.setVisibility(View.VISIBLE);
                 //etc
             }
         });
@@ -83,9 +101,12 @@ public class TeamScreen extends AppCompatActivity {
             public void onClick(View v) {
 
                 String email = inviteeEmail.getText().toString();
-                TeamCollection tc = new TeamCollection();
-                tc.sendInvitationEmail(email, "r52dbOwQBO0Qbh2MNMU5");
+                String currUserID = AccessSharedPrefs.getUserID(TeamScreen.this);
 
+                TeamCollection tc = new TeamCollection();
+
+                tc.sendInvitationEmail(email, teamID, currUserID);
+                Toast.makeText(TeamScreen.this, "Invitation Sent!", Toast.LENGTH_SHORT).show();
             }
         });
 
