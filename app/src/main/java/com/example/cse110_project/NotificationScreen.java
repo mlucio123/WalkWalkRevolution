@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse110_project.notifications.Notification;
 import com.example.cse110_project.notifications.WalkNotification;
 import com.example.cse110_project.notifications.WalkNotificationBuilder;
+import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,9 +43,11 @@ public class NotificationScreen extends AppCompatActivity {
             }
         });
 
+        String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
+        Log.d("Notification: ", "This is user's id " + currUserID);
         chat = FirebaseFirestore.getInstance()
                 .collection("users")
-                .document("dummyUser")
+                .document(currUserID)
                 .collection("invitations");
         initMessageUpdateListener();
 
@@ -57,12 +60,14 @@ public class NotificationScreen extends AppCompatActivity {
                 .result(true);
 
         Notification example = walk.getNotification();
-        //addWalkElement(example);
+//        addWalkElement(example);
         subscribeToNotificationsTopic();
     }
 
     private void subscribeToNotificationsTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic("dummyUser")
+        String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
+
+        FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
                 .addOnCompleteListener(task -> {
                             String msg = "Subscribed to notifications";
                             if (!task.isSuccessful()) {
@@ -110,10 +115,13 @@ public class NotificationScreen extends AppCompatActivity {
         chat.addSnapshotListener((newChatSnapShot, error) -> {
             if (error != null) {
                 Log.e(TAG, error.getLocalizedMessage());
+                Log.d("Notification: ", "There is an error subscribing");
                 return;
             }
 
             if (newChatSnapShot != null && !newChatSnapShot.isEmpty()) {
+
+                Log.d("Notification: ", "SOMETHING RETURNED! GOOD!");
                 StringBuilder sb = new StringBuilder();
                 List<DocumentChange> documentChanges = newChatSnapShot.getDocumentChanges();
                 documentChanges.forEach(change -> {

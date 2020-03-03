@@ -1,49 +1,33 @@
 package com.example.cse110_project;
-import android.app.Activity;
 
-import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.util.SparseBooleanArray;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-
 import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
-import com.google.android.gms.tasks.Task;
+import com.example.cse110_project.utils.Route;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.opencensus.resource.Resource;
-
-import static java.lang.Integer.parseInt;
 import static java.lang.Integer.valueOf;
 
 public class RouteScreen extends AppCompatActivity {
@@ -56,6 +40,7 @@ public class RouteScreen extends AppCompatActivity {
     private ArrayList<Route> currentRoutes;
     private static int routesNum = 0;
     public static boolean testing = false;
+    private String TAG = "ROUTE SCREEN: ";
 
     private Route dummyRoute;
 
@@ -85,12 +70,13 @@ public class RouteScreen extends AppCompatActivity {
         RouteCollection rc = new RouteCollection();
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+
         rc.getRoutes(deviceID, new MyCallback() {
                     @Override
                     public void getRoutes(ArrayList<Route> routes) {
 
                         if(testing) {
-                            Log.d("ROUTE SCREEN: ", "adding testing route");
+                            Log.d(TAG, "adding testing route");
                             Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
                             //routes.clear();
                             //routes.add(testRoute);
@@ -100,10 +86,11 @@ public class RouteScreen extends AppCompatActivity {
 
                         currentRoutes = routes;
                         routesNum = currentRoutes.size();
-                        Log.d("TAG", "SIZE IS = " + routes.size());
+                        Log.d(TAG, "SIZE IS = " + routes.size());
+                        addMyRoutesTitle();
 
                         for (int i = 0; i < routes.size(); i++) {
-                            Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
+                            Log.d(TAG, "ROUTE NAME: " + routes.get(i).getName());
 
                             // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
 
@@ -112,8 +99,12 @@ public class RouteScreen extends AppCompatActivity {
                             addElement(dummyRoute);
 
                         }
+
+                        addTeamRoutestitle();
+
                     }
                 });
+
 
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -135,6 +126,45 @@ public class RouteScreen extends AppCompatActivity {
             hide.setVisibility(View.VISIBLE);
             exp.setText("Hide");
         }
+    }
+
+    public void addMyRoutesTitle() {
+        TextView myRoutesTitle = new TextView(this);
+        int fontColor = Color.parseColor("#FFFFFFFF");
+        LinearLayout routeContain = findViewById(R.id.routeContain);
+
+        myRoutesTitle.setText("Your Routes");
+        myRoutesTitle.setTextSize(20);
+        myRoutesTitle.setTextColor(fontColor);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, .6f
+        );
+        myRoutesTitle.setLayoutParams(params);
+        myRoutesTitle.setGravity(Gravity.CENTER);
+
+
+        routeContain.addView(myRoutesTitle);
+    }
+
+    public void addTeamRoutestitle() {
+        TextView myRoutesTitle = new TextView(this);
+        int fontColor = Color.parseColor("#FFFFFFFF");
+        LinearLayout routeContain = findViewById(R.id.routeContain);
+
+        myRoutesTitle.setText("Your Team's Routes");
+        myRoutesTitle.setTextSize(20);
+        myRoutesTitle.setTextColor(fontColor);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, .6f
+        );
+        myRoutesTitle.setLayoutParams(params);
+        myRoutesTitle.setGravity(Gravity.CENTER);
+
+        routeContain.addView(myRoutesTitle);
     }
 
 
@@ -502,10 +532,10 @@ public class RouteScreen extends AppCompatActivity {
         titleEntry.addView(title);
         titleEntry.addView(titleDisplay);
         if (routeEntry.getFavorite()) {
-            Log.d("ROUTE SCREEN: ", routeEntry.getId() + " IS FAVORITE ");
+            Log.d(TAG, routeEntry.getId() + " IS FAVORITE ");
             titleEntry.addView(favDisplay);
         } else {
-            Log.d("ROUTE SCREEN: ", routeEntry.getId() + " IS NOT FAVORITE ");
+            Log.d(TAG, routeEntry.getId() + " IS NOT FAVORITE ");
         }
         container.addView(titleEntry);
         container.addView(startEntry);
@@ -572,6 +602,10 @@ public class RouteScreen extends AppCompatActivity {
                 newIntent = new Intent(this, WalkScreen.class);
                 startActivity(newIntent);
                 break;
+            case R.id.navigation_team:
+                newIntent = new Intent(this, TeamScreen.class);
+                startActivity(newIntent);
+                break;
             default:
                 break;
         }
@@ -580,5 +614,33 @@ public class RouteScreen extends AppCompatActivity {
     public static int getRouteNumber() {
         return routesNum;
     }
+
+    /*@Override
+    public void onStart() {
+        /*Log.d(TAG, "Checking for google account");
+        super.onStart();
+        com.google.firebase.auth.FirebaseUser currUser;
+
+        com.google.android.gms.auth.api.signin.GoogleSignInAccount acct =
+                GoogleSignIn.getLastSignedInAccount(this);
+
+        if( acct == null ) {
+            Log.d(TAG, "account not found");
+        } else {
+            Log.d(TAG, "account found " + acct.getDisplayName());
+
+            com.google.firebase.auth.AuthCredential cred = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            currUser = mAuth.getCurrentUser();
+
+            if(currUser == null ) {
+                Log.d(TAG, "user not found in firebase");
+            } else {
+                Log.d(TAG, "user found in firebase");
+                //update UI
+            }
+        }
+
+    }*/
 
 }

@@ -1,16 +1,10 @@
 package com.example.cse110_project;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -20,17 +14,23 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.math.BigDecimal;
-import java.math.MathContext;
 
-import com.example.cse110_project.Firebase.RouteCollection;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.StrideCalculator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
 
 
 
@@ -47,7 +47,6 @@ public class HomeScreen extends AppCompatActivity {
     private TextView distance;
     private TextView estimatedDistance;
     private TextView textSteps;
-//    private com.example.cse110_project.fitness_deprecated.FitnessService fitnessService;
     private FitnessService fitnessService;
 
 
@@ -57,7 +56,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    public static Boolean USE_GOOGLE_FIT_TESTER = true;
+    public static Boolean USE_GOOGLE_FIT_TESTER = false;
 
 
     /* Member functions */
@@ -107,7 +106,7 @@ public class HomeScreen extends AppCompatActivity {
         /**
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
+        fitnessService = FitnessServiceFactory.create(this, false);
         fitnessService.setup();
 
         /* TEST MODE BUTTON */
@@ -132,7 +131,7 @@ public class HomeScreen extends AppCompatActivity {
                 fitnessService.setup();
 
                 if (USE_GOOGLE_FIT_TESTER) {
-                    testModeBtn.setText("TEST");
+                    testModeBtn.setText("@string/testLit");
                     Toast.makeText(HomeScreen.this, "TEST MODE: ON", Toast.LENGTH_SHORT).show();
                 } else {
                     testModeBtn.setText("NORMAL");
@@ -158,9 +157,12 @@ public class HomeScreen extends AppCompatActivity {
                 // Update steps and distance
                 long dailySteps = fitnessService.getDailySteps();
                 long dailyDistance = fitnessService.getDailyDistance();
-                textSteps.setText(String.valueOf(dailySteps) + " Steps");
-                distance.setText(String.valueOf(dailyDistance) + " Miles");
-                estimatedDistance.setText(String.valueOf(dailyDistance) + " Miles");
+                String textStepsStr = dailySteps + " Steps";
+                String distStr = dailyDistance + " Miles";
+                String estDistStr = dailyDistance + " Miles";
+                textSteps.setText(textStepsStr);
+                distance.setText(distStr);
+                estimatedDistance.setText(estDistStr);
             }
         });
 
@@ -265,6 +267,10 @@ public class HomeScreen extends AppCompatActivity {
                 newIntent = new Intent(this, RouteScreen.class);
                 startActivity(newIntent);
                 break;
+            case R.id.navigation_team:
+                newIntent = new Intent(this, TeamScreen.class);
+                startActivity(newIntent);
+                break;
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
                 newIntent.putExtra("actFlag", "Home");
@@ -307,11 +313,13 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     public void setDistance(long distanceValue){
-        distance.setText(String.valueOf(distanceValue) + " Miles");
+        String distText = distanceValue + " Miles";
+        distance.setText(distText);
     }
 
     public void setStepCount(long stepCount) {
-        textSteps.setText(String.valueOf(stepCount) + " Steps");
+        String stepText = stepCount + " Steps";
+        textSteps.setText(stepText);
 
         // look in storage
         SharedPreferences sharedpreference_value = getSharedPreferences("user_info",MODE_PRIVATE);
@@ -328,17 +336,17 @@ public class HomeScreen extends AppCompatActivity {
         double rounded = bd.doubleValue();
 
         if (estimateDistance < FEET_IN_MILE){
-            //String estDistStr = rounded + "@string/space" + "@string/feetStr";
-            estimatedDistance.setText(rounded + " Feet");
-            distance.setText(rounded + " Feet");
+            String estDistStr = rounded + "@string/space" + "@string/feetStr";
+            estimatedDistance.setText(estDistStr);
+            distance.setText(estDistStr);
         } else {
             double convert = (estimateDistance * 1.0 / FEET_IN_MILE );
             bd = new BigDecimal(convert);
             bd = bd.round(new MathContext(3));
             rounded = bd.doubleValue();
             String estDistStr = rounded + "@string/space" + "@string/milesStr";
-            estimatedDistance.setText(rounded + " Miles");
-            distance.setText(rounded + " Miles");
+            estimatedDistance.setText(estDistStr);
+            distance.setText(estDistStr);
         }
 
     }

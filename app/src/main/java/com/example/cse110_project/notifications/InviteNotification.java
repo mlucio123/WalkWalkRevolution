@@ -25,6 +25,11 @@ public class InviteNotification implements Notification {
     }
 
     @Override
+    public String getWalkTitle() {
+        return "Title";
+    }
+
+    @Override
     public String getMessage(){
         String[] returnString = {};
         return returnString.toString();

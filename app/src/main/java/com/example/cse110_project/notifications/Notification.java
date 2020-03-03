@@ -9,6 +9,7 @@ public interface Notification {
     }
 
     String getFromName();
+    String getWalkTitle();
     NotifType getType();
     String getMessage();
 

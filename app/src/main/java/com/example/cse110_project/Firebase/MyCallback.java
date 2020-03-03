@@ -1,8 +1,8 @@
 package com.example.cse110_project.Firebase;
 
-import com.example.cse110_project.Route;
+import com.example.cse110_project.utils.Route;
+import com.example.cse110_project.utils.User;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public interface MyCallback {
