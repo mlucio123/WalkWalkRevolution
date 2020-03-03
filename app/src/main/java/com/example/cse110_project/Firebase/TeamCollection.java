@@ -44,9 +44,12 @@ public class TeamCollection {
         FirebaseApp.initializeApp(context);
     }
 
-    public void makeTeam(String deviceID) {
+    public String makeTeam(String deviceID) {
         Map<String, Object> teamMap = new HashMap<>();
-        teamMap.put("userID", deviceID );
+        ArrayList<String> userIDs = new ArrayList<String>();
+        userIDs.add(deviceID);
+        teamMap.put("listOfUserIDs", userIDs );
+        String teamID;
 
         db.collection("teams")
                 .add(teamMap)
@@ -63,8 +66,18 @@ public class TeamCollection {
                     }
                 });
 
+        teamID = getTeamID(deviceID);
+        Log.d(TAG, "Got ID for new team");
+
+        return teamID;
+
     }
 
+    public String getTeamID(String deviceID) {
+        DocumentReference docRef = db.collection("teams").document(deviceID);
+        return docRef.getId();
+
+    }
 
     public void sendInvitation(String userId, String teamId){
         Map<String,Object> invitationMap = new HashMap<>();
@@ -73,6 +86,30 @@ public class TeamCollection {
         db.collection("users")
                 .document(userId)
                 .collection("invitations")
+                .add(invitationMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        Log.d(TAG, "Send an invite to " + userId + " from team " + teamId);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
+        //add invited user to list of pending invitations
+        Map<String, Object> teamMap = new HashMap<>();
+        ArrayList<String> userIDs = new ArrayList<String>();
+        userIDs.add(userId);
+        teamMap.put("listOfUserIDs", userIDs );
+
+        db.collection("teams")
+                .document(teamId)
+                .collection("listOfPendingUserIds")
                 .add(invitationMap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

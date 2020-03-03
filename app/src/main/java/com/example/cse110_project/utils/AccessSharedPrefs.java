@@ -126,6 +126,13 @@ public class AccessSharedPrefs {
         editor.apply();
     }
 
+    public static void saveTeamID(Context context, String newTeamID) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString("TeamID", newTeamID);
+        edit.apply();
+    }
+
 
     public static int getDailyStepsTester(Context context){
         SharedPreferences prefs = setUp(context);

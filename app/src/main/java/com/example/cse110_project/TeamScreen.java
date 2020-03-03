@@ -24,6 +24,7 @@ import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
+import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Route;
 import com.example.cse110_project.utils.Team;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -69,7 +70,8 @@ public class TeamScreen extends AppCompatActivity {
                 Log.d(TAG, "Making new team");
                 TeamCollection tc = new TeamCollection();
                 String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                tc.makeTeam(deviceID);
+                String newTeamId = tc.makeTeam(deviceID);
+                //AccessSharedPrefs.saveTeamID(TeamScreen.this, newTeamId);
                 //render team screen ui
                 createTeamBtn.setVisibility(View.GONE);
                 //etc
