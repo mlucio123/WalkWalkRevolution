@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 
 import android.content.Intent;
 import android.view.MenuItem;
@@ -58,26 +58,21 @@ public class TeamScreen extends AppCompatActivity implements MyRecyclerViewAdapt
             }
         });
 
-        // data to populate the RecyclerView with
-        ArrayList<String> animalNames = new ArrayList<>();
-        animalNames.add("Horse");
-        animalNames.add("Cow");
-        animalNames.add("Camel");
-        animalNames.add("Sheep");
-        animalNames.add("Goat");
 
-        // set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.teamateList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
 
-        recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new MyRecyclerViewAdapter(this, animalNames);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
+        ArrayList<TeamateModel> list= new ArrayList();
+        list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,"JINING"));
+        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"HOWARD"));
+        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"CONOR"));
+        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"MIA"));
+
+        MultiViewTypeAdapter adapter = new MultiViewTypeAdapter(list,this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(adapter);
 
 
     }
