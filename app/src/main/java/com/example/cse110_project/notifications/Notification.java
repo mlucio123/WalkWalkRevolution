@@ -5,12 +5,8 @@ public interface Notification {
     {
         WalkNotification,
         InviteNotification
-
     }
-
     String getFromName();
-    String getWalkTitle();
     NotifType getType();
-    String getMessage();
-
+    void deleteNotification(String deviceID, String notificationID);
 }

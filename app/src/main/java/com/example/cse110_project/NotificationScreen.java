@@ -137,16 +137,8 @@ public class NotificationScreen extends AppCompatActivity {
                         notifContainer.addView(newNotifHolder);
                     }
                 });
-
             }
         });
-
-
-   /*     chat = FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(currUserID)
-                .collection("invitations");
-    */
 
 
         WalkNotificationBuilder walk = new WalkNotificationBuilder()
@@ -180,7 +172,7 @@ public class NotificationScreen extends AppCompatActivity {
 
 
 
-    protected void addWalkElement(Notification notif){
+    protected void addWalkElement(WalkNotification notif){
         int textColor = Color.parseColor("#FFFFFFFF");
         int bodySize = 20;
         int headerSize = 30;
