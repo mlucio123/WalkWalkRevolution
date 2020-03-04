@@ -47,12 +47,17 @@ public class TeamScreen extends AppCompatActivity {
 
     public static boolean testing = false;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_screen);
 
         //TODO: set ui based on whether user is on a team
+
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
         Log.d(TAG, "created");
         RouteCollection.initFirebase(this);
@@ -82,8 +87,8 @@ public class TeamScreen extends AppCompatActivity {
                 Log.d(TAG, "Making new team");
                 TeamCollection tc = new TeamCollection();
                 String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                String newTeamId = tc.makeTeam(deviceID);
-                AccessSharedPrefs.saveTeamID(TeamScreen.this, newTeamId);
+                tc.makeTeam(deviceID);
+//                AccessSharedPrefs.saveTeamID(TeamScreen.this, newTeamId);
 
                 Toast.makeText(TeamScreen.this, "Team Created!", Toast.LENGTH_SHORT).show();
 
@@ -101,11 +106,11 @@ public class TeamScreen extends AppCompatActivity {
             public void onClick(View v) {
 
                 String email = inviteeEmail.getText().toString();
-                String currUserID = AccessSharedPrefs.getUserID(TeamScreen.this);
-                String teamID = AccessSharedPrefs.getTeamID(TeamScreen.this);
+
                 TeamCollection tc = new TeamCollection();
 
-                tc.sendInvitationEmail(email, teamID, currUserID);
+                // tc.sendInvitationEmail(email, teamID, currUserID);
+                tc.sendInviteToEmail(email, deviceID);
                 Toast.makeText(TeamScreen.this, "Invitation Sent!", Toast.LENGTH_SHORT).show();
             }
         });
