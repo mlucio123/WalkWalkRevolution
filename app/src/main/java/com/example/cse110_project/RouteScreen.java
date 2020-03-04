@@ -21,7 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
+import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.utils.Route;
+import com.example.cse110_project.utils.Team;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -80,7 +82,8 @@ public class RouteScreen extends AppCompatActivity {
                             Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
                             //routes.clear();
                             //routes.add(testRoute);
-                            addElement(testRoute);
+                            LinearLayout outer = findViewById(R.id.routeContain);
+                            addElement(testRoute, outer);
                             return;
                         }
 
@@ -89,6 +92,8 @@ public class RouteScreen extends AppCompatActivity {
                         Log.d(TAG, "SIZE IS = " + routes.size());
                         addMyRoutesTitle();
 
+                        LinearLayout outer = findViewById(R.id.routeContain);
+
                         for (int i = 0; i < routes.size(); i++) {
                             Log.d(TAG, "ROUTE NAME: " + routes.get(i).getName());
 
@@ -96,15 +101,55 @@ public class RouteScreen extends AppCompatActivity {
 
                             dummyRoute = routes.get(i);
 
-                            addElement(dummyRoute);
+                            addElement(dummyRoute, outer);
 
                         }
 
-                        addTeamRoutestitle();
 
                     }
                 });
 
+        TeamCollection tc = new TeamCollection();
+        Log.d(TAG, "GETTING TEAM ROUTES RIGHT HERE!");
+        tc.getTeamRoutesFromDevice(deviceID, new MyCallback() {
+            @Override
+            public void getRoutes(ArrayList<Route> routes) {
+
+
+                LinearLayout outer = findViewById(R.id.teamrouteContain);
+
+                if(testing) {
+                    Log.d(TAG, "adding testing route");
+                    Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
+                    //routes.clear();
+                    //routes.add(testRoute);
+                    addElement(testRoute, outer);
+                    return;
+                }
+
+                Log.d(TAG, "GETTING TEAM ROUTES CALL BACK FUNCTION");
+
+                currentRoutes = routes;
+                routesNum = currentRoutes.size();
+                Log.d(TAG, "TEAM ROUTE SIZE IS = " + routes.size());
+                addMyRoutesTitle();
+
+                for (int i = 0; i < routes.size(); i++) {
+                    Log.d(TAG, "TEAM ROUTE NAME: " + routes.get(i).getName() + " for " + deviceID);
+
+                    // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
+
+                    dummyRoute = routes.get(i);
+
+                    addElement(dummyRoute, outer);
+
+                }
+
+            }
+        });
+
+
+//        addTeamRoutestitle();
 
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -168,7 +213,7 @@ public class RouteScreen extends AppCompatActivity {
     }
 
 
-    public void addElement(Route routeEntry){
+    public void addElement(Route routeEntry, LinearLayout outer){
         int fontColor = Color.parseColor("#FFFFFFFF");
 
         /* Rounded button drawable */
@@ -177,7 +222,7 @@ public class RouteScreen extends AppCompatActivity {
         /* Linear Layouts containers */
 
         /* route contain --> outer most layer */
-        LinearLayout routeContain = findViewById(R.id.routeContain);
+        LinearLayout routeContain = outer;
 
         /* container --> holds all views within routeContain */
         LinearLayout container = new LinearLayout(this);
