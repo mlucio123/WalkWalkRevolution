@@ -169,4 +169,16 @@ public class AccessSharedPrefs {
         return -1;
     }
 
+    public static void saveOnTeam(Context context) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putBoolean("OnTeam", true);
+        edit.apply();
+    }
+
+    public static boolean getOnTeam(Context context) {
+        SharedPreferences prefs = setUp(context);
+        return (prefs.contains("OnTeam"));
+    }
+
 }

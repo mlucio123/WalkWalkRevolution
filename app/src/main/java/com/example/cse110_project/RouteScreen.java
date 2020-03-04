@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
+import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Route;
 import com.example.cse110_project.utils.Team;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -111,42 +112,46 @@ public class RouteScreen extends AppCompatActivity {
 
         TeamCollection tc = new TeamCollection();
         Log.d(TAG, "GETTING TEAM ROUTES RIGHT HERE!");
-        tc.getTeamRoutesFromDevice(deviceID, new MyCallback() {
-            @Override
-            public void getRoutes(ArrayList<Route> routes) {
+        if(AccessSharedPrefs.getOnTeam(RouteScreen.this)) {
+            Log.d(TAG, "User is on a team, getting routes");
+            tc.getTeamRoutesFromDevice(deviceID, new MyCallback() {
+                @Override
+                public void getRoutes(ArrayList<Route> routes) {
 
 
-                LinearLayout outer = findViewById(R.id.teamrouteContain);
+                    LinearLayout outer = findViewById(R.id.teamrouteContain);
 
-                if(testing) {
-                    Log.d(TAG, "adding testing route");
-                    Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
-                    //routes.clear();
-                    //routes.add(testRoute);
-                    addElement(testRoute, outer);
-                    return;
+                    if (testing) {
+                        Log.d(TAG, "adding testing route");
+                        Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
+                        //routes.clear();
+                        //routes.add(testRoute);
+                        addElement(testRoute, outer);
+                        return;
+                    }
+
+
+                    Log.d(TAG, "GETTING TEAM ROUTES CALL BACK FUNCTION");
+
+                    currentRoutes = routes;
+                    routesNum = currentRoutes.size();
+                    Log.d(TAG, "TEAM ROUTE SIZE IS = " + routes.size());
+                    addMyRoutesTitle();
+
+                    for (int i = 0; i < routes.size(); i++) {
+                        Log.d(TAG, "TEAM ROUTE NAME: " + routes.get(i).getName() + " for " + deviceID);
+
+                        // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
+
+                        dummyRoute = routes.get(i);
+
+                        addElement(dummyRoute, outer);
+
+                    }
+
                 }
-
-                Log.d(TAG, "GETTING TEAM ROUTES CALL BACK FUNCTION");
-
-                currentRoutes = routes;
-                routesNum = currentRoutes.size();
-                Log.d(TAG, "TEAM ROUTE SIZE IS = " + routes.size());
-                addMyRoutesTitle();
-
-                for (int i = 0; i < routes.size(); i++) {
-                    Log.d(TAG, "TEAM ROUTE NAME: " + routes.get(i).getName() + " for " + deviceID);
-
-                    // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
-
-                    dummyRoute = routes.get(i);
-
-                    addElement(dummyRoute, outer);
-
-                }
-
-            }
-        });
+            });
+        }
 
 
 //        addTeamRoutestitle();
