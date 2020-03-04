@@ -81,6 +81,8 @@ public class InviteNotification implements Notification {
                 doc.getReference().delete();
             }
         });
+
+        
         db.collection("users")
                 .document(device)
                 .collection("invitations")
