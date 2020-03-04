@@ -24,7 +24,7 @@ public class WalkNotification implements Notification {
         return type;
     }
 
-    @Override
+
     public String getWalkTitle(){
         return this.walkTitle;
     }
@@ -34,9 +34,14 @@ public class WalkNotification implements Notification {
         return this.fromName;
     }
 
-    @Override
+
     public String getMessage(){
         String[] returnString = {};
         return returnString.toString();
+    }
+
+    //@Override
+    public void deleteNotification(String deviceID, String from, String notifID){
+
     }
 }

@@ -94,7 +94,7 @@ public class TeamScreen extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         if (document.get("teamID") != null) {
-                            Log.d(TAG, "THIS USER HAS A TEAM!");
+                            Log.d(TAG, "THIS USER:" + deviceID + " HAS A TEAM!");
                             inviteBtn.setVisibility(View.VISIBLE);
                             inviteeEmail.setVisibility(View.VISIBLE);
                             inviteeLabel.setVisibility(View.VISIBLE);
@@ -168,6 +168,10 @@ public class TeamScreen extends AppCompatActivity {
                 break;
             case R.id.navigation_walk:
                 newIntent = new Intent(this, WalkScreen.class);
+                startActivity(newIntent);
+                break;
+            case R.id.navigation_routes:
+                newIntent = new Intent(this, RouteScreen.class);
                 startActivity(newIntent);
                 break;
             case R.id.navigation_team:
