@@ -91,7 +91,7 @@ public class RouteScreen extends AppCompatActivity {
                         currentRoutes = routes;
                         routesNum = currentRoutes.size();
                         Log.d(TAG, "SIZE IS = " + routes.size());
-                        addMyRoutesTitle();
+                        //addMyRoutesTitle();
 
                         LinearLayout outer = findViewById(R.id.routeContain);
 
@@ -136,7 +136,7 @@ public class RouteScreen extends AppCompatActivity {
                     currentRoutes = routes;
                     routesNum = currentRoutes.size();
                     Log.d(TAG, "TEAM ROUTE SIZE IS = " + routes.size());
-                    addMyRoutesTitle();
+                    //addMyRoutesTitle();
 
                     for (int i = 0; i < routes.size(); i++) {
                         Log.d(TAG, "TEAM ROUTE NAME: " + routes.get(i).getName() + " for " + deviceID);
