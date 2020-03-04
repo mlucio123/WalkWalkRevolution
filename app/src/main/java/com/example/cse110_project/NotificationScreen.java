@@ -1,10 +1,13 @@
 package com.example.cse110_project;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -29,6 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class NotificationScreen extends AppCompatActivity {
     String TAG = NotificationScreen.class.getSimpleName();
@@ -37,6 +41,7 @@ public class NotificationScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification_screen);
         cancel = (ImageButton) findViewById(R.id.btn_cancel);
@@ -63,19 +68,23 @@ public class NotificationScreen extends AppCompatActivity {
                 invite.addSnapshotListener((newSnapShot, err) -> {
                     for(DocumentSnapshot doc : newSnapShot.getDocuments()) {
                         StringBuilder sb = new StringBuilder();
+                        StringBuilder sb2 = new StringBuilder();
+                        sb.append("You have a team invite from ");
                         sb.append(doc.get("fromUserID"));
-                        sb.append(":\n");
-                        sb.append(doc.get("teamId"));
-                        sb.append("\n");
-                        sb.append("---\n");
-
+                        sb.append("!");
+                        sb2.append("Please accept or decline your invite to team: ");
+                        sb2.append(doc.get("teamId"));
+                        LayoutInflater inflater = getLayoutInflater();
 
                         LinearLayout chatView = findViewById(R.id.notif_container);
-                        TextView t = new TextView(this);
+                        inflater.inflate(R.layout.invite_view, chatView, false);
+                        TextView t = findViewById(R.id.fromUser);
                         t.setText(sb.toString());
-                        int textColor = Color.parseColor("#FFFFFFFF");
-                        t.setTextColor(textColor);
-                        chatView.addView(t);
+                        TextView t2 = findViewById(R.id.teamID);
+                        t2.setText(sb2.toString());
+                        //int textColor = Color.parseColor("#FFFFFFFF");
+                        //t.setTextColor(textColor);
+                        //chatView.addView(t);
                     }
                 });
 
