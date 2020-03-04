@@ -27,7 +27,12 @@ import com.example.cse110_project.Firebase.UserCollection;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Route;
 import com.example.cse110_project.utils.Team;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +52,11 @@ public class TeamScreen extends AppCompatActivity {
 
     public static boolean testing = false;
 
+    public boolean hasTeam = false;
 
+    public void setHasTeam(boolean newValue) { this.hasTeam = newValue; }
+
+    public boolean getHasTean() { return this.hasTeam; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +79,36 @@ public class TeamScreen extends AppCompatActivity {
         inviteeLabel = (TextView) findViewById(R.id.inviteEmailLabel);
 
 
-        String teamID = AccessSharedPrefs.getTeamID(TeamScreen.this);
+        createTeamBtn.setVisibility(View.GONE);
+        inviteBtn.setVisibility(View.GONE);
+        inviteeEmail.setVisibility(View.GONE);
+        inviteeLabel.setVisibility(View.GONE);
 
-        if (teamID.length() == 0){
-            inviteBtn.setVisibility(View.GONE);
-            inviteeEmail.setVisibility(View.GONE);
-            inviteeLabel.setVisibility(View.GONE);
-        } else {
-            createTeamBtn.setVisibility(View.GONE);
-        }
+
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        DocumentReference docIdRef = rootRef.collection("users").document(deviceID);
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        if (document.get("teamID") != null) {
+                            Log.d(TAG, "THIS USER HAS A TEAM!");
+                            inviteBtn.setVisibility(View.VISIBLE);
+                            inviteeEmail.setVisibility(View.VISIBLE);
+                            inviteeLabel.setVisibility(View.VISIBLE);
+                            setHasTeam(true);
+                        } else {
+                            createTeamBtn.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        createTeamBtn.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
 
         createTeamBtn.setOnClickListener(new View.OnClickListener() {
             @Override
