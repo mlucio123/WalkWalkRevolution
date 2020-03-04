@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cse110_project.notifications.InviteNotification;
 import com.example.cse110_project.notifications.Notification;
 import com.example.cse110_project.notifications.WalkNotification;
 import com.example.cse110_project.notifications.WalkNotificationBuilder;
@@ -86,6 +87,7 @@ public class NotificationScreen extends AppCompatActivity {
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                         );
+                        InviteNotification i = new InviteNotification(doc.get("fromUserID").toString(), doc.get("teamId").toString(), false);
                         newNotifHolder.setOrientation(LinearLayout.VERTICAL);
                         newNotifHolder.setBackground(draw);
                         newNotifHolder.setLayoutParams(containerParams);
@@ -99,7 +101,16 @@ public class NotificationScreen extends AppCompatActivity {
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                         ));
                         declineBtn.setText("Decline");
+                        declineBtn.setTag(i);
                         declineBtn.setTextColor(textColor);
+                        declineBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                InviteNotification inviteNotification = (InviteNotification) view.getTag();
+                                inviteNotification.deleteNotification( document.getId(),doc.getId());
+                                newNotifHolder.setVisibility(View.GONE);
+                            }
+                        });
 
                         final Button acceptBtn = new Button(NotificationScreen.this);
                         acceptBtn.setBackground(buttonBack);
