@@ -1,7 +1,5 @@
 package com.example.cse110_project;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -9,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.Firebase.UserCollection;
 import com.example.cse110_project.utils.AccessSharedPrefs;
@@ -62,6 +62,8 @@ public class FirstLoadScreen extends AppCompatActivity {
                     user.setHeightFt(heightFt.getText().toString());
                     user.setHeightInch(heightInch.getText().toString());
                     uc.addUser(user);
+                    String userID = uc.getUserID(deviceID);
+                    AccessSharedPrefs.saveUserID(FirstLoadScreen.this, userID);
                     Toast toast = Toast.makeText(getApplicationContext(), "Successfully post to firebase", Toast.LENGTH_SHORT);
                     toast.show();
                     finish();

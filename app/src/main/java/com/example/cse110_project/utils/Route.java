@@ -1,23 +1,8 @@
 package com.example.cse110_project.utils;
 
-import android.content.Context;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
-import com.google.firebase.FirebaseApp;
-/*
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.core.Context;
-*/
 import android.util.Log;
 
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.core.Context;
-
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
 
 public class Route extends Observable {

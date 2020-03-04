@@ -65,6 +65,11 @@ public class UserCollection {
                 });
     }
 
+    public String getUserID(String deviceID) {
+        DocumentReference docRef = db.collection("users").document(deviceID);
+        return docRef.getId();
+    }
+
 
     /* Get current user for current device */
     public void getUser(String deviceID){
