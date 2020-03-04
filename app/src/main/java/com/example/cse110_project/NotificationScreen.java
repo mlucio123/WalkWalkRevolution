@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -60,6 +61,9 @@ public class NotificationScreen extends AppCompatActivity {
 
         // Create a query against the collection.
         Query query = chat.whereEqualTo("deviceID", currUserID);
+        int textColor = Color.parseColor("#FFFFFFFF");
+        int bodySize = 20;
+        int headerSize = 30;
 
         //retrieve  query results asynchronously using query.get()
         query.addSnapshotListener((newChatSnapShot, error) -> {
@@ -67,24 +71,59 @@ public class NotificationScreen extends AppCompatActivity {
                 CollectionReference invite = document.getReference().collection("invitations");
                 invite.addSnapshotListener((newSnapShot, err) -> {
                     for(DocumentSnapshot doc : newSnapShot.getDocuments()) {
-                        StringBuilder sb = new StringBuilder();
-                        StringBuilder sb2 = new StringBuilder();
-                        sb.append("You have a team invite from ");
-                        sb.append(doc.get("fromUserID"));
-                        sb.append("!");
-                        sb2.append("Please accept or decline your invite to team: ");
-                        sb2.append(doc.get("teamId"));
-                        LayoutInflater inflater = getLayoutInflater();
+                        StringBuilder header = new StringBuilder();
+                        StringBuilder body = new StringBuilder();
+                        header.append("You have a team invite from ");
+                        header.append(doc.get("fromUserID"));
+                        header.append("!");
+                        body.append("Please accept or decline your invite to team: ");
+                        body.append(doc.get("teamId"));
 
-                        LinearLayout chatView = findViewById(R.id.notif_container);
-                        inflater.inflate(R.layout.invite_view, chatView, false);
-                        TextView t = findViewById(R.id.fromUser);
-                        t.setText(sb.toString());
-                        TextView t2 = findViewById(R.id.teamID);
-                        t2.setText(sb2.toString());
-                        //int textColor = Color.parseColor("#FFFFFFFF");
-                        //t.setTextColor(textColor);
-                        //chatView.addView(t);
+                        Drawable draw = getDrawable(R.drawable.rounded_edges);
+                        LinearLayout notifContainer = findViewById(R.id.notif_container);
+                        LinearLayout newNotifHolder = new LinearLayout(this);
+                        LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        newNotifHolder.setOrientation(LinearLayout.VERTICAL);
+                        newNotifHolder.setBackground(draw);
+                        newNotifHolder.setLayoutParams(containerParams);
+
+                        Drawable buttonBack = getDrawable(R.drawable.btn_rounded);
+                        Drawable buttonBackRed = getDrawable(R.drawable.btn_rounded_red);
+                        final Button declineBtn = new Button(NotificationScreen.this);
+                        declineBtn.setBackground(buttonBackRed);
+                        declineBtn.setLayoutParams(new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        ));
+                        declineBtn.setText("Decline");
+                        declineBtn.setTextColor(textColor);
+
+                        final Button acceptBtn = new Button(NotificationScreen.this);
+                        acceptBtn.setBackground(buttonBack);
+                        acceptBtn.setLayoutParams(new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        ));
+                        acceptBtn.setText("Accept");
+                        acceptBtn.setTextColor(textColor);
+
+                        TextView head = new TextView(this);
+                        head.setTextColor(textColor);
+                        head.setText(header.toString());
+                        head.setTextSize(headerSize);
+                        TextView mes = new TextView(this);
+                        mes.setTextColor(textColor);
+                        mes.setText(body.toString());
+                        mes.setTextSize(bodySize);
+
+                        newNotifHolder.addView(head);
+                        newNotifHolder.addView(mes);
+                        newNotifHolder.addView(acceptBtn);
+                        newNotifHolder.addView(declineBtn);
+                        notifContainer.addView(newNotifHolder);
                     }
                 });
 
