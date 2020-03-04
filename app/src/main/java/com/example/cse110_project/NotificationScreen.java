@@ -55,8 +55,7 @@ public class NotificationScreen extends AppCompatActivity {
             }
         });
 
-        String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
-        if (currUserID.equals("")) { currUserID = "dummyUser"; }
+        final String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
         Log.d("Notification: ", "This is user's id " + currUserID);
         chat = FirebaseFirestore.getInstance().collection("users");
 
@@ -87,7 +86,7 @@ public class NotificationScreen extends AppCompatActivity {
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                         );
-                        InviteNotification i = new InviteNotification(doc.get("fromUserID").toString(), doc.get("teamId").toString(), false);
+                        InviteNotification i = new InviteNotification(currUserID, doc.get("fromUserID").toString(), doc.get("teamId").toString());
                         newNotifHolder.setOrientation(LinearLayout.VERTICAL);
                         newNotifHolder.setBackground(draw);
                         newNotifHolder.setLayoutParams(containerParams);
@@ -107,7 +106,7 @@ public class NotificationScreen extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 InviteNotification inviteNotification = (InviteNotification) view.getTag();
-                                inviteNotification.deleteNotification( document.getId(),doc.getId());
+                                inviteNotification.deleteNotification( currUserID, document.getId(),doc.get("teamId").toString(), doc.getId());
                                 newNotifHolder.setVisibility(View.GONE);
                             }
                         });

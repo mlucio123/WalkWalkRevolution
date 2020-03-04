@@ -40,8 +40,8 @@ public class WalkNotification implements Notification {
         return returnString.toString();
     }
 
-    @Override
-    public void deleteNotification(String deviceID, String notifID){
+    //@Override
+    public void deleteNotification(String deviceID, String from, String notifID){
 
     }
 }
