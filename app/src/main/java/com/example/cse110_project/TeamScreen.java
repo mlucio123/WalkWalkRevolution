@@ -1,5 +1,6 @@
 package com.example.cse110_project;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -74,12 +75,17 @@ public class TeamScreen extends AppCompatActivity {
 
         // Fetch list of teammates from database
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-
+        deviceID = "69f564cdea524279";
         // Get team id
-        TeamCollection tc = new TeamCollection();
-//        String teamID = tc.getTeamID(deviceID);
-//        Log.i(TAG, teamID);
-
+        UserCollection uc = new UserCollection();
+        String teamID = uc.getTeamID(deviceID);
+        uc.getUser(deviceID);
+        if (teamID == null) {
+            Log.i(TAG, "TeamID is null");
+        }
+        else {
+            Log.i(TAG, teamID);
+        }
         // Get list of User IDs
 
         // Get list of Pending IDs
@@ -98,6 +104,8 @@ public class TeamScreen extends AppCompatActivity {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(adapter);
+        list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,"JINING"));
+        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"HOWARD"));
 
 
     }

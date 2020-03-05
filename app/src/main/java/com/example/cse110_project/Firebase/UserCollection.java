@@ -26,6 +26,7 @@ public class UserCollection {
 
     FirebaseFirestore db;
     private final String TAG = "Firebase User";
+    private String teamID;
 
 
     /* Initialize firebase instance */
@@ -111,6 +112,37 @@ public class UserCollection {
             }
         });
 
+    }
+
+    /* Get user's teamID */
+    private void getTeamIdFromFirebase(String deviceID) {
+        DocumentReference docRef = db.collection("users").document(deviceID);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String teamID = document.get("teamID").toString();
+                        Log.d(TAG, "DocumentSnapshot data: " + teamID);
+                        setTeamID(teamID);
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    public void setTeamID(String teamID){
+        this.teamID = teamID;
+    }
+
+    public String getTeamID(String deviceID){
+        getTeamIdFromFirebase(deviceID);
+        return this.teamID;
     }
 
 }
