@@ -106,7 +106,7 @@ public class HomeScreen extends AppCompatActivity {
         /**
          * Create and start fitnessService
          */
-        fitnessService = FitnessServiceFactory.create(this, false);
+        fitnessService = FitnessServiceFactory.create(this, USE_GOOGLE_FIT_TESTER);
         fitnessService.setup();
 
         /* TEST MODE BUTTON */
