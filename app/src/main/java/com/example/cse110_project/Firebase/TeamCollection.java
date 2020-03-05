@@ -232,6 +232,12 @@ public class TeamCollection {
                             Log.d(TAG, "get failed with ", task.getException());
                         }
                     }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error at findInviterTeam" , e);
+                    }
                 });
     }
 
@@ -255,6 +261,12 @@ public class TeamCollection {
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error at sendInviteToEmail" , e);
                     }
                 });
 
@@ -293,7 +305,14 @@ public class TeamCollection {
                                 Log.w(TAG, "Error getting documents.", task.getException());
                             }
                         }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error at getTeamRoutes" , e);
+                        }
                     });
+
 
 
         }
@@ -326,6 +345,12 @@ public class TeamCollection {
                         } else {
                             Log.d(TAG, "get failed with ", task.getException());
                         }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error at getTeamUsers" , e);
                     }
                 });
 
@@ -361,6 +386,12 @@ public class TeamCollection {
                         } else {
                             Log.d(TAG, "get failed with ", task.getException());
                         }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error at getTeamRoutesFromDevice" , e);
                     }
                 });
 
@@ -408,6 +439,12 @@ public class TeamCollection {
             boolean hard= false;
             boolean favorite= false;
 
+            String initial = "";
+
+            if(qry.getData().get("createdBy") != null) {
+                initial = qry.getData().get("createdBy").toString();
+            }
+
             if(qry.getData().get("out") != null){
                 out = Boolean.parseBoolean(qry.getData().get("out").toString());
             }
@@ -453,10 +490,30 @@ public class TeamCollection {
 
             newRoute.setFavorite(favorite);
 
+            newRoute.setCreatedBy(initial);
+            Log.d(TAG, "ROUTE IS CREATED BY : " + initial + " and got " + newRoute.getCreatedBy());
+
             String time;
             String steps;
             String distance;
 
+            int[] colors = new int[3];
+
+            Log.d(TAG, "ROUTE RED IS " + qry.getData().get("red".toString()));
+
+            if(qry.getData().get("red") != null){
+                colors[0] = Integer.parseInt(qry.getData().get("red").toString());
+            }
+
+
+            if(qry.getData().get("green") != null){
+                colors[1] = Integer.parseInt(qry.getData().get("green").toString());
+            }
+
+
+            if(qry.getData().get("blue") != null){
+                colors[2] = Integer.parseInt(qry.getData().get("blue").toString());
+            }
 
 
             if(qry.getData().get("lastCompletedTime") != null ){
@@ -479,6 +536,9 @@ public class TeamCollection {
                     newRoute.setLastCompletedDistance(distance);
                 }
             }
+
+            Log.d(TAG, "GOT COLORS: " + colors[0] +", " + colors[1] + ", " + colors[2]);
+            newRoute.setColors(colors);
 
             newRoute.setId(id);
             return newRoute;

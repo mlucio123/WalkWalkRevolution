@@ -1,5 +1,7 @@
 package com.example.cse110_project.utils;
 
+import android.graphics.Color;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -12,10 +14,13 @@ public class User {
     String lastName;
     String initial;
     String teamID;
-    String color;
+    Color color;
     String heightFt;
     String heightInch;
 
+    int red;
+    int green;
+    int blue;
 
     public User(String deviceID, String gmail, String firstName, String lastName) {
         this.deviceID = deviceID;
@@ -43,6 +48,12 @@ public class User {
         int g = rnd.nextInt(256);
         int b = rnd.nextInt(256);
 
+        this.red = r;
+        this.green = g;
+        this.blue = b;
+
+        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+
         map.put("deviceID", this.getDeviceID());
         map.put("gmail", this.getGmail());
         map.put("firstName", this.getFirstName());
@@ -50,6 +61,7 @@ public class User {
         map.put("color_r", r);
         map.put("color_g", g);
         map.put("color_b", b);
+        map.put("color", color);
 
         if (teamID != null && teamID.length() != 0) {
             map.put("teamID", this.getTeamID());
@@ -61,6 +73,15 @@ public class User {
 
         return map;
     }
+
+
+    public void setRed(int r) { this.red = r; }
+    public void setGreen(int g) { this.green = g; }
+    public void setBlue(int b) { this.blue = b; }
+
+    public int getRed() { return this.red; }
+    public int getGreen() { return this.green; }
+    public int getBlue() { return this.blue; }
 
     public String getDeviceID() {
         return deviceID;
@@ -82,11 +103,11 @@ public class User {
         this.teamID = teamID;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
