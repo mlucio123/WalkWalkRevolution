@@ -96,11 +96,6 @@ public class RouteScreen extends AppCompatActivity {
                         currentRoutes = routes;
                         routesNum = currentRoutes.size();
                         Log.d(TAG, "SIZE IS = " + routes.size());
-<<<<<<< HEAD
-                        //addMyRoutesTitle();
-=======
-//                        addMyRoutesTitle();
->>>>>>> origin/teamCollection
 
                         LinearLayout outer = findViewById(R.id.routeContain);
 
