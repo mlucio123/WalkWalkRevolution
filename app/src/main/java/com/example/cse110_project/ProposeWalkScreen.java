@@ -21,5 +21,6 @@ public class ProposeWalkScreen extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 }
