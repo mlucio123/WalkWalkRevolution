@@ -46,10 +46,15 @@ public class RouteCollection {
 
 
     /* add routes along with device ID */
-    public void addRoute(Route addRoute, String deviceID) {
+    public void addRoute(Route addRoute, String deviceID, String initial, int[] colors) {
 
         Map<String, Object> route = addRoute.getFeatureMap();
         route.put("deviceID", deviceID);
+        route.put("createdBy", initial);
+        route.put("red", colors[0]);
+        route.put("green", colors[1]);
+        route.put("blue", colors[2]);
+        Log.d(TAG, "Adding COLORS to Route: " + colors[0] +", " + colors[1] + ", " + colors[2]);
 
          // Add a new document with a generated ID
         db.collection("routes")
@@ -57,7 +62,7 @@ public class RouteCollection {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        Log.d(TAG, "DocumentSnapshot added with Route-ID: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -113,6 +118,7 @@ public class RouteCollection {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 try {
                                     Route newRoute = makeRoute(document);
+                                    Log.d(TAG, "DATA: " + document.getData());
                                     qryRoutes.add(makeRoute(document));
                                     routesSimpleList.add(makeRoute(document));
                                 } catch (Exception e) {
@@ -173,6 +179,12 @@ public class RouteCollection {
             boolean hard= false;
             boolean favorite= false;
 
+            String initial = "";
+
+            if(qry.getData().get("createdBy") != null) {
+                initial = qry.getData().get("createdBy").toString();
+            }
+
             if(qry.getData().get("out") != null){
                 out = Boolean.parseBoolean(qry.getData().get("out").toString());
             }
@@ -217,6 +229,9 @@ public class RouteCollection {
             newRoute.setId(qry.getId().toString());
 
             newRoute.setFavorite(favorite);
+
+            newRoute.setCreatedBy(initial);
+            Log.d(TAG, "ROUTE IS CREATED BY : " + initial + " and got " + newRoute.getCreatedBy());
 
             String time;
             String steps;

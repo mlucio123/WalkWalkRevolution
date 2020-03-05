@@ -76,6 +76,51 @@ public class AccessSharedPrefs {
         return prefs.getBoolean("walkStatus", false);
     }
 
+    public static void saveInitial(Context context, String initial) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString("initial", initial);
+        editor.apply();
+    }
+
+    public static String getInitial(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("initial"))
+            return prefs.getString("initial", "");
+
+        return "";
+    }
+
+    public static void saveColors(Context context, int red, int green, int blue){
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putInt("red", red);
+        editor.putInt("green", green);
+        editor.putInt("blue", blue);
+
+        editor.apply();
+    }
+
+    public static int[] getColors(Context context){
+        int[] c = new int[3];
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("red")){
+            c[0] = prefs.getInt("red", 123);
+        }
+
+        if(prefs.contains("green")){
+            c[1] = prefs.getInt("green", 123);
+        }
+
+        if(prefs.contains("blue")){
+            c[2] = prefs.getInt("blue", 123);
+        }
+
+        return c;
+    }
+
     public static void saveWalk(Context context, String timer, String steps, String distance) {
         SharedPreferences prefs = setUp(context);
         SharedPreferences.Editor editor = prefs.edit();
