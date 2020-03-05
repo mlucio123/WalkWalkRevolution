@@ -3,6 +3,7 @@ package com.example.cse110_project;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class RouteScreen extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
     private Button addRoute;
+    private Button openMap;
     private Button expandBtn;
     private RelativeLayout invis;
 
@@ -332,6 +334,14 @@ public class RouteScreen extends AppCompatActivity {
 
         TextView startDisplay = new TextView(this);
         startDisplay.setText(routeEntry.getStartingPoint());
+        startDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GoogleMapNavigation googleMapNavigation = new GoogleMapNavigation(startDisplay);
+                Intent browserIntent = googleMapNavigation.getURL();
+                startActivity(browserIntent);
+            }
+        });
         startDisplay.setTextColor(fontColor);
         startDisplay.setTextSize(20);
         startDisplay.setLayoutParams(new LinearLayout.LayoutParams(
