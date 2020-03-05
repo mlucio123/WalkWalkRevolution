@@ -1,6 +1,7 @@
 package com.example.cse110_project.Firebase;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,7 @@ public class UserCollection {
     public UserCollection() {
         db = FirebaseFirestore.getInstance();
         if (this.db == null) {
-            Log.d(TAG, "Unsuccessful firebase instance");
+            Log.d(TAG, "Unsuccessful Firebase instance");
         } else {
             Log.d(TAG, "Success");
         }
@@ -45,30 +46,50 @@ public class UserCollection {
 
 
     /* add user along with device ID */
-    public void addUser(User newUser) {
+    public void addUser(User newUser, String deviceID) {
 
         Map<String, Object> newUserInfo = newUser.getUserFieldsMap();
+
+
         // Add a new document with a generated ID
         db.collection("users")
-                .add(newUserInfo)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+            .document(deviceID)
+            .set(newUserInfo)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
     }
 
-    public String getUserID(String deviceID) {
+
+    public void getUserID(String deviceID) {
+
         DocumentReference docRef = db.collection("users").document(deviceID);
-        return docRef.getId();
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
+
 
 
     /* Get current user for current device */

@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,12 +45,33 @@ public class TeamCollection {
         FirebaseApp.initializeApp(context);
     }
 
-    public String makeTeam(String deviceID) {
+
+    public void addTeamIdToUser(String teamID, String userID) {
+        Map<String, Object> tmID = new HashMap<>();
+        tmID.put("teamID", teamID);
+
+        db.collection("users")
+                .document(userID)
+                .update(tmID)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Added " + teamID + " in to the user " + userID);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });;
+    }
+
+    public void makeTeam(String deviceID) {
         Map<String, Object> teamMap = new HashMap<>();
         ArrayList<String> userIDs = new ArrayList<String>();
         userIDs.add(deviceID);
         teamMap.put("listOfUserIDs", userIDs );
-        String teamID;
 
         db.collection("teams")
                 .add(teamMap)
@@ -57,6 +79,10 @@ public class TeamCollection {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        String teamID = documentReference.getId();
+
+                        addTeamIdToUser(teamID, deviceID);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -66,10 +92,6 @@ public class TeamCollection {
                     }
                 });
 
-        teamID = getTeamID(deviceID);
-        Log.d(TAG, "Got ID for new team");
-
-        return teamID;
 
     }
 
@@ -85,7 +107,7 @@ public class TeamCollection {
         invitationMap.put("fromUserID", fromUserID);
 
         db.collection("users")
-                .document(userId)
+                .document(teamId)
                 .collection("invitations")
                 .add(invitationMap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -129,8 +151,91 @@ public class TeamCollection {
     }
 
 
-    /* Get current user for current device */
-    public void sendInvitationEmail(String email, String teamId, String fromUserID) {
+
+    public void addToTeamPendingList(String teamID, String newUserID) {
+
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("userID", newUserID);
+
+
+        db.collection("teams")
+                .document(teamID)
+                .collection("listOfPendingUserIds")
+                .add(userMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, newUserID + " is added to " + teamID + "'s pending list!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
+
+    }
+
+
+
+    public void addToUserInvitationCollection(String toUserID, String fromUserID, String teamID) {
+
+
+        Map<String,Object> invitationMap = new HashMap<>();
+        invitationMap.put("teamId", teamID);
+        invitationMap.put("fromUserID", fromUserID);
+
+        db.collection("users")
+                .document(toUserID)
+                .collection("invitations")
+                .add(invitationMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        Log.d(TAG, "Send an invite to " + toUserID + " from team " + teamID + " by " + fromUserID);
+                        addToTeamPendingList(teamID, toUserID);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+
+    }
+
+
+
+    public void findInviterTeam(String toUserId, String fromUserId) {
+
+        db.collection("users")
+                .document(fromUserId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "Finding inviter's teamID: " + document.getData());
+                                Log.d(TAG, "FOUND INVITER'S TeamID: " + document.getData().get("teamID"));
+                                addToUserInvitationCollection(toUserId, fromUserId, document.getData().get("teamID").toString());
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    public void sendInviteToEmail(String email, String fromUserID) {
 
         db.collection("users")
                 .whereEqualTo("gmail", email)
@@ -141,7 +246,10 @@ public class TeamCollection {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                sendInvitation(document.getId().toString(), teamId, fromUserID);
+                                String toUserID = document.getId();
+
+                                findInviterTeam(toUserID, fromUserID);
+
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());

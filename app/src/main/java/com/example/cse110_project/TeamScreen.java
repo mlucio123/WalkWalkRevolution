@@ -24,7 +24,6 @@ import com.example.cse110_project.Firebase.UserCollection;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Route;
 import com.example.cse110_project.utils.Team;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -37,12 +36,21 @@ public class TeamScreen extends AppCompatActivity {
     private String TAG = "Team Screen: ";
     public static boolean testing = false;
 
+    public boolean hasTeam = false;
+
+    public void setHasTeam(boolean newValue) { this.hasTeam = newValue; }
+
+    public boolean getHasTean() { return this.hasTeam; }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_screen);
 
         //TODO: set ui based on whether user is on a team
+
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
         Log.d(TAG, "created");
         RouteCollection.initFirebase(this);
@@ -59,9 +67,7 @@ public class TeamScreen extends AppCompatActivity {
         });
 
 
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        TeamCollection tc = new TeamCollection();
-        tc.
+
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
