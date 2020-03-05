@@ -44,12 +44,10 @@ public class TeamScreen extends AppCompatActivity {
     private MyRecyclerViewAdapter adapter;
 
 
-    private Button createTeamBtn;
     private Button inviteBtn;
     private EditText inviteeEmail;
     private TextView inviteeLabel;
     private String TAG = "Team Screen: ";
-
 
     public static boolean testing = false;
 
@@ -64,60 +62,17 @@ public class TeamScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_screen);
 
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+
         // Initialize Firebase Collections
         Log.d(TAG, "created");
         RouteCollection.initFirebase(this);
         UserCollection.initFirebase(this);
         TeamCollection.initFirebase(this);
 
-        createTeamBtn = (Button) findViewById(R.id.createTeamBtn);
         inviteBtn = (Button) findViewById(R.id.addBtn);
 
-
-        createTeamBtn.setVisibility(View.GONE);
-        inviteBtn.setVisibility(View.GONE);
-
-
-        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-        DocumentReference docIdRef = rootRef.collection("users").document(deviceID);
-        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        if (document.get("teamID") != null) {
-                            Log.d(TAG, "THIS USER:" + deviceID + " HAS A TEAM!");
-                            inviteBtn.setVisibility(View.VISIBLE);
-                            setHasTeam(true);
-                        } else {
-                            createTeamBtn.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        createTeamBtn.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
-
-
-        createTeamBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //make new team in database
-                Log.d(TAG, "Making new team");
-                TeamCollection tc = new TeamCollection();
-                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                tc.makeTeam(deviceID);
-
-                Toast.makeText(TeamScreen.this, "Team Created!", Toast.LENGTH_SHORT).show();
-
-                //render team screen ui
-                createTeamBtn.setVisibility(View.GONE);
-                inviteBtn.setVisibility(View.VISIBLE);
-
-            }
-        });
 
 
         // Initialize teamBtn and bottom navigation bar
@@ -140,7 +95,6 @@ public class TeamScreen extends AppCompatActivity {
         });
 
         // Fetch list of teammates from database
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         Log.i(TAG, deviceID);
 
         // Get team id
@@ -167,6 +121,7 @@ public class TeamScreen extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /*
         ArrayList<TeamateModel> list= new ArrayList();
 //        list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,"JINING"));
 //        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"HOWARD"));
@@ -181,6 +136,7 @@ public class TeamScreen extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
 
     }
+    */
 
     private void selectFragment(MenuItem item){
 

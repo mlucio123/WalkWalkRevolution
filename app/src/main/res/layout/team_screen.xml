@@ -49,20 +49,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/createTeamBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="0sp"
-            android:background="@drawable/btn_rounded"
-            android:drawablePadding="5dp"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:text="Create a Team"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
