@@ -8,124 +8,89 @@
     android:background="@color/colorBackground"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/teamTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25sp"
-        android:layout_marginBottom="15sp"
-        android:fontFamily="@font/lato"
-        android:text="Team"
-        android:textColor="@color/colorText"
-        android:textSize="45sp" />
-
-    <Button
-        android:id="@+id/createTeam"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="320dp"
-        android:layout_height="50sp"
-        android:layout_gravity="center"
-        android:layout_marginStart="5sp"
-        android:background="@drawable/btn_rounded"
-        android:backgroundTint="@color/colorAccent"
-        android:drawablePadding="5dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="Create Team"
-        android:textColor="#FFFFFF"
-        android:textSize="13sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25sp"
-        android:layout_marginLeft="30sp"
-        android:layout_marginRight="30sp"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/inviteEmailLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/teamTitle"
+            android:layout_width="227dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0sp"
+            android:layout_marginBottom="0sp"
             android:fontFamily="@font/lato"
-            android:text="Invitee Email:"
+            android:text="Team"
+            android:textAlignment="center"
             android:textColor="@color/colorText"
-            android:textSize="20sp" />
+            android:textSize="45sp" />
 
-        <EditText
-            android:id="@+id/inviteEmail"
-            android:layout_width="180sp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato_bold"
-            android:hint="...@gmail.com"
-            android:inputType="text"
-            android:background="@color/white"
-            android:textColor="@color/colorAccent"
-            android:textSize="20sp"
-            android:autofillHints="" tools:targetApi="o" />
-
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@color/colorBackground"
+            android:text="+"
+            android:textColor="@color/colorText"
+            android:textSize="50sp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/inviteMemberBtn"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="320dp"
-        android:layout_height="50sp"
-        android:layout_gravity="center"
-        android:layout_marginStart="5sp"
-        android:background="@drawable/btn_rounded"
-        android:backgroundTint="@color/colorAccent"
-        android:drawablePadding="5dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="Invite Team Member"
-        android:textColor="#FFFFFF"
-        android:textSize="13sp" />
 
-    <ScrollView
-        android:id="@+id/scrl"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/routesContainer"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/routeContain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
 
 
-            </LinearLayout>
 
-        </LinearLayout>
+    </RelativeLayout>
+<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="https://schemas.android.com/apk/res/android"-->
+<!--        xmlns:app="https://schemas.android.com/apk/res-auto"-->
+<!--        xmlns:tools="https://schemas.android.com/tools"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        tools:context="com.journaldev.recyclerviewmultipleviewtype.MainActivity">-->
 
-    </ScrollView>
-
+<!--        -->
+<!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="bottom">
 
         <!-- Main content -->
+
+        <Button
+            android:id="@+id/ppWalkBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0sp"
+            android:background="@drawable/btn_rounded"
+            android:drawablePadding="5dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="@string/title_propose_walk_screeen"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
