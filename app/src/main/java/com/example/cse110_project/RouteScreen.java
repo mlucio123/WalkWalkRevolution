@@ -25,7 +25,12 @@ import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Route;
 import com.example.cse110_project.utils.Team;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,14 +89,18 @@ public class RouteScreen extends AppCompatActivity {
                             //routes.clear();
                             //routes.add(testRoute);
                             LinearLayout outer = findViewById(R.id.routeContain);
-                            addElement(testRoute, outer);
+                            addElement(testRoute, outer, false);
                             return;
                         }
 
                         currentRoutes = routes;
                         routesNum = currentRoutes.size();
                         Log.d(TAG, "SIZE IS = " + routes.size());
+<<<<<<< HEAD
                         //addMyRoutesTitle();
+=======
+//                        addMyRoutesTitle();
+>>>>>>> origin/teamCollection
 
                         LinearLayout outer = findViewById(R.id.routeContain);
 
@@ -102,7 +111,7 @@ public class RouteScreen extends AppCompatActivity {
 
                             dummyRoute = routes.get(i);
 
-                            addElement(dummyRoute, outer);
+                            addElement(dummyRoute, outer, false);
 
                         }
 
@@ -110,52 +119,59 @@ public class RouteScreen extends AppCompatActivity {
                     }
                 });
 
-        TeamCollection tc = new TeamCollection();
-        Log.d(TAG, "GETTING TEAM ROUTES RIGHT HERE!");
-        if(AccessSharedPrefs.getOnTeam(RouteScreen.this)) {
-            Log.d(TAG, "User is on a team, getting routes");
-            tc.getTeamRoutesFromDevice(deviceID, new MyCallback() {
-                @Override
-                public void getRoutes(ArrayList<Route> routes) {
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        DocumentReference docIdRef = rootRef.collection("users").document(deviceID);
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        if (document.get("teamID") != null) {
+                            Log.d(TAG, "THIS USER:" + deviceID + " HAS A TEAM!");
+                            TeamCollection tc = new TeamCollection();
+                            Log.d(TAG, "GETTING TEAM ROUTES RIGHT HERE!");
+                            tc.getTeamRoutesFromDevice(deviceID, new MyCallback() {
+                                @Override
+                                public void getRoutes(ArrayList<Route> routes) {
 
 
-                    LinearLayout outer = findViewById(R.id.teamrouteContain);
+                                    LinearLayout outer = findViewById(R.id.teamrouteContain);
 
-                    if (testing) {
-                        Log.d(TAG, "adding testing route");
-                        Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
-                        //routes.clear();
-                        //routes.add(testRoute);
-                        addElement(testRoute, outer);
-                        return;
+                                    if(testing) {
+                                        Log.d(TAG, "adding testing route");
+                                        Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
+                                        //routes.clear();
+                                        //routes.add(testRoute);
+                                        addElement(testRoute, outer, true);
+                                        return;
+                                    }
+
+                                    Log.d(TAG, "GETTING TEAM ROUTES CALL BACK FUNCTION");
+
+                                    currentRoutes = routes;
+                                    routesNum = currentRoutes.size();
+                                    Log.d(TAG, "TEAM ROUTE SIZE IS = " + routes.size());
+//                                    addMyRoutesTitle();
+
+                                    for (int i = 0; i < routes.size(); i++) {
+                                        Log.d(TAG, "TEAM ROUTE NAME: " + routes.get(i).getName() + " for " + deviceID);
+
+                                        // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
+
+                                        dummyRoute = routes.get(i);
+
+                                        addElement(dummyRoute, outer, true);
+
+                                    }
+
+                                }
+                            });
+                        }
                     }
-
-
-                    Log.d(TAG, "GETTING TEAM ROUTES CALL BACK FUNCTION");
-
-                    currentRoutes = routes;
-                    routesNum = currentRoutes.size();
-                    Log.d(TAG, "TEAM ROUTE SIZE IS = " + routes.size());
-                    //addMyRoutesTitle();
-
-                    for (int i = 0; i < routes.size(); i++) {
-                        Log.d(TAG, "TEAM ROUTE NAME: " + routes.get(i).getName() + " for " + deviceID);
-
-                        // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
-
-                        dummyRoute = routes.get(i);
-
-                        addElement(dummyRoute, outer);
-
-                    }
-
                 }
-            });
-        }
-
-
-//        addTeamRoutestitle();
-
+            }
+        });
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -218,7 +234,7 @@ public class RouteScreen extends AppCompatActivity {
     }
 
 
-    public void addElement(Route routeEntry, LinearLayout outer){
+    public void addElement(Route routeEntry, LinearLayout outer, boolean isTeam){
         int fontColor = Color.parseColor("#FFFFFFFF");
 
         /* Rounded button drawable */
@@ -327,6 +343,54 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
         ));
+
+
+        /* Created BY */
+
+        LinearLayout createdBy = null;
+        TextView createdByLabel = null;
+        TextView createdByDisplay = null;
+
+        if(isTeam) {
+
+            createdBy = new LinearLayout(this);
+            titleEntry.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    1f
+            ));
+            createdBy.setOrientation(LinearLayout.HORIZONTAL);
+
+
+            createdByLabel = new TextView(this);
+            createdByLabel.setText("Created By:");
+            createdByLabel.setTextColor(fontColor);
+            createdByLabel.setTextSize(20);
+            createdByLabel.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f
+            ));
+
+            Log.d(TAG, "GOT INTO ROUTE SCREEN FOR TEAMS AND GOT CREATED BY " + routeEntry.getCreatedBy());
+
+            int[] colors = routeEntry.getColors();
+            Log.d(TAG, "RECEIVED COLOR FOR THIS USER AS : " + colors.toString());
+
+            int RGB = android.graphics.Color.argb(255, colors[0], colors[1], colors[2]);
+
+            createdByDisplay = new TextView(this);
+            Log.d(TAG, "GETTING CREATED BY TEXT AS " + routeEntry.getCreatedBy());
+            createdByDisplay.setText(routeEntry.getCreatedBy());
+            createdByDisplay.setTextColor(RGB);
+            createdByDisplay.setTextSize(20);
+            createdByDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
+            ));
+
+
+
+        }
 
 
         int fontSmall = 14;
@@ -579,6 +643,12 @@ public class RouteScreen extends AppCompatActivity {
         hidden.addView(deleteBtn);
         startEntry.addView(start);
         startEntry.addView(startDisplay);
+
+        if(isTeam) {
+            createdBy.addView(createdByLabel);
+            createdBy.addView(createdByDisplay);
+        }
+
         titleEntry.addView(title);
         titleEntry.addView(titleDisplay);
         if (routeEntry.getFavorite()) {
@@ -589,6 +659,9 @@ public class RouteScreen extends AppCompatActivity {
         }
         container.addView(titleEntry);
         container.addView(startEntry);
+        if(isTeam){
+            container.addView(createdBy);
+        }
         container.addView(hidden);
         container.addView(btnHolder);
         routeContain.addView(container);
