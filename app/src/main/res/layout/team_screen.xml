@@ -64,11 +64,25 @@
             android:textSize="15sp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/teamateList"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
+
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+
+
 
     </RelativeLayout>
+<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="https://schemas.android.com/apk/res/android"-->
+<!--        xmlns:app="https://schemas.android.com/apk/res-auto"-->
+<!--        xmlns:tools="https://schemas.android.com/tools"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        tools:context="com.journaldev.recyclerviewmultipleviewtype.MainActivity">-->
+
+<!--        -->
+<!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 
     <FrameLayout
         android:id="@+id/frameLayout"

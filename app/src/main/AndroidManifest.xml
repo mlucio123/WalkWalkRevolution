@@ -31,12 +31,14 @@
         </activity>
         <activity android:name=".RouteFormScreen"></activity>
         <activity android:name=".TeamScreen"></activity>
+
+        <activity android:name=".AddTeamateScreen"></activity>
         <service android:name="com.example.cse110_project.Firebase.FirebaseMessageService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".AddTeamateScreen" />
+
     </application>
 
 </manifest>
