@@ -157,6 +157,14 @@ public class WalkScreen extends AppCompatActivity {
             layout.setVisibility(View.VISIBLE);
             routeTitle.setText(title);
             routeStart.setText(start);
+            routeStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    GoogleMapNavigation googleMapNavigation = new GoogleMapNavigation(routeStart);
+                    Intent browserIntent = googleMapNavigation.getURL();
+                    startActivity(browserIntent);
+                }
+            });
             routeNotes.setText(notes);
             if(lastTime != null && lastTime.length() != 0){
                 routeLastCompletedTimeLayout.setVisibility(View.VISIBLE);

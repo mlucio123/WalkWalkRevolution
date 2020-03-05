@@ -57,7 +57,6 @@
 <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
 
 
-
     </RelativeLayout>
 <!--    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="https://schemas.android.com/apk/res/android"-->
 <!--        xmlns:app="https://schemas.android.com/apk/res-auto"-->
@@ -91,6 +90,8 @@
             android:text="@string/title_propose_walk_screeen"
             android:textColor="#FFFFFF"
             android:textSize="15sp" />
+
+
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
