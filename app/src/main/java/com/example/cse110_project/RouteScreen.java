@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
+import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Route;
 import com.example.cse110_project.utils.Team;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -95,7 +96,6 @@ public class RouteScreen extends AppCompatActivity {
                         currentRoutes = routes;
                         routesNum = currentRoutes.size();
                         Log.d(TAG, "SIZE IS = " + routes.size());
-//                        addMyRoutesTitle();
 
                         LinearLayout outer = findViewById(R.id.routeContain);
 
@@ -167,11 +167,6 @@ public class RouteScreen extends AppCompatActivity {
                 }
             }
         });
-
-
-
-//        addTeamRoutestitle();
-
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

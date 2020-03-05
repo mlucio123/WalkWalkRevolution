@@ -18,11 +18,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.notifications.InviteNotification;
 import com.example.cse110_project.notifications.Notification;
 import com.example.cse110_project.notifications.WalkNotification;
 import com.example.cse110_project.notifications.WalkNotificationBuilder;
 import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.Team;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
@@ -131,6 +133,9 @@ public class NotificationScreen extends AppCompatActivity {
                                 Toast.makeText(NotificationScreen.this, "Accepted invitation clicked", Toast.LENGTH_SHORT).show();
                                 inviteNotification.deleteNotification( currUserID, document.getId(),doc.get("teamId").toString(), doc.getId());
                                 newNotifHolder.setVisibility(View.GONE);
+                                AccessSharedPrefs.saveOnTeam(NotificationScreen.this);
+                                TeamCollection tc = new TeamCollection();
+                                tc.addTeamID(doc.get("teamId").toString(),currUserID);
                             }
                         });
 
@@ -208,7 +213,6 @@ public class NotificationScreen extends AppCompatActivity {
         body.setTextColor(textColor);
         body.setText(notif.getFromName());
         body.setTextSize(bodySize);
-
 
         newNotifHolder.addView(header);
         newNotifHolder.addView(body);

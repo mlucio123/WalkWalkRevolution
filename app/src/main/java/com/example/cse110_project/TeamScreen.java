@@ -84,6 +84,10 @@ public class TeamScreen extends AppCompatActivity {
         inviteeEmail.setVisibility(View.GONE);
         inviteeLabel.setVisibility(View.GONE);
 
+        if(AccessSharedPrefs.getOnTeam(this)) {
+            renderOnATeamUI();
+        }
+
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
         DocumentReference docIdRef = rootRef.collection("users").document(deviceID);
@@ -120,6 +124,7 @@ public class TeamScreen extends AppCompatActivity {
                 tc.makeTeam(deviceID);
 //                AccessSharedPrefs.saveTeamID(TeamScreen.this, newTeamId);
 
+                AccessSharedPrefs.saveOnTeam(TeamScreen.this);
                 Toast.makeText(TeamScreen.this, "Team Created!", Toast.LENGTH_SHORT).show();
 
                 //render team screen ui
@@ -154,6 +159,13 @@ public class TeamScreen extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void renderOnATeamUI() {
+        createTeamBtn.setVisibility(View.GONE);
+        inviteBtn.setVisibility(View.VISIBLE);
+        inviteeEmail.setVisibility(View.VISIBLE);
+        inviteeLabel.setVisibility(View.VISIBLE);
     }
 
 

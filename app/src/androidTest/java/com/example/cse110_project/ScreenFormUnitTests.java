@@ -39,10 +39,12 @@ public class ScreenFormUnitTests {
             @Override
             public void perform(RouteScreen activity) {
 
+                int[] colors = {255,0,0};
+                String initials = "RR";
                 RouteCollection routeCol = new RouteCollection();
                 String deviceID = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
                 Route testRoute = new Route(name, location);
-                routeCol.addRoute(testRoute, deviceID);
+                routeCol.addRoute(testRoute, deviceID,initials,colors);
 
                 RouteCollection routec = new RouteCollection();
                 ArrayList<Route> routeArr = routec.qryRoutes;

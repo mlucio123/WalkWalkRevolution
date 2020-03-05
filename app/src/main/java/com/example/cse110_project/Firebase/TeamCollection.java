@@ -373,11 +373,13 @@ public class TeamCollection {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "FOUND Device'S TeamID: " + document.getData().get("teamID"));
+                                Log.d(TAG, "FOUND Device'S TeamID: " + document.get("teamID"));
 
-                                String teamID = document.getData().get("teamID").toString();
+                                if(document.getData().get("teamID") != null) {
+                                    String teamID = document.get("teamID").toString();
 
-                                getTeamUsers(teamID, myCallback);
+                                    getTeamUsers(teamID, myCallback);
+                                }
 
 
                             } else {
@@ -396,6 +398,10 @@ public class TeamCollection {
                 });
 
 
+    }
+
+    public void addTeamID(String teamID, String deviceID) {
+        db.collection("users").document(deviceID).update("teamID", teamID);
     }
 
 
