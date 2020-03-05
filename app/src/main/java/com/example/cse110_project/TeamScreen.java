@@ -47,16 +47,13 @@ public class TeamScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_screen);
 
-        //TODO: set ui based on whether user is on a team
-
-        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-
-
+        // Initialize Firebase Collections
         Log.d(TAG, "created");
         RouteCollection.initFirebase(this);
         UserCollection.initFirebase(this);
         TeamCollection.initFirebase(this);
 
+        // Initialize teamBtn and bottom navigation bar
         addTeamateBtn = (Button) findViewById(R.id.addBtn);
         Intent intent = new Intent(this, AddTeamateScreen.class);
         addTeamateBtn.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +62,6 @@ public class TeamScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -78,6 +72,17 @@ public class TeamScreen extends AppCompatActivity {
             }
         });
 
+        // Fetch list of teammates from database
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.i(TAG, deviceID);
+
+        // Get team id
+
+        // Get list of User IDs
+
+        // Get list of Pending IDs
+
+        // Create Teamate Model list
 
         ArrayList<TeamateModel> list= new ArrayList();
 //        list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,"JINING"));
