@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cse110_project.Firebase.RouteCollection;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.Route;
 
 public class RouteFormScreen extends AppCompatActivity {
 
@@ -260,7 +262,9 @@ public class RouteFormScreen extends AppCompatActivity {
 
                     RouteCollection rc = new RouteCollection();
                     String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                    rc.addRoute(newRoute, deviceID);
+                    String initial = AccessSharedPrefs.getInitial(RouteFormScreen.this);
+                    int[] colors = AccessSharedPrefs.getColors(RouteFormScreen.this);
+                    rc.addRoute(newRoute, deviceID, initial, colors);
 
                     Toast.makeText(RouteFormScreen.this, "Form Submitted!", Toast.LENGTH_SHORT).show();
 

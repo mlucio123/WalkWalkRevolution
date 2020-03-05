@@ -15,9 +15,11 @@
         <activity
             android:name=".WalkScreen"
             android:label="@string/title_activity_intentional_walk_screen"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FirstLoadScreen" />
-        <activity android:name=".RouteScreen" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".FirstLoadScreen"></activity>
+        <activity android:name=".RouteScreen"></activity>
+        <activity android:name=".NotificationScreen"></activity>
+
         <activity android:name=".HomeScreen">
 
             <!-- Set HomeScreen as Main entrance of the APP -->
@@ -27,7 +29,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RouteFormScreen" />
+        <activity android:name=".RouteFormScreen"></activity>
+        <activity android:name=".TeamScreen"></activity>
+
+        <activity android:name=".AddTeamateScreen"></activity>
+        <service android:name="com.example.cse110_project.Firebase.FirebaseMessageService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

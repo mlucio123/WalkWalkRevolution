@@ -1,11 +1,11 @@
-package com.example.cse110_project;
+package com.example.cse110_project.utils;
 
 public class StrideCalculator {
 
     private int ft;
     private int inch;
-    private final int FT_IN_INCH = 12;
-    private final double CONSTANT = 0.413;
+    private static final int FT_IN_INCH = 12;
+    private static final double CONSTANT = 0.413;
 
     public StrideCalculator(int ft, int inch){
         this.ft = ft;
