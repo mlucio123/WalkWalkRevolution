@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
+import com.example.cse110_project.Firebase.TeamCollection;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.Route;
+import com.example.cse110_project.utils.Team;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +48,7 @@ public class RouteScreen extends AppCompatActivity {
     private ArrayList<Route> currentRoutes;
     private static int routesNum = 0;
     public static boolean testing = false;
+    private String TAG = "ROUTE SCREEN: ";
 
     private Route dummyRoute;
 
@@ -67,36 +78,95 @@ public class RouteScreen extends AppCompatActivity {
         RouteCollection rc = new RouteCollection();
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+
         rc.getRoutes(deviceID, new MyCallback() {
                     @Override
                     public void getRoutes(ArrayList<Route> routes) {
 
                         if(testing) {
-                            Log.d("ROUTE SCREEN: ", "adding testing route");
+                            Log.d(TAG, "adding testing route");
                             Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
                             //routes.clear();
                             //routes.add(testRoute);
-                            addElement(testRoute);
+                            LinearLayout outer = findViewById(R.id.routeContain);
+                            addElement(testRoute, outer, false);
                             return;
                         }
 
                         currentRoutes = routes;
                         routesNum = currentRoutes.size();
-                        Log.d("TAG", "SIZE IS = " + routes.size());
+                        Log.d(TAG, "SIZE IS = " + routes.size());
+
+                        LinearLayout outer = findViewById(R.id.routeContain);
 
                         for (int i = 0; i < routes.size(); i++) {
-                            Log.d("TAG", "ROUTE NAME: " + routes.get(i).getName());
+                            Log.d(TAG, "ROUTE NAME: " + routes.get(i).getName());
 
                             // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
 
                             dummyRoute = routes.get(i);
 
-                            addElement(dummyRoute);
+                            addElement(dummyRoute, outer, false);
 
                         }
+
+
                     }
                 });
 
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        DocumentReference docIdRef = rootRef.collection("users").document(deviceID);
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        if (document.get("teamID") != null) {
+                            Log.d(TAG, "THIS USER:" + deviceID + " HAS A TEAM!");
+                            TeamCollection tc = new TeamCollection();
+                            Log.d(TAG, "GETTING TEAM ROUTES RIGHT HERE!");
+                            tc.getTeamRoutesFromDevice(deviceID, new MyCallback() {
+                                @Override
+                                public void getRoutes(ArrayList<Route> routes) {
+
+
+                                    LinearLayout outer = findViewById(R.id.teamrouteContain);
+
+                                    if(testing) {
+                                        Log.d(TAG, "adding testing route");
+                                        Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
+                                        //routes.clear();
+                                        //routes.add(testRoute);
+                                        addElement(testRoute, outer, true);
+                                        return;
+                                    }
+
+                                    Log.d(TAG, "GETTING TEAM ROUTES CALL BACK FUNCTION");
+
+                                    currentRoutes = routes;
+                                    routesNum = currentRoutes.size();
+                                    Log.d(TAG, "TEAM ROUTE SIZE IS = " + routes.size());
+//                                    addMyRoutesTitle();
+
+                                    for (int i = 0; i < routes.size(); i++) {
+                                        Log.d(TAG, "TEAM ROUTE NAME: " + routes.get(i).getName() + " for " + deviceID);
+
+                                        // TODO : CALLS METHOD THAT BUILDS THE ROUTE HERE
+
+                                        dummyRoute = routes.get(i);
+
+                                        addElement(dummyRoute, outer, true);
+
+                                    }
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -119,8 +189,47 @@ public class RouteScreen extends AppCompatActivity {
         }
     }
 
+    public void addMyRoutesTitle() {
+        TextView myRoutesTitle = new TextView(this);
+        int fontColor = Color.parseColor("#FFFFFFFF");
+        LinearLayout routeContain = findViewById(R.id.routeContain);
 
-    public void addElement(Route routeEntry){
+        myRoutesTitle.setText("Your Routes");
+        myRoutesTitle.setTextSize(20);
+        myRoutesTitle.setTextColor(fontColor);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, .6f
+        );
+        myRoutesTitle.setLayoutParams(params);
+        myRoutesTitle.setGravity(Gravity.CENTER);
+
+
+        routeContain.addView(myRoutesTitle);
+    }
+
+    public void addTeamRoutestitle() {
+        TextView myRoutesTitle = new TextView(this);
+        int fontColor = Color.parseColor("#FFFFFFFF");
+        LinearLayout routeContain = findViewById(R.id.routeContain);
+
+        myRoutesTitle.setText("Your Team's Routes");
+        myRoutesTitle.setTextSize(20);
+        myRoutesTitle.setTextColor(fontColor);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, .6f
+        );
+        myRoutesTitle.setLayoutParams(params);
+        myRoutesTitle.setGravity(Gravity.CENTER);
+
+        routeContain.addView(myRoutesTitle);
+    }
+
+
+    public void addElement(Route routeEntry, LinearLayout outer, boolean isTeam){
         int fontColor = Color.parseColor("#FFFFFFFF");
 
         /* Rounded button drawable */
@@ -129,7 +238,7 @@ public class RouteScreen extends AppCompatActivity {
         /* Linear Layouts containers */
 
         /* route contain --> outer most layer */
-        LinearLayout routeContain = findViewById(R.id.routeContain);
+        LinearLayout routeContain = outer;
 
         /* container --> holds all views within routeContain */
         LinearLayout container = new LinearLayout(this);
@@ -229,6 +338,54 @@ public class RouteScreen extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
         ));
+
+
+        /* Created BY */
+
+        LinearLayout createdBy = null;
+        TextView createdByLabel = null;
+        TextView createdByDisplay = null;
+
+        if(isTeam) {
+
+            createdBy = new LinearLayout(this);
+            titleEntry.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    1f
+            ));
+            createdBy.setOrientation(LinearLayout.HORIZONTAL);
+
+
+            createdByLabel = new TextView(this);
+            createdByLabel.setText("Created By:");
+            createdByLabel.setTextColor(fontColor);
+            createdByLabel.setTextSize(20);
+            createdByLabel.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f
+            ));
+
+            Log.d(TAG, "GOT INTO ROUTE SCREEN FOR TEAMS AND GOT CREATED BY " + routeEntry.getCreatedBy());
+
+            int[] colors = routeEntry.getColors();
+            Log.d(TAG, "RECEIVED COLOR FOR THIS USER AS : " + colors.toString());
+
+            int RGB = android.graphics.Color.argb(255, colors[0], colors[1], colors[2]);
+
+            createdByDisplay = new TextView(this);
+            Log.d(TAG, "GETTING CREATED BY TEXT AS " + routeEntry.getCreatedBy());
+            createdByDisplay.setText(routeEntry.getCreatedBy());
+            createdByDisplay.setTextColor(RGB);
+            createdByDisplay.setTextSize(20);
+            createdByDisplay.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 0.4f
+            ));
+
+
+
+        }
 
 
         int fontSmall = 14;
@@ -481,16 +638,25 @@ public class RouteScreen extends AppCompatActivity {
         hidden.addView(deleteBtn);
         startEntry.addView(start);
         startEntry.addView(startDisplay);
+
+        if(isTeam) {
+            createdBy.addView(createdByLabel);
+            createdBy.addView(createdByDisplay);
+        }
+
         titleEntry.addView(title);
         titleEntry.addView(titleDisplay);
         if (routeEntry.getFavorite()) {
-            Log.d("ROUTE SCREEN: ", routeEntry.getId() + " IS FAVORITE ");
+            Log.d(TAG, routeEntry.getId() + " IS FAVORITE ");
             titleEntry.addView(favDisplay);
         } else {
-            Log.d("ROUTE SCREEN: ", routeEntry.getId() + " IS NOT FAVORITE ");
+            Log.d(TAG, routeEntry.getId() + " IS NOT FAVORITE ");
         }
         container.addView(titleEntry);
         container.addView(startEntry);
+        if(isTeam){
+            container.addView(createdBy);
+        }
         container.addView(hidden);
         container.addView(btnHolder);
         routeContain.addView(container);
@@ -554,6 +720,10 @@ public class RouteScreen extends AppCompatActivity {
                 newIntent = new Intent(this, WalkScreen.class);
                 startActivity(newIntent);
                 break;
+            case R.id.navigation_team:
+                newIntent = new Intent(this, TeamScreen.class);
+                startActivity(newIntent);
+                break;
             default:
                 break;
         }
@@ -562,5 +732,33 @@ public class RouteScreen extends AppCompatActivity {
     public static int getRouteNumber() {
         return routesNum;
     }
+
+    /*@Override
+    public void onStart() {
+        /*Log.d(TAG, "Checking for google account");
+        super.onStart();
+        com.google.firebase.auth.FirebaseUser currUser;
+
+        com.google.android.gms.auth.api.signin.GoogleSignInAccount acct =
+                GoogleSignIn.getLastSignedInAccount(this);
+
+        if( acct == null ) {
+            Log.d(TAG, "account not found");
+        } else {
+            Log.d(TAG, "account found " + acct.getDisplayName());
+
+            com.google.firebase.auth.AuthCredential cred = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            currUser = mAuth.getCurrentUser();
+
+            if(currUser == null ) {
+                Log.d(TAG, "user not found in firebase");
+            } else {
+                Log.d(TAG, "user found in firebase");
+                //update UI
+            }
+        }
+
+    }*/
 
 }

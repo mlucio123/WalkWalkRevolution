@@ -1,4 +1,4 @@
-package com.example.cse110_project;
+package com.example.cse110_project.utils;
 
 import android.util.Log;
 
@@ -25,6 +25,10 @@ public class Route extends Observable {
     private String lastCompletedTime;
     private String lastCompletedSteps;
     private String lastCompletedDistance;
+
+    private int[] colors;
+
+    private String createdBy;
 
     private final String TAG = "ROUTE CLASS: ";
 
@@ -78,6 +82,14 @@ public class Route extends Observable {
         this.hard = tags[10];
         this.favorite = tags[11];
     }
+
+    public void setColors(int[] newColors) { this.colors = newColors; }
+
+    public int[] getColors() { return this.colors; }
+
+    public void setCreatedBy(String person) { this.createdBy = person; }
+
+    public String getCreatedBy() { return this.createdBy; }
 
     public void setNotes(String notes){
         this.extraNotes = notes;

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.StrideCalculator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;
@@ -53,7 +56,7 @@ public class HomeScreen extends AppCompatActivity {
     private static final int FEET_IN_MILE = 5280;
     private final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 1;
     private String fitnessServiceKey = "GOOGLE_FIT";
-    public static Boolean USE_GOOGLE_FIT_TESTER = true;
+    public static Boolean USE_GOOGLE_FIT_TESTER = false;
 
 
     /* Member functions */
@@ -221,6 +224,14 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
+        final Intent notifIntent = new Intent(HomeScreen.this, NotificationScreen.class);
+        ImageButton notifButton = (ImageButton) findViewById(R.id.btn_notif);
+        notifButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(notifIntent);
+            }
+        });
     }
 
     @Override
@@ -254,6 +265,10 @@ public class HomeScreen extends AppCompatActivity {
                 break;
             case R.id.navigation_routes:
                 newIntent = new Intent(this, RouteScreen.class);
+                startActivity(newIntent);
+                break;
+            case R.id.navigation_team:
+                newIntent = new Intent(this, TeamScreen.class);
                 startActivity(newIntent);
                 break;
             case R.id.navigation_walk:

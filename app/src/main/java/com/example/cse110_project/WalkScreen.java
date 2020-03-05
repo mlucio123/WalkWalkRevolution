@@ -21,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.fitness.FitnessService;
 import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.StrideCalculator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;
@@ -80,7 +82,7 @@ public class WalkScreen extends AppCompatActivity {
          * Create and start fitnessService
          */
         is_test = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
-        fitnessService = FitnessServiceFactory.create(this, is_test);
+        fitnessService = FitnessServiceFactory.create(this, false);
         fitnessService.setup();
 
         startButton = findViewById(R.id.startWalkMaterial);
@@ -367,6 +369,14 @@ public class WalkScreen extends AppCompatActivity {
                     AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 }
                 newIntent = new Intent(this, RouteScreen.class);
+                startActivity(newIntent);
+                break;
+            case R.id.navigation_team:
+                if(!walking) {
+                    Log.d(TAG, "NOT SAVING TO ROUTE");
+                    AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
+                }
+                newIntent = new Intent(this, TeamScreen.class);
                 startActivity(newIntent);
                 break;
             default:

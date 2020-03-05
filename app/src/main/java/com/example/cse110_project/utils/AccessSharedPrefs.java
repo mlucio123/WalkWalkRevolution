@@ -1,4 +1,4 @@
-package com.example.cse110_project;
+package com.example.cse110_project.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -76,6 +76,51 @@ public class AccessSharedPrefs {
         return prefs.getBoolean("walkStatus", false);
     }
 
+    public static void saveInitial(Context context, String initial) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString("initial", initial);
+        editor.apply();
+    }
+
+    public static String getInitial(Context context) {
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("initial"))
+            return prefs.getString("initial", "");
+
+        return "";
+    }
+
+    public static void saveColors(Context context, int red, int green, int blue){
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putInt("red", red);
+        editor.putInt("green", green);
+        editor.putInt("blue", blue);
+
+        editor.apply();
+    }
+
+    public static int[] getColors(Context context){
+        int[] c = new int[3];
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("red")){
+            c[0] = prefs.getInt("red", 123);
+        }
+
+        if(prefs.contains("green")){
+            c[1] = prefs.getInt("green", 123);
+        }
+
+        if(prefs.contains("blue")){
+            c[2] = prefs.getInt("blue", 123);
+        }
+
+        return c;
+    }
+
     public static void saveWalk(Context context, String timer, String steps, String distance) {
         SharedPreferences prefs = setUp(context);
         SharedPreferences.Editor editor = prefs.edit();
@@ -126,6 +171,34 @@ public class AccessSharedPrefs {
         editor.apply();
     }
 
+    public static void saveUserID(Context context, String newUserID) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString("UserID", newUserID);
+        edit.apply();
+    }
+
+    public static String getUserID(Context context){
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("UserID"))
+            return prefs.getString("UserID", "");
+        return "";
+    }
+
+
+    public static void saveTeamID(Context context, String newTeamID) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString("TeamID", newTeamID);
+        edit.apply();
+    }
+
+    public static String getTeamID(Context context){
+        SharedPreferences prefs = setUp(context);
+        if(prefs.contains("TeamID"))
+            return prefs.getString("TeamID", "");
+        return "";
+    }
 
     public static int getDailyStepsTester(Context context){
         SharedPreferences prefs = setUp(context);
@@ -139,6 +212,18 @@ public class AccessSharedPrefs {
         if(prefs.contains("dailyDistanceTester"))
             return prefs.getInt("dailyDistanceTester", -1);
         return -1;
+    }
+
+    public static void saveOnTeam(Context context) {
+        SharedPreferences prefs = setUp(context);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putBoolean("OnTeam", true);
+        edit.apply();
+    }
+
+    public static boolean getOnTeam(Context context) {
+        SharedPreferences prefs = setUp(context);
+        return (prefs.contains("OnTeam"));
     }
 
 }

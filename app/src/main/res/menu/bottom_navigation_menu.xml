@@ -5,13 +5,18 @@
 
     <item android:id="@+id/navigation_walk"
         android:icon="@drawable/ic_directions_walk_black_24dp"
-        android:title="@string/walk" />
+        android:title="" />
 
     <item android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/home" />
+        android:title="" />
 
     <item android:id="@+id/navigation_routes"
         android:icon="@drawable/ic_format_list_bulleted_black_24dp"
-        android:title="@string/route" />
+        android:title="" />
+
+    <item android:id="@+id/navigation_team"
+        android:icon="@drawable/ic_group_black_24dp"
+        android:title="" />
+
 </menu>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/teamTitle"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0sp"
+            android:layout_marginBottom="0sp"
+            android:fontFamily="@font/lato"
+            android:text="Team"
+            android:textAlignment="center"
+            android:textColor="@color/colorText"
+            android:textSize="45sp" />
+
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@color/colorBackground"
+            android:text="+"
+            android:textColor="@color/colorText"
+            android:textSize="50sp" />
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+
+
+
+    </RelativeLayout>
+<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="https://schemas.android.com/apk/res/android"-->
+<!--        xmlns:app="https://schemas.android.com/apk/res-auto"-->
+<!--        xmlns:tools="https://schemas.android.com/tools"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        tools:context="com.journaldev.recyclerviewmultipleviewtype.MainActivity">-->
+
+<!--        -->
+<!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom">
+
+        <!-- Main content -->
+
+        <Button
+            android:id="@+id/ppWalkBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0sp"
+            android:background="@drawable/btn_rounded"
+            android:drawablePadding="5dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="@string/title_propose_walk_screeen"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="@color/white"
+            app:menu="@menu/bottom_navigation_menu" />
+
+    </FrameLayout>
+
+
+</LinearLayout>

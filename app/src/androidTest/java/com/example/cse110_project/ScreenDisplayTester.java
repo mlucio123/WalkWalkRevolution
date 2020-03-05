@@ -9,6 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.cse110_project.Firebase.RouteCollection;
+import com.example.cse110_project.utils.Route;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,10 +42,12 @@ public class ScreenDisplayTester {
             @Override
             public void perform(RouteScreen activity) {
 
+                int[] colors = {255,0,0};
+                String initials = "RR";
                 RouteCollection routeCol = new RouteCollection();
                 String deviceID = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
                 Route testRoute = new Route(name, location);
-                routeCol.addRoute(testRoute, deviceID);
+                routeCol.addRoute(testRoute, deviceID,initials,colors);
 
                 RouteCollection routec = new RouteCollection();
                 ArrayList<Route> routeArr = routec.qryRoutes;

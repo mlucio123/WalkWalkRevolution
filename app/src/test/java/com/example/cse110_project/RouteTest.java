@@ -2,6 +2,9 @@ package com.example.cse110_project;
 
 import androidx.test.filters.LargeTest;
 
+import com.example.cse110_project.utils.Route;
+
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -37,4 +40,6 @@ public class RouteTest {
         assertEquals("Fun Walk", testRoute.getNotes());
     }
 
+
 }
+
