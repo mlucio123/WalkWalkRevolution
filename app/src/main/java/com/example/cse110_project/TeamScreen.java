@@ -14,7 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.util.Log;
 
 
@@ -22,6 +27,7 @@ import android.util.Log;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
+import com.example.cse110_project.Firebase.teammatesListListener;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Route;
 import com.example.cse110_project.utils.Team;
@@ -35,13 +41,10 @@ public class TeamScreen extends AppCompatActivity {
     private Button addTeamateBtn;
     private MyRecyclerViewAdapter adapter;
     private String TAG = "Team Screen: ";
+    private String teamID;
+
     public static boolean testing = false;
 
-    public boolean hasTeam = false;
-
-    public void setHasTeam(boolean newValue) { this.hasTeam = newValue; }
-
-    public boolean getHasTean() { return this.hasTeam; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +81,17 @@ public class TeamScreen extends AppCompatActivity {
         deviceID = "69f564cdea524279";
         // Get team id
         UserCollection uc = new UserCollection();
-        String teamID = uc.getTeamID(deviceID);
-        uc.getUser(deviceID);
+        TeamCollection tc = new TeamCollection();
+        ArrayList<String> nameList = new ArrayList<String>();
+
+        uc.getTeammatesList(deviceID, new teammatesListListener() {
+            @Override
+            public void onSuccess(String name) {
+                nameList.add((name));
+            }
+        });
+
+
         if (teamID == null) {
             Log.i(TAG, "TeamID is null");
         }

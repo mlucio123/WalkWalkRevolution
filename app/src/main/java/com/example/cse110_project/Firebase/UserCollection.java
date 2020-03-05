@@ -20,6 +20,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class UserCollection {
@@ -27,6 +29,7 @@ public class UserCollection {
     FirebaseFirestore db;
     private final String TAG = "Firebase User";
     private String teamID;
+    private boolean gettingTeamID = true;
 
 
     /* Initialize firebase instance */
@@ -115,9 +118,9 @@ public class UserCollection {
     }
 
     /* Get user's teamID */
-    private void getTeamIdFromFirebase(String deviceID) {
-        DocumentReference docRef = db.collection("users").document(deviceID);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    public void getTeammatesList(String deviceID, final teammatesListListener myListener) {
+        DocumentReference userRef = db.collection("users").document(deviceID);
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -125,7 +128,47 @@ public class UserCollection {
                     if (document.exists()) {
                         String teamID = document.get("teamID").toString();
                         Log.d(TAG, "DocumentSnapshot data: " + teamID);
-                        setTeamID(teamID);
+                        if (teamID == null){
+                            return;
+                        }
+                        else {
+                            DocumentReference teamRef = db.collection("teams").document(teamID);
+                            teamRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()){
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()){
+                                            List<String> userIds = (List<String>) document.get("listOfUserIDs");
+                                            ArrayList<String> nameList = new ArrayList<>();
+                                            for(int i = 0; i < userIds.size(); i++){
+                                                String userID = userIds.get(i);
+                                                DocumentReference currentUserRef = db.collection(("users")).document(userID);
+                                                currentUserRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            DocumentSnapshot document = task.getResult();
+                                                            if (document.exists()) {
+                                                                String firstName = document.get("firstName").toString();
+                                                                String lastName = document.get("lastName").toString();
+                                                                String userName = firstName + " " + lastName;
+                                                                nameList.add(userName);
+                                                                Log.i(TAG, userName);
+
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                            }
+//                                            Log.i(TAG, Arrays.toString(nameList.toArray()));
+//                                            myListener.onSuccess(userName);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -136,13 +179,16 @@ public class UserCollection {
         });
     }
 
-    public void setTeamID(String teamID){
-        this.teamID = teamID;
-    }
-
-    public String getTeamID(String deviceID){
-        getTeamIdFromFirebase(deviceID);
-        return this.teamID;
-    }
+//    public void setTeamID(String teamID){
+//        this.teamID = teamID;
+//        gettingTeamID = false;
+//    }
+//
+//    public String getTeamID(String deviceID){
+//        getTeamIdFromFirebase(deviceID);
+//        while(gettingTeamID);
+////        gettingTeamID = true;
+//        return this.teamID;
+//    }
 
 }

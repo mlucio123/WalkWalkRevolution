@@ -127,6 +127,7 @@ public class RouteScreen extends AppCompatActivity {
                             TeamCollection tc = new TeamCollection();
                             Log.d(TAG, "GETTING TEAM ROUTES RIGHT HERE!");
                             tc.getTeamRoutesFromDevice(deviceID, new MyCallback() {
+
                                 @Override
                                 public void getRoutes(ArrayList<Route> routes) {
 
