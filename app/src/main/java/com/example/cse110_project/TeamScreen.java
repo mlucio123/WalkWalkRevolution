@@ -74,9 +74,11 @@ public class TeamScreen extends AppCompatActivity {
 
         // Fetch list of teammates from database
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        Log.i(TAG, deviceID);
 
         // Get team id
+        TeamCollection tc = new TeamCollection();
+//        String teamID = tc.getTeamID(deviceID);
+//        Log.i(TAG, teamID);
 
         // Get list of User IDs
 
