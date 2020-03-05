@@ -93,27 +93,37 @@ public class SBMT6Test {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("P"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("Prendi"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userHeightFt),
+                allOf(withId(R.id.emailEntry),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         3),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("6"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("test@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.userHeightFt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("6"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.userHeightInch),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        3),
+                                        4),
                                 3),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("0"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("0"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -121,19 +131,22 @@ public class SBMT6Test {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                4),
+                                5),
                         isDisplayed()));
         appCompatButton.perform(click());
         SystemClock.sleep(3000);
-        ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.navigation_routes), withContentDescription("Route"),
+
+        //AFTER SHARED PREFS
+
+        ViewInteraction bottomNavigationItemView3 = onView(
+                allOf(withId(R.id.navigation_routes),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.bottom_navigation),
                                         0),
                                 2),
                         isDisplayed()));
-        bottomNavigationItemView.perform(click());
+        bottomNavigationItemView3.perform(click());
 
         SystemClock.sleep(5000);
 
@@ -146,37 +159,6 @@ public class SBMT6Test {
                                 0),
                         isDisplayed()));
         button.perform(click());
-
-        ViewInteraction button2 = onView(
-                allOf(withText("Start this Route"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                4),
-                        isDisplayed()));
-        button2.perform(click());
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.routeTitleWalkScreen), withText("Regular Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.route_summary),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textView.check(matches(withText("Regular Walk")));
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.walkPageTitle), withText("Walk"),
-                        childAtPosition(
-                                allOf(withId(R.id.headerLayout),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        textView2.check(matches(withText("Walk")));
     }
 
     private static Matcher<View> childAtPosition(

@@ -22,6 +22,7 @@ import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,30 +47,35 @@ public class SBMT1Test {
     private static final String TAG = "SBMT1Test: ";
 
     @Rule
-    public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<HomeScreen>(HomeScreen.class) {
-        @Override
-        protected void beforeActivityLaunched() {
-            AccessSharedPrefs.clearSharedPrefs(InstrumentationRegistry.getInstrumentation().getTargetContext());
-            super.beforeActivityLaunched();
-        }
-    };
+    public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
 
     @Rule
     public GrantPermissionRule mGrantPermissionRule =
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
+    @BeforeClass
+    public static void setUp() {
+        HomeScreen.USE_GOOGLE_FIT_TESTER = true;
+        WalkScreen.USE_TEST_SERVICE = true;
+    }
+
     @Before
+    public void setSharedPrefs() {
+        Log.d("SAVING", "PREFS");
+        AccessSharedPrefs.setUserInfo(mActivityTestRule.getActivity(), "Connor",
+                "Prendiville", 6, 0);
+    }
+
     @After
     public void clearSharedPreferences() {
-        Log.d(TAG, "Clearing shared preferences");
         mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
                 .edit().clear().apply();
     }
 
     @Test
     public void sBMT1Test() {
-        SystemClock.sleep(1000);
+        SystemClock.sleep(5000);
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(
@@ -88,27 +94,37 @@ public class SBMT1Test {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("P"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("Prendi"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userHeightFt),
+                allOf(withId(R.id.emailEntry),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         3),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("6"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("test@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.userHeightFt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("6"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.userHeightInch),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        3),
+                                        4),
                                 3),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("0"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("0"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -116,9 +132,11 @@ public class SBMT1Test {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                4),
+                                5),
                         isDisplayed()));
         appCompatButton.perform(click());
+
+        //AFTER SHARED PREFS
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.homeTitle), withText("Home"),
@@ -126,19 +144,19 @@ public class SBMT1Test {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                0),
+                                1),
                         isDisplayed()));
         textView.check(matches(withText("Home")));
 
-        ViewInteraction textView3 = onView(
+        ViewInteraction textView2 = onView(
                 allOf(withId(R.id.homeDailyStepsCount), withText("0 Steps"),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        2),
+                                        3),
                                 1),
                         isDisplayed()));
-        textView3.check(matches(withText("0 Steps")));
+        textView2.check(matches(withText("0 Steps")));
     }
 
     private static Matcher<View> childAtPosition(
