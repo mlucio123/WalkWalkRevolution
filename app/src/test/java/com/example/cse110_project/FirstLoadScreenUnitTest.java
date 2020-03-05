@@ -1,9 +1,7 @@
 package com.example.cse110_project;
 
-import android.content.SharedPreferences;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -14,7 +12,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.content.Context.MODE_PRIVATE;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)

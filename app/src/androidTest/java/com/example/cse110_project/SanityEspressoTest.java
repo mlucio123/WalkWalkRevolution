@@ -2,6 +2,7 @@ package com.example.cse110_project;
 
 
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -12,12 +13,15 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.example.cse110_project.utils.AccessSharedPrefs;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +51,19 @@ public class SanityEspressoTest {
             GrantPermissionRule.grant(
                     "android.permission.ACCESS_FINE_LOCATION");
 
+    @BeforeClass
+    public static void setUp() {
+        HomeScreen.USE_GOOGLE_FIT_TESTER = true;
+        WalkScreen.USE_TEST_SERVICE = true;
+    }
+
     @Before
+    public void setSharedPrefs() {
+        Log.d("SAVING", "PREFS");
+        AccessSharedPrefs.setUserInfo(mActivityTestRule.getActivity(), "Connor",
+                "Prendiville", 6, 0);
+    }
+
     @After
     public void clearSharedPreferences() {
         mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
@@ -55,8 +71,7 @@ public class SanityEspressoTest {
     }
 
     @Test
-    public void sanityEspressoTest() {
-        SystemClock.sleep(5000);
+    public void sanityTest() {
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(
@@ -75,27 +90,37 @@ public class SanityEspressoTest {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("P"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("Prendi"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userHeightFt),
+                allOf(withId(R.id.emailEntry),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         3),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("6"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("test@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.userHeightFt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("6"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.userHeightInch),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        3),
+                                        4),
                                 3),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("0"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("0"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -103,16 +128,18 @@ public class SanityEspressoTest {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                4),
+                                5),
                         isDisplayed()));
         appCompatButton.perform(click());
+
+        //AFTER SHARED PREFERENCES
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.homeDailyStepsCount), withText("0 Steps"),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        2),
+                                        3),
                                 1),
                         isDisplayed()));
         textView.check(matches(withText("0 Steps")));
@@ -122,7 +149,7 @@ public class SanityEspressoTest {
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        3),
+                                        4),
                                 1),
                         isDisplayed()));
         textView2.check(matches(withText("0 Miles")));
@@ -132,20 +159,11 @@ public class SanityEspressoTest {
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                        4),
+                                        5),
                                 1),
                         isDisplayed()));
         textView3.check(matches(withText("0 Miles")));
 
-        ViewInteraction textView4 = onView(
-                allOf(withId(R.id.homeTitle), withText("Home"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView4.check(matches(withText("Home")));
     }
 
     private static Matcher<View> childAtPosition(

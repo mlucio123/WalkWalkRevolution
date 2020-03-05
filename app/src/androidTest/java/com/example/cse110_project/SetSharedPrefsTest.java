@@ -3,6 +3,7 @@ package com.example.cse110_project;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -68,6 +69,7 @@ public class SetSharedPrefsTest {
 
         //mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
 
+        SystemClock.sleep(1000);
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(
@@ -86,27 +88,37 @@ public class SetSharedPrefsTest {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("P"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("Prendi"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userHeightFt),
+                allOf(withId(R.id.emailEntry),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         3),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("test@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.userHeightFt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("6"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.userHeightInch),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        3),
+                                        4),
                                 3),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("5"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("0"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -114,7 +126,7 @@ public class SetSharedPrefsTest {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                4),
+                                5),
                         isDisplayed()));
         appCompatButton.perform(click());
 
@@ -126,9 +138,9 @@ public class SetSharedPrefsTest {
         int inch = prefs.getInt("heightInch", -1);
 
         Assert.assertEquals("Connor", first);
-        Assert.assertEquals("P", last);
-        Assert.assertEquals(5, height);
-        Assert.assertEquals(5, inch);
+        Assert.assertEquals("Prendi", last);
+        Assert.assertEquals(6, height);
+        Assert.assertEquals(0, inch);
 
 
 

@@ -54,4 +54,6 @@
     <string name="new_route_text">New Route</string>
     <string name="notes_label">Notes</string>
     <string name="route_summary_title">This is a new route!</string>
+    <string name="title_propose_walk_screeen">Propose a Walk</string>
+    <string name="double_zero">00</string>
 </resources>

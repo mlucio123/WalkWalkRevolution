@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/teamTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="0sp"
+        android:layout_marginBottom="0sp"
+        android:fontFamily="@font/lato"
+        android:text="Add Your Teamate"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="45sp" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/createTeamLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/createTeamBtn"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/btn_rounded"
+                    android:text="CREATE TEAM"
+                    android:textColor="@color/colorText" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/invitationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Please enter his/her name and Email"
+                    android:textAlignment="center"
+                    android:textColor="#989797"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="60dp"
+                    android:text="Invitee Name: "
+                    android:textColor="@color/colorText"
+                    android:textSize="22sp" />
+
+                <EditText
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="#ffffff"
+                    android:ems="10"
+                    android:hint="Please enter your teamate’s name"
+                    android:inputType="textPersonName"
+                    android:padding="8dp"
+                    android:textColorHint="#727272" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Invitee Email: "
+                    android:textColor="@color/colorText"
+                    android:textSize="22sp" />
+
+                <EditText
+                    android:id="@+id/inviteeEmail"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="#ffffff"
+                    android:ems="10"
+                    android:hint="Please enter your teamate’s Email"
+                    android:inputType="textEmailAddress"
+                    android:padding="8dp"
+                    android:textColorHint="#727272"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/submitBtn"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/btn_rounded"
+                    android:text="ADD TEAMATE"
+                    android:textColor="@color/colorText" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom">
+
+        <!-- Main content -->
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="@color/white"
+            app:menu="@menu/bottom_navigation_menu" />
+
+    </FrameLayout>
+
+
+</LinearLayout>

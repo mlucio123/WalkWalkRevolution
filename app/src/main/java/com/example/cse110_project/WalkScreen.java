@@ -4,10 +4,6 @@ package com.example.cse110_project;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.SystemClock;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -19,11 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.cse110_project.Firebase.RouteCollection;
-import com.example.cse110_project.fitness.FitnessServiceFactory;
 import com.example.cse110_project.fitness.FitnessService;
-import com.example.cse110_project.fitness.GoogleFitAdapter;
-import com.example.cse110_project.fitness.GoogleFitAdapterTester;
+import com.example.cse110_project.fitness.FitnessServiceFactory;
+import com.example.cse110_project.utils.AccessSharedPrefs;
+import com.example.cse110_project.utils.StrideCalculator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;
@@ -83,7 +82,7 @@ public class WalkScreen extends AppCompatActivity {
          * Create and start fitnessService
          */
         is_test = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
-        fitnessService = FitnessServiceFactory.create(this, is_test);
+        fitnessService = FitnessServiceFactory.create(this, false);
         fitnessService.setup();
 
         startButton = findViewById(R.id.startWalkMaterial);
@@ -146,9 +145,9 @@ public class WalkScreen extends AppCompatActivity {
 
         LinearLayout layout = findViewById(R.id.route_summary);
 
-        Log.d("WALKSCREEN", "THIS IS " +  lastTime);
-        Log.d("WALKSCREEN", "THIS IS " + lastSteps);
-        Log.d("WALKSCREEN", "THIS IS " + lastDistance);
+        Log.d(TAG, "THIS IS " +  lastTime);
+        Log.d(TAG, "THIS IS " + lastSteps);
+        Log.d(TAG, "THIS IS " + lastDistance);
 
 
         if(title == null && start == null && notes == null){
@@ -238,7 +237,7 @@ public class WalkScreen extends AppCompatActivity {
                 walking = false;
                 AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 walkTime = SystemClock.elapsedRealtime() - mChronometer.getBase();
-                Log.d("Walktime is: ", String.valueOf(walkTime));
+                Log.d(TAG, "Walktime is: " + walkTime);
                 startButton.setVisibility(View.VISIBLE);
                 endButton.setVisibility(View.GONE);
                 mChronometer.stop();
@@ -370,6 +369,14 @@ public class WalkScreen extends AppCompatActivity {
                     AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
                 }
                 newIntent = new Intent(this, RouteScreen.class);
+                startActivity(newIntent);
+                break;
+            case R.id.navigation_team:
+                if(!walking) {
+                    Log.d(TAG, "NOT SAVING TO ROUTE");
+                    AccessSharedPrefs.setWalkStartTime(WalkScreen.this, -1);
+                }
+                newIntent = new Intent(this, TeamScreen.class);
                 startActivity(newIntent);
                 break;
             default:
