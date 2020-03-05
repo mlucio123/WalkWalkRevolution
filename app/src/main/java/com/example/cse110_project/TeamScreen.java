@@ -137,6 +137,13 @@ public class TeamScreen extends AppCompatActivity {
 
     }
     */
+//    public void renderOnATeamUI() {
+//        createTeamBtn.setVisibility(View.GONE);
+//        inviteBtn.setVisibility(View.VISIBLE);
+//        inviteeEmail.setVisibility(View.VISIBLE);
+//        inviteeLabel.setVisibility(View.VISIBLE);
+//    }
+
 
     private void selectFragment(MenuItem item){
 
