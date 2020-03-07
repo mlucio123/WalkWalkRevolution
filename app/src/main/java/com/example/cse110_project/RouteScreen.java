@@ -627,12 +627,47 @@ public class RouteScreen extends AppCompatActivity {
             }
         });
 
+
+        /* Propose Walk Button */
+        final Button proposeWalkBtn = new Button(RouteScreen.this);
+        if(isTeam) {
+            proposeWalkBtn.setBackground(buttonBack);
+            proposeWalkBtn.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            proposeWalkBtn.setText("Propose Walk");
+            proposeWalkBtn.setTag(routeEntry);
+            proposeWalkBtn.setVisibility(View.VISIBLE);
+            proposeWalkBtn.setTextColor(fontColor);
+            proposeWalkBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(RouteScreen.this, ProposeWalkScreen.class);
+                    Route dummy = (Route) view.getTag();
+                    intent.putExtra("routeID", dummy.getId());
+                    intent.putExtra("routeName", dummy.getName());
+                    intent.putExtra("routeStart", dummy.getStartingPoint());
+                    intent.putExtra("routeNotes", dummy.getNotes());
+                    intent.putExtra("lastCompletedTime", dummy.getLastCompletedTime());
+                    intent.putExtra("lastCompletedSteps", dummy.getLastCompletedSteps());
+                    intent.putExtra("lastCompletedDistance", dummy.getLastCompletedDistance());
+                    startActivity(intent);
+                }
+            });
+        }
+
+
+
         btnParams.setMargins(150, 50, 150, 0);
 
         btnHolder.setLayoutParams(btnParams);
         newButton.setLayoutParams(btnParams);
         deleteBtn.setLayoutParams(btnParams);
 
+        if(isTeam) {
+            proposeWalkBtn.setLayoutParams(btnParams);
+        }
 
 
         // ADD COMPLETED ELEMENTS
@@ -646,6 +681,9 @@ public class RouteScreen extends AppCompatActivity {
         hidden.addView(stepHolder);
         hidden.addView(newButton);
         hidden.addView(deleteBtn);
+        if(isTeam) {
+            hidden.addView(proposeWalkBtn);
+        }
         startEntry.addView(start);
         startEntry.addView(startDisplay);
 
