@@ -13,10 +13,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Space
-            android:layout_width="10dp"
+
+        <ImageButton
+            android:id="@+id/btn_notif"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_marginEnd="15dp"
+            android:background="#00111010"
+            android:padding="30dp"
+            app:srcCompat="@android:drawable/ic_dialog_email" />
+
 
         <TextView
             android:id="@+id/teamTitle"
@@ -26,19 +32,19 @@
             android:layout_marginTop="0sp"
             android:layout_marginBottom="0sp"
             android:fontFamily="@font/lato"
-            android:text="Team"
+            android:text="@string/teamStr"
             android:textAlignment="center"
             android:textColor="@color/colorText"
             android:textSize="45sp" />
 
         <Button
             android:id="@+id/addBtn"
-            android:layout_width="10dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:background="@color/colorBackground"
-            android:text="+"
+            android:text="@string/plus"
             android:textColor="@color/colorText"
             android:textSize="50sp" />
     </LinearLayout>

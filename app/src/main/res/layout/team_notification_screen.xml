@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="15dp"
+            android:background="#00111010"
+            android:padding="30dp"
+            app:srcCompat="@android:drawable/ic_dialog_email" />
+
+
+        <TextView
+            android:id="@+id/walkNotifTitle"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="0sp"
+            android:layout_marginBottom="0sp"
+            android:fontFamily="@font/lato"
+            android:text="@string/walkNotifStr"
+            android:textAlignment="center"
+            android:textColor="@color/colorText"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/scrollableLayout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/notifcationLayout">
+
+                <!-- put notifs here -->
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/noWalkMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical">
+                <!--android:visibility="gone">-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/noProposedWalk"
+                    android:layout_gravity="center"
+                    android:textSize="40sp"
+                    android:gravity="center"
+                    android:textColor="#FFFFFF">
+                </TextView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/proposedWalkLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                style="?android:attr/buttonBarStyle"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/proposedWalkDetailsTitle"
+                    android:layout_gravity="center"
+                    android:textSize="15sp"
+                    android:textColor="#FFFFFF">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/walkTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_marginRight="10sp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/walkTitle"
+                        android:textColor="#FFFFFF">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/recentSteps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Walk title goes here"
+                        android:textColor="#FFFFFF">
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/startingPointTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginEnd="10sp"
+                        android:text="@string/startingPointTitileLabel">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/startingPoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Starting place title goes here"
+                        android:textColor="#FFFFFF">
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/walkStartTimeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_marginRight="10sp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/showTimeLabel"
+                        android:textColor="#FFFFFF">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/walkStartTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Starting Time Goes Here"
+                        android:textColor="#FFFFFF">
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/createdByTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_marginRight="10sp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/walkCreatorTitle"
+                        android:textColor="#FFFFFF">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/createdBy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Creator's name goes here"
+                        android:textColor="#FFFFFF">
+                    </TextView>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonUpdateSteps"
+                    android:layout_width="250sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_rounded"
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:layout_marginTop="25sp"
+                    android:text="@string/update_steps"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/badTimeDeclineBtn"
+                    android:layout_width="250sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_rounded_red"
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:layout_marginTop="25sp"
+                    android:text="@string/declineBadTimeStr"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/badRouteDeclineBtn"
+                    android:layout_width="250sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_rounded_red"
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:layout_marginTop="25sp"
+                    android:text="@string/declineBadRoute"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
+
+</LinearLayout>
