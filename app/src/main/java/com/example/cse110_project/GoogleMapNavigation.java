@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 public class GoogleMapNavigation {
 
-    private String URL = "https://www.google.com/maps/search/?api=1&query=";
+    private final String URL = "https://www.google.com/maps/search/?api=1&query=";
 
     private String startPosition;
     private String query;
