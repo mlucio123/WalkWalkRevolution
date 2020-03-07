@@ -56,4 +56,8 @@
     <string name="route_summary_title">This is a new route!</string>
     <string name="title_propose_walk_screeen">Propose a Walk</string>
     <string name="double_zero">00</string>
+    <string name="showDateLabel">Date: </string>
+    <string name="slashStr">/</string>
+    <string name="monthEntry">MM</string>
+    <string name="dayEntry">DD</string>
 </resources>
