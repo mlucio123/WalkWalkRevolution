@@ -1,6 +1,8 @@
 package com.example.cse110_project;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -66,17 +69,7 @@ public class HeightEntryTest {
 
     @Test
     public void heightEntryTest() {
-        SystemClock.sleep(5000);
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.firstLoadTitle), withText("Welcome to WWR!"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView.check(matches(withText("Welcome to WWR!")));
-
+        SystemClock.sleep(1000);
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(
@@ -85,7 +78,7 @@ public class HeightEntryTest {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Howard"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Connor"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.userLastName),
@@ -95,27 +88,37 @@ public class HeightEntryTest {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("Lin"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("Prendi"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userHeightFt),
+                allOf(withId(R.id.emailEntry),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         3),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("5"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("test@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.userHeightFt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("6"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.userHeightInch),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        3),
+                                        4),
                                 3),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("9"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("0"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -123,19 +126,22 @@ public class HeightEntryTest {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                4),
+                                5),
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.homeTitle), withText("Home"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView3.check(matches(withText("Home")));
+        SharedPreferences prefs = mActivityTestRule.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+
+        String first = prefs.getString("firstname", "");
+        String last = prefs.getString("lastname", "");
+        int height = prefs.getInt("heightFt", -1);
+        int inch = prefs.getInt("heightInch", -1);
+
+        Assert.assertEquals("Connor", first);
+        Assert.assertEquals("Prendi", last);
+        Assert.assertEquals(6, height);
+        Assert.assertEquals(0, inch);
+
     }
 
     private static Matcher<View> childAtPosition(

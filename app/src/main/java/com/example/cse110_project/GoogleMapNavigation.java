@@ -2,32 +2,46 @@ package com.example.cse110_project;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.view.View;
 import android.widget.TextView;
 
 
 public class GoogleMapNavigation {
 
-    protected final String URL = "https://www.google.com/maps/search/?api=1&query=";
+    private String URL = "https://www.google.com/maps/search/?api=1&query=";
 
-    protected TextView startDisplay;
+    private String startPosition;
+    private String query;
 
-    public GoogleMapNavigation(TextView startDisplay) {
-        this.startDisplay = startDisplay;
+    /*Empty Constructor for unit tests only*/
+    GoogleMapNavigation() {
+
+    }
+
+    GoogleMapNavigation(String startPosition) {
+        this.startPosition = startPosition;
+    }
+
+    GoogleMapNavigation(TextView startPosition) {
+        this.startPosition = startPosition.toString();
     }
 
     public Intent getURL() {
-
-        final String URL = "https://www.google.com/maps/search/?api=1&query=";
-        String name = startDisplay.getText().toString();
-        name.replace(" ", "+");
-        String Query = URL +  name;
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Query));
-
+        this.query = URL +  startPosition.replace(" ", "+");
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(query));
         return browserIntent;
-
     }
 
+    public String getQuery() {
+        return query;
+    }
+
+    public String getUrlPrefix() {
+        return URL;
+    }
+
+    public String getStartPosition() {
+        return startPosition;
+    }
 
 
 }

@@ -1,5 +1,5 @@
 package com.example.cse110_project.fitness;
-import com.example.cse110_project.AccessSharedPrefs;
+import com.example.cse110_project.utils.AccessSharedPrefs;
 
 
 import android.app.Activity;

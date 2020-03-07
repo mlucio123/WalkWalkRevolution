@@ -1,23 +1,8 @@
-package com.example.cse110_project;
+package com.example.cse110_project.utils;
 
-import android.content.Context;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
-import com.google.firebase.FirebaseApp;
-/*
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.core.Context;
-*/
 import android.util.Log;
 
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.core.Context;
-
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
 
 public class Route extends Observable {
@@ -40,6 +25,10 @@ public class Route extends Observable {
     private String lastCompletedTime;
     private String lastCompletedSteps;
     private String lastCompletedDistance;
+
+    private int[] colors;
+
+    private String createdBy;
 
     private final String TAG = "ROUTE CLASS: ";
 
@@ -93,6 +82,14 @@ public class Route extends Observable {
         this.hard = tags[10];
         this.favorite = tags[11];
     }
+
+    public void setColors(int[] newColors) { this.colors = newColors; }
+
+    public int[] getColors() { return this.colors; }
+
+    public void setCreatedBy(String person) { this.createdBy = person; }
+
+    public String getCreatedBy() { return this.createdBy; }
 
     public void setNotes(String notes){
         this.extraNotes = notes;

@@ -1,0 +1,5 @@
+<root>
+    <item name='org.robolectric.RobolectricTestRunner'>
+        <annotation name='java.lang.Deprecated' />
+    </item>
+</root>

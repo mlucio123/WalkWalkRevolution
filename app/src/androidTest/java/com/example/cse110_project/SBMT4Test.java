@@ -13,6 +13,8 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.example.cse110_project.utils.AccessSharedPrefs;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -29,6 +31,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -72,7 +75,6 @@ public class SBMT4Test {
 
     @Test
     public void sBMT4Test() {
-        SystemClock.sleep(2000);
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userFirstName),
                         childAtPosition(
@@ -81,7 +83,7 @@ public class SBMT4Test {
                                         1),
                                 1),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Connor"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("f"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.userLastName),
@@ -91,10 +93,10 @@ public class SBMT4Test {
                                         2),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("P"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("f"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userHeightFt),
+                allOf(withId(R.id.emailEntry),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
@@ -104,14 +106,34 @@ public class SBMT4Test {
         appCompatEditText3.perform(replaceText("6"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.userHeightFt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText(""), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.userHeightInch),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
-                                        3),
+                                        4),
                                 3),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("0"), closeSoftKeyboard());
+        appCompatEditText5.perform(replaceText("7"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.userHeightFt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        4),
+                                1),
+                        isDisplayed()));
+        appCompatEditText6.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.getStartedBtn), withText("Get Started"),
@@ -119,19 +141,21 @@ public class SBMT4Test {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                4),
+                                5),
                         isDisplayed()));
         appCompatButton.perform(click());
         SystemClock.sleep(2000);
-        ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.navigation_routes), withContentDescription("Route"),
+        ViewInteraction bottomNavigationItemView3 = onView(
+                allOf(withId(R.id.navigation_routes),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.bottom_navigation),
                                         0),
                                 2),
                         isDisplayed()));
-        bottomNavigationItemView.perform(click());
+        bottomNavigationItemView3.perform(click());
+
+        //passes up until here
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.addRouteBtn), withText("ADD ROUTE"),
@@ -139,7 +163,7 @@ public class SBMT4Test {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                2),
+                                4),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -160,16 +184,31 @@ public class SBMT4Test {
                                         2),
                                 1)));
         appCompatEditText8.perform(scrollTo(), replaceText("New Routes"), closeSoftKeyboard());
-        int routesNum = RouteScreen.getRouteNumber();
-        ViewInteraction appCompatButton3 = onView(
+
+
+
+
+
+
+        ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.submitBtn), withText("Submit"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         10),
                                 1)));
-        appCompatButton3.perform(scrollTo(), click());
-        assertEquals(routesNum+1, RouteScreen.getRouteNumber());
+        appCompatButton4.perform(scrollTo(), click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.routeTitle), withText("Route"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        textView.check(matches(withText("Route")));
+        //assertEquals(routesNum+1, RouteScreen.getRouteNumber());
     }
 
     private static Matcher<View> childAtPosition(

@@ -47,6 +47,45 @@
 
     </ScrollView>
 
+
+    <TextView
+        android:id="@+id/teamRouteTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25sp"
+        android:layout_marginBottom="15sp"
+        android:fontFamily="@font/lato"
+        android:text="Team Routes"
+        android:textColor="@color/colorText"
+        android:textSize="45sp" />
+
+    <ScrollView
+        android:id="@+id/scrl2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/teamRoutesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/teamrouteContain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
     <Button
         android:id="@+id/addRouteBtn"
         style="?android:attr/buttonBarButtonStyle"
