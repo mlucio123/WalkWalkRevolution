@@ -16,8 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cse110_project.Firebase.FirebaseMessageService;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.notifications.InviteNotification;
 import com.example.cse110_project.notifications.Notification;
@@ -25,6 +27,7 @@ import com.example.cse110_project.notifications.WalkNotification;
 import com.example.cse110_project.notifications.WalkNotificationBuilder;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Team;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
@@ -33,6 +36,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
@@ -42,6 +47,9 @@ public class NotificationScreen extends AppCompatActivity {
     String TAG = NotificationScreen.class.getSimpleName();
     ImageButton cancel;
     CollectionReference chat;
+    FirebaseMessageService service;
+    String messagingToken;
+    String currUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +65,30 @@ public class NotificationScreen extends AppCompatActivity {
             }
         });
 
-        final String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+
+                        String token = task.getResult().getToken();
+
+                        messagingToken = token;
+                        // Log and toast
+                        //String msg = getString('%', token);
+                        Log.d(TAG, token);
+                       // Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+        currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
+        subscribeToNotificationsTopic();
         Log.d("Notification: ", "This is user's id " + currUserID);
         chat = FirebaseFirestore.getInstance().collection("users");
 
@@ -172,9 +203,9 @@ public class NotificationScreen extends AppCompatActivity {
     }
 
     private void subscribeToNotificationsTopic() {
-        String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
 
-   /*     FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
+
+        FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
                 .addOnCompleteListener(task -> {
                             String msg = "Subscribed to notifications";
                             if (!task.isSuccessful()) {
@@ -185,7 +216,7 @@ public class NotificationScreen extends AppCompatActivity {
                         }
                 );
 
-    */
+
     }
 
 
