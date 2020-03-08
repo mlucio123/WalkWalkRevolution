@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.cse110_project.Firebase.ProposeWalkCollection;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
@@ -58,6 +59,8 @@ public class TeamScreen extends AppCompatActivity {
 
     private Button scheduleButton;
     private Button withdrawButton;
+
+    private TextView isScheduleText;
 
     public static boolean testing = false;
 
@@ -108,6 +111,8 @@ public class TeamScreen extends AppCompatActivity {
         badRouteButton.setVisibility(View.GONE);
         scheduleButton.setVisibility(View.GONE);
         withdrawButton.setVisibility(View.GONE);
+
+        isScheduleText = findViewById(R.id.isScheduledText);
 
         Log.d(TAG, "hiding proposed walk layout");
         proposedWalkLayout = findViewById(R.id.proposedWalkLayout);
@@ -169,6 +174,16 @@ public class TeamScreen extends AppCompatActivity {
                                            theTime = document.getData().get("hour").toString() + ":" + document.getData().get("minute").toString() + " " + document.getData().get("month") + "/" + document.getData().get("day") + "/" + document.getData().get("year");
 
 
+                                           String isSchStr = document.getData().get("isScheduled").toString();
+
+                                           boolean val = Boolean.parseBoolean(isSchStr);
+
+                                           if(val) {
+                                               isScheduleText.setText("This walk is scheduled!");
+                                           } else {
+                                               isScheduleText.setText("Not yet!");
+                                           }
+
                                            timeLabel.setText(theTime);
 
                                            proposerLabel.setText(proposedBy);
@@ -223,10 +238,29 @@ public class TeamScreen extends AppCompatActivity {
                 TeamCollection tc = new TeamCollection();
                 tc.setUserResponseToWalk(deviceID, "bad route");
                 Toast.makeText(TeamScreen.this, "Bad Route!", Toast.LENGTH_SHORT).show();
-
             }
         });
 
+        scheduleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProposeWalkCollection pwc = new ProposeWalkCollection();
+                pwc.setScheduled(deviceID);
+                isScheduleText.setText("This walk is scheduled!");
+                Toast.makeText(TeamScreen.this, "Scheduled Proposed Walk!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        withdrawButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProposeWalkCollection pwc = new ProposeWalkCollection();
+                pwc.withdrawWalk(deviceID);
+                proposedWalkLayout.setVisibility(View.GONE);
+                Toast.makeText(TeamScreen.this, "Withdraw Proposed Walk!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Initialize teamBtn and bottom navigation bar
         addTeamateBtn = (Button) findViewById(R.id.addBtn);
