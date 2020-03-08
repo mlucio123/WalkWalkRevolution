@@ -209,6 +209,90 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/acceptsCountLabel"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="10sp"
+                android:layout_height="wrap_content"
+                android:text="Accept:"
+                android:textColor="#FFFFFF">
+            </TextView>
+
+            <TextView
+                android:id="@+id/acceptsPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#FFFFFF">
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/badWalksLabel"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="10sp"
+                android:layout_height="wrap_content"
+                android:text="Bad Walk:"
+                android:textColor="#FFFFFF">
+            </TextView>
+
+            <TextView
+                android:id="@+id/badTimePeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#FFFFFF">
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/badRouteLabel"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="10sp"
+                android:layout_height="wrap_content"
+                android:text="Bad Route:"
+                android:textColor="#FFFFFF">
+            </TextView>
+
+            <TextView
+                android:id="@+id/badRoutePeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#FFFFFF">
+            </TextView>
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/acceptWalkButton"
             android:layout_width="250sp"
