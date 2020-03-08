@@ -69,6 +69,7 @@ public class TeamCollection {
     }
 
     public void makeTeam(String deviceID) {
+        Log.i(TAG, "MAKING TEAM for: " + deviceID);
         Map<String, Object> teamMap = new HashMap<>();
         ArrayList<String> userIDs = new ArrayList<String>();
         userIDs.add(deviceID);
@@ -98,6 +99,7 @@ public class TeamCollection {
 
     public String getTeamID(String deviceID) {
         DocumentReference docRef = db.collection("teams").document(deviceID);
+        Log.i(TAG, docRef.getId().toString());
         return docRef.getId();
 
     }
@@ -153,30 +155,97 @@ public class TeamCollection {
 
 
 
-    public void addToTeamPendingList(String teamID, String newUserID) {
+//    public void addToTeamPendingList(String teamID, String newUserID) {
+//
+//        Map<String, Object> userMap = new HashMap<>();
+//        userMap.put("userID", newUserID);
+//
+//
+//        db.collection("teams")
+//                .document(teamID)
+//                .collection("listOfPendingUserIds")
+//                .add(userMap)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d(TAG, newUserID + " is added to " + teamID + "'s pending list!");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error adding document", e);
+//                    }
+//                });
+//
+//
+//    }
 
-        Map<String, Object> userMap = new HashMap<>();
-        userMap.put("userID", newUserID);
+    public void addToTeamPendingList(String deviceID, TeammatesListListener myListener){
+        Log.d(TAG, "DEVICE ID: " + deviceID);
+        DocumentReference userRef = db.collection("users").document(deviceID);
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Object teamIDObj = document.get("teamID");
 
+                        // TODO: handle no teammate case
+                        if (teamIDObj == null){
+                            makeTeam(deviceID);
+//                            String teamID = document.get("teamID").toString();
+//                            Log.d(TAG, "CREATE NEW TEAMID: " + teamID);
+                        }
+                        else {
+                            return;
+//                            String teamID = teamIDObj.toString();
+//                            Log.d(fTAG, "TEAM ID: " + teamID);
+//                            DocumentReference teamRef = db.collection("teams").document(teamID);
+//                            teamRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                    if (task.isSuccessful()){
+//                                        DocumentSnapshot document = task.getResult();
+//                                        if (document.exists()) {
+//                                            List<String> userIds = (List<String>) document.get("listOfUserIDs");
+//                                            Log.i(TAG, "FOUND LIST OF USERS" + userIds.toString());
+//
+//                                            for (int i = 0; i < userIds.size(); i++) {
+//                                                String userID = userIds.get(i);
+//                                                DocumentReference currentUserRef = db.collection(("users")).document(userID);
+//                                                currentUserRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                                                    @Override
+//                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                                        if (task.isSuccessful()) {
+//                                                            DocumentSnapshot document = task.getResult();
+//                                                            if (document.exists()) {
+//                                                                String firstName = document.get("firstName").toString();
+//                                                                String lastName = document.get("lastName").toString();
+//                                                                String userName = firstName + " " + lastName;
+//                                                                Log.i(TAG, "CURRENT USERNAME: " + userName);
+//                                                                myListener.onSuccess(userName);
+//                                                            }
+//
+//                                                        }
+//                                                    }
+//                                                });
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            });
+                        }
 
-        db.collection("teams")
-                .document(teamID)
-                .collection("listOfPendingUserIds")
-                .add(userMap)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, newUserID + " is added to " + teamID + "'s pending list!");
+                    } else {
+                        Log.d(TAG, "No such document");
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-
-
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
 
@@ -197,7 +266,7 @@ public class TeamCollection {
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         Log.d(TAG, "Send an invite to " + toUserID + " from team " + teamID + " by " + fromUserID);
-                        addToTeamPendingList(teamID, toUserID);
+//                        addToTeamPendingList(teamID, toUserID);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

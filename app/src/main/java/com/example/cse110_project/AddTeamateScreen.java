@@ -2,6 +2,7 @@ package com.example.cse110_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
+import com.example.cse110_project.Firebase.TeammatesListListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -46,6 +48,14 @@ public class AddTeamateScreen extends AppCompatActivity {
         addTeammateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                TeamCollection tc = new TeamCollection();
+                tc.addToTeamPendingList(deviceID, new TeammatesListListener() {
+                    @Override
+                    public void onSuccess(String name) {
+                        return;
+                    }
+                });
                 // Check if user has a team
                     // create team if not and add user
                     // else get team id
