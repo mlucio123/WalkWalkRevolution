@@ -51,7 +51,7 @@
                 android:textSize="22sp" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/inviteeName"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -75,7 +75,7 @@
                 android:textSize="22sp" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/inviteeEmail"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

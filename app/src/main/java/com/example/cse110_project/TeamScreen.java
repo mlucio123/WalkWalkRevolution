@@ -28,9 +28,6 @@ import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
 import com.example.cse110_project.Firebase.TeammatesListListener;
-import com.example.cse110_project.utils.AccessSharedPrefs;
-import com.example.cse110_project.utils.Route;
-import com.example.cse110_project.utils.Team;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -88,6 +85,12 @@ public class TeamScreen extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(adapter);
 
+        TeammatesListListener tm = new TeammatesListListener() {
+            @Override
+            public void onSuccess(String name) {
+                return;
+            }
+        };
         // Get list of User IDs
         uc.getTeammatesList(deviceID, new TeammatesListListener() {
             @Override
@@ -100,6 +103,7 @@ public class TeamScreen extends AppCompatActivity {
             }
         });
 
+        // Get list of pending User IDs
         uc.getPendingTeammatesList(deviceID, new TeammatesListListener() {
             @Override
             public void onSuccess(String name) {
