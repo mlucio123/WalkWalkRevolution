@@ -5,35 +5,22 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
+
 import android.content.Intent;
 import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-import java.util.ArrayList;
-import android.util.Log;
-
 
 
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
-import com.example.cse110_project.utils.AccessSharedPrefs;
-import com.example.cse110_project.utils.Route;
-import com.example.cse110_project.utils.Team;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class TeamScreen extends AppCompatActivity {
@@ -45,6 +32,7 @@ public class TeamScreen extends AppCompatActivity {
 
 
     private Button inviteBtn;
+    private ImageButton notifsButton;
     private EditText inviteeEmail;
     private TextView inviteeLabel;
     private String TAG = "Team Screen: ";
@@ -64,6 +52,13 @@ public class TeamScreen extends AppCompatActivity {
 
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        notifsButton = findViewById(R.id.walkNotifButton);
+        notifsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchNotifScreen();
+            }
+        });
 
         // Initialize Firebase Collections
         Log.d(TAG, "created");
@@ -110,14 +105,19 @@ public class TeamScreen extends AppCompatActivity {
         proposeWalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lauchProposeWalkScreen();
+                launchProposeWalkScreen();
             }
         });
 
     }
 
-    public void lauchProposeWalkScreen() {
+    public void launchProposeWalkScreen() {
         Intent intent = new Intent(this, ProposeWalkScreen.class);
+        startActivity(intent);
+    }
+
+    public void launchNotifScreen() {
+        Intent intent = new Intent(this, TeamNotificationScreen.class);
         startActivity(intent);
     }
 

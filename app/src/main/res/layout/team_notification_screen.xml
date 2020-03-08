@@ -14,15 +14,10 @@
         android:orientation="horizontal">
 
 
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
+        <Space
+            android:layout_width="10dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="15dp"
-            android:background="#00111010"
-            android:padding="30dp"
-            app:srcCompat="@android:drawable/ic_dialog_email" />
-
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/walkNotifTitle"
@@ -36,6 +31,11 @@
             android:textAlignment="center"
             android:textColor="@color/colorText"
             android:textSize="30sp" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
@@ -52,7 +52,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/notifcationLayout">
+                android:orientation="vertical"
+                android:id="@+id/notificationLayout">
 
                 <!-- put notifs here -->
 
@@ -212,7 +213,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/buttonUpdateSteps"
+                    android:id="@+id/acceptWalkButton"
                     android:layout_width="250sp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
