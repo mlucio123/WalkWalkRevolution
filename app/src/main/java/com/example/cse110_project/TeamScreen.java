@@ -27,7 +27,7 @@ import android.util.Log;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
-import com.example.cse110_project.Firebase.teammatesListListener;
+import com.example.cse110_project.Firebase.TeammatesListListener;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Route;
 import com.example.cse110_project.utils.Team;
@@ -79,9 +79,7 @@ public class TeamScreen extends AppCompatActivity {
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         // Get team id
         UserCollection uc = new UserCollection();
-        TeamCollection tc = new TeamCollection();
         ArrayList<TeamateModel> list= new ArrayList();
-//        deviceID = "69f564cdea524279";
 
         MultiViewTypeAdapter adapter = new MultiViewTypeAdapter(list, this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
@@ -90,9 +88,8 @@ public class TeamScreen extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(adapter);
 
-//        list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE, "Jining"));
-
-        uc.getTeammatesList(deviceID, new teammatesListListener() {
+        // Get list of User IDs
+        uc.getTeammatesList(deviceID, new TeammatesListListener() {
             @Override
             public void onSuccess(String name) {
                 // Create Teammate Model list
@@ -103,8 +100,14 @@ public class TeamScreen extends AppCompatActivity {
             }
         });
 
+        uc.getPendingTeammatesList(deviceID, new TeammatesListListener() {
+            @Override
+            public void onSuccess(String name) {
+                list.add(new TeamateModel(TeamateModel.PENDING_TYPE,name));
+                adapter.notifyDataSetChanged();
+            }
+        });
 
-        // Get list of User IDs
 
         // Get list of Pending IDs
 
