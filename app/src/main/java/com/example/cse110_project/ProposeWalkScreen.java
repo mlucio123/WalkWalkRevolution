@@ -60,6 +60,7 @@ public class ProposeWalkScreen extends AppCompatActivity {
 
                     Intent intent = getIntent();
                     String routeID = intent.getStringExtra("routeID");
+                    String routeStart = intent.getStringExtra("routeStart");
 
                     info.put("timestamp", FieldValue.serverTimestamp());
                     info.put("walkingName", walkName.getText().toString());
@@ -75,6 +76,7 @@ public class ProposeWalkScreen extends AppCompatActivity {
                     info.put("declineBadRoute", Arrays.asList());
                     info.put("proposedBy", deviceID);
                     info.put("routeID", routeID);
+                    info.put("startPosition", routeStart);
 
                     pwc.getTeamID(deviceID, info, "propose");
 
