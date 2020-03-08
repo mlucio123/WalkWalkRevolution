@@ -1,10 +1,13 @@
 package com.example.cse110_project.Firebase;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.cse110_project.WalkScreen;
+import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RouteCollection {
@@ -46,15 +50,18 @@ public class RouteCollection {
 
 
     /* add routes along with device ID */
-    public void addRoute(Route addRoute, String deviceID, String initial, int[] colors) {
+    public void addRoute(Route addRoute, String deviceID, String initial, int[] colors,
+                         String timer, String steps, String distance) {
 
         Map<String, Object> route = addRoute.getFeatureMap();
+        route.put("initials", initial);
         route.put("deviceID", deviceID);
         route.put("createdBy", initial);
         route.put("red", colors[0]);
         route.put("green", colors[1]);
         route.put("blue", colors[2]);
         Log.d(TAG, "Adding COLORS to Route: " + colors[0] +", " + colors[1] + ", " + colors[2]);
+
 
          // Add a new document with a generated ID
         db.collection("routes")
@@ -63,6 +70,8 @@ public class RouteCollection {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with Route-ID: " + documentReference.getId());
+                        addToCompletedRoutes(deviceID, documentReference.getId(), addRoute.getLastCompletedTime(), addRoute.getLastCompletedDistance(), addRoute.getLastCompletedSteps());
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -74,15 +83,38 @@ public class RouteCollection {
     }
 
 
+
     /* Update walking stats to existing routes */
-    public void updateRouteStats(String id, String lastCompletedTime, String lastCompletedSteps, String lastCompletedDistance) {
+    public void updateRouteStats(String id, String deviceID, String lastCompletedTime, String lastCompletedSteps, String lastCompletedDistance, String initials) {
+
+        //if route not is already completed, add to completed routes
+
+        addToCompletedRoutes(id, deviceID, lastCompletedSteps, lastCompletedDistance, lastCompletedTime);
 
         db.collection("routes").document(id)
                 .update(
                         "lastCompletedTime", lastCompletedTime,
                         "lastCompletedSteps", lastCompletedSteps,
-                        "lastCompletedDistance", lastCompletedDistance
+                        "lastCompletedDistance", lastCompletedDistance,
+                        "initials", initials
                 );
+    }
+
+    public void addToCompletedRoutes(String routeID, String userID, String steps, String distance,
+                                     String time) {
+        Log.d(TAG, "saving route " + routeID + " to user " + userID);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("distance", distance);
+        map.put("steps", steps);
+        map.put("time", time);
+
+        db.collection("users")
+                .document(userID)
+                .collection("completedRoutes")
+                .document(routeID)
+                .set(map);
+
     }
 
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
@@ -69,6 +70,7 @@ public class WalkScreen extends AppCompatActivity {
     private TextView textSteps;
     private TextView textDistance;
     private FitnessService fitnessService;
+    private String deviceID;
 
     public static boolean walking;
     private boolean is_test;
@@ -77,6 +79,8 @@ public class WalkScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.walk_screen);
+
+        deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         /*
          * Create and start fitnessService
@@ -251,20 +255,24 @@ public class WalkScreen extends AppCompatActivity {
                 mChronometer.stop();
                 mChronometer.setEnabled(false);
 
+                Log.d(TAG, "Getting walk stats");
                 String timer = mChronometer.getText().toString();
                 String steps = textSteps.getText().toString();
                 String distance = textDistance.getText().toString();
+                String initials = AccessSharedPrefs.getInitial(WalkScreen.this);
                 AccessSharedPrefs.saveWalk(WalkScreen.this, timer, steps, distance);
 
                 if(routeID == null) {
+                    Log.d(TAG, "route is not in the db (null)");
                     Intent intent = new Intent(WalkScreen.this, RouteFormScreen.class);
                     intent.putExtra("completedTime", timer);
                     intent.putExtra("stepCount", steps);
                     intent.putExtra("distance", distance);
                     startActivity(intent);
                 } else {
+                    Log.d(TAG, "Route is in db, updating stats");
                     RouteCollection rc = new RouteCollection();
-                    rc.updateRouteStats(routeID, timer, steps, distance);
+                    rc.updateRouteStats(routeID, deviceID, steps, distance, timer, initials);
                     Toast.makeText(WalkScreen.this, "You successfully updated your walk.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(WalkScreen.this, RouteScreen.class);
                     startActivity(intent);
