@@ -47,15 +47,16 @@ public class ProposeWalkCollection {
 
     public void proposeWalkToTeam(String teamID, Map<String, Object> infoMap){
 
-        infoMap.put("Dummy", "info");
+//        infoMap.put("Dummy", "info");
 
         db.collection("teams")
                 .document(teamID)
                 .collection("proposeWalk")
-                .add(infoMap)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                .document(teamID)
+                .set(infoMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Propose a walk to " + teamID);
                     }
                 })
@@ -105,7 +106,6 @@ public class ProposeWalkCollection {
                 });
 
     }
-
 
 
 }
