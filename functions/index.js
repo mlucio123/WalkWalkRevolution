@@ -12,10 +12,10 @@ exports.sendInvite = functions.firestore
      if (document) {
        var message = {
          notification: {
-           title: document.from + ' sent you a message',
-           body: document.text
+           title: 'You have a Team Invitation',
+           body: document.fromUserID + ' from Team: ' + document.teamId + ' has sent you a team Invite'
          },
-         topic: context.params.userId
+         topic: context.params.userID
        };
 
        return admin.messaging().send(message)
