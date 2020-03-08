@@ -3,7 +3,9 @@ package com.example.cse110_project;
 import android.os.Bundle;
 
 import com.example.cse110_project.Firebase.InvitationCallback;
+import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.notifications.InviteNotification;
+import com.example.cse110_project.utils.Team;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.api.Distribution;
@@ -34,7 +36,17 @@ public class TeamNotificationScreen extends AppCompatActivity {
         in.getUserRepsonses(deviceID, new InvitationCallback() {
             @Override
             public void getUsers(String userInitial, String action) {
-                Log.d(TAG, userInitial + " has " + action + " the TEAM");
+                Log.d(TAG, userInitial + " has " + action + " to join the TEAM");
+
+            }
+        });
+
+
+        TeamCollection tc = new TeamCollection();
+        tc.getWalkingResponses(deviceID, new InvitationCallback() {
+            @Override
+            public void getUsers(String userInitial, String action) {
+                Log.d(TAG, userInitial + " has responded " + action + " for the WALK");
             }
         });
 

@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.cse110_project.Firebase.RouteCollection;
@@ -115,6 +116,35 @@ public class TeamScreen extends AppCompatActivity {
                 }
             });
 
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TeamCollection tc = new TeamCollection();
+                tc.setUserResponseToWalk(deviceID, "join walk");
+                Toast.makeText(TeamScreen.this, "Joining Walk!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        badTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TeamCollection tc = new TeamCollection();
+                tc.setUserResponseToWalk(deviceID, "bad time");
+                Toast.makeText(TeamScreen.this, "Bad Time!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        badRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TeamCollection tc = new TeamCollection();
+                tc.setUserResponseToWalk(deviceID, "bad route");
+                Toast.makeText(TeamScreen.this, "Bad Route!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
         // Initialize teamBtn and bottom navigation bar
