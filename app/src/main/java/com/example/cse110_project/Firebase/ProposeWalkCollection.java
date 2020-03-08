@@ -17,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class ProposeWalkCollection {
@@ -71,7 +73,7 @@ public class ProposeWalkCollection {
     }
 
 
-    public void getTeamID(String deviceID, Map<String, Object> infoMap) {
+    public void getTeamID(String deviceID, Map<String, Object> infoMap, String rule) {
 
         db.collection("users")
                 .document(deviceID)
@@ -86,7 +88,14 @@ public class ProposeWalkCollection {
 
                                 if(document.getData().get("teamID") != null) {
                                     String teamID = document.get("teamID").toString();
-                                    proposeWalkToTeam(teamID, infoMap);
+
+                                    if(rule.equals("propose")) {
+                                        proposeWalkToTeam(teamID, infoMap);
+                                    } else if(rule.equals("getResponse")) {
+                                        getResponseCount(teamID);
+                                    }
+
+
                                 }
 
 
@@ -106,6 +115,45 @@ public class ProposeWalkCollection {
                 });
 
     }
+
+    public void getResponseCount(String teamID) {
+
+        db.collection("teams")
+                .document(teamID)
+                .collection("proposeWalk")
+                .document(teamID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                // TODO : GET ACCEPTED / DECLINED COUNTS
+//                                List<String> accept = Arrays.asList(a);
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error at getTeamRoutesFromDevice" , e);
+                    }
+                });
+
+
+    }
+
+
+
+
 
 
 }

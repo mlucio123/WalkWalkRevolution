@@ -76,7 +76,7 @@ public class ProposeWalkScreen extends AppCompatActivity {
                     info.put("proposedBy", deviceID);
                     info.put("routeID", routeID);
 
-                    pwc.getTeamID(deviceID, info);
+                    pwc.getTeamID(deviceID, info, "propose");
 
                     Toast.makeText(ProposeWalkScreen.this, "You proposed a walk!", Toast.LENGTH_SHORT).show();
 

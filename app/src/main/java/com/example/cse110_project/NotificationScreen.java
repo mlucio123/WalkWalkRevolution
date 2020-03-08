@@ -57,6 +57,8 @@ public class NotificationScreen extends AppCompatActivity {
             }
         });
 
+
+
         final String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
         Log.d("Notification: ", "This is user's id " + currUserID);
         chat = FirebaseFirestore.getInstance().collection("users");
