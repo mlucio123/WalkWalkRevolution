@@ -9,10 +9,10 @@ import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.notifications.InviteNotification;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Team;
->>>>>>> feature/ProposeWalk/firebaseUpload
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.api.Distribution;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -53,9 +53,9 @@ public class TeamNotificationScreen extends AppCompatActivity {
                 .addSnapshotListener((userSnapShot, error) -> {
             for(DocumentSnapshot userDoc : userSnapShot.getDocuments()){
                 String teamID = userDoc.get("teamID").toString();
-                db.collection("teams")
-                        .document(teamID)
-                        .collection("responses")
+                DocumentReference team = db.collection("teams")
+                        .document(teamID);
+                        team.collection("responses")
                         .get()
                         .addOnSuccessListener((teamNotifSnapShot) -> {
                             for(DocumentSnapshot notif: teamNotifSnapShot.getDocuments()){
@@ -66,9 +66,28 @@ public class TeamNotificationScreen extends AppCompatActivity {
                                 add.setTextColor(textColor);
                                 add.setTextSize(20);
                                 LinearLayout contain = findViewById(R.id.inviteResultContainer);
-                                contain.addView(add);
+                                if (!deviceId.equals(fromDevice)) {
+                                    contain.addView(add);
+                                }
                             }
                         });
+                        team.collection("responsesToWalk")
+                                .get()
+                                .addOnSuccessListener((teamNotifSnapShot) -> {
+                                    for(DocumentSnapshot notif: teamNotifSnapShot.getDocuments()){
+                                        String response = notif.get("response").toString();
+                                        String fromDevice = notif.get("deviceID").toString();
+                                        TextView add = new TextView(this);
+                                        add.setText(fromDevice + "'s response to your proposed walk is " + response);
+                                        add.setTextColor(textColor);
+                                        add.setTextSize(20);
+                                        LinearLayout contain = findViewById(R.id.inviteResultContainer);
+                                        //ensure only notifs from other teammates are displayed
+                                        if (!deviceId.equals(fromDevice)) {
+                                            contain.addView(add);
+                                        }
+                                    }
+                                });
             }
         });
 
