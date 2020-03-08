@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class TeamNotificationScreen extends AppCompatActivity {
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

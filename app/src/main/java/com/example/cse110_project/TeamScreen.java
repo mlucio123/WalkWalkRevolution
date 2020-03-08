@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -20,7 +21,12 @@ import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class TeamScreen extends AppCompatActivity {
@@ -29,6 +35,7 @@ public class TeamScreen extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private Button addTeamateBtn;
     private MyRecyclerViewAdapter adapter;
+    private LinearLayout proposedWalkLayout;
 
 
     private Button inviteBtn;
@@ -36,6 +43,15 @@ public class TeamScreen extends AppCompatActivity {
     private EditText inviteeEmail;
     private TextView inviteeLabel;
     private String TAG = "Team Screen: ";
+
+    private TextView propWalkLabel;
+    private TextView startingPointLabel;
+    private TextView timeLabel;
+    private TextView proposerLabel;
+
+    private Button acceptButton;
+    private Button badTimeButton;
+    private Button badRouteButton;
 
     public static boolean testing = false;
 
@@ -52,6 +68,15 @@ public class TeamScreen extends AppCompatActivity {
 
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        // Initialize Firebase Collections
+        Log.d(TAG, "created");
+        RouteCollection.initFirebase(this);
+        UserCollection.initFirebase(this);
+        TeamCollection.initFirebase(this);
+
+        inviteBtn = (Button) findViewById(R.id.addBtn);
+
+        //enable team notif screen
         notifsButton = findViewById(R.id.walkNotifButton);
         notifsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,13 +85,35 @@ public class TeamScreen extends AppCompatActivity {
             }
         });
 
-        // Initialize Firebase Collections
-        Log.d(TAG, "created");
-        RouteCollection.initFirebase(this);
-        UserCollection.initFirebase(this);
-        TeamCollection.initFirebase(this);
+        propWalkLabel = findViewById(R.id.walkTitle);
+        startingPointLabel = findViewById(R.id.startingPoint);
+        timeLabel = findViewById(R.id.walkStartTime);
+        proposerLabel = findViewById(R.id.createdByTitle);
 
-        inviteBtn = (Button) findViewById(R.id.addBtn);
+        acceptButton = findViewById(R.id.acceptWalkButton);
+        badTimeButton = findViewById(R.id.badTimeDeclineBtn);
+        badRouteButton = findViewById(R.id.badRouteDeclineBtn);
+
+        Log.d(TAG, "hiding proposed walk layout");
+        proposedWalkLayout = findViewById(R.id.proposedWalkLayout);
+        proposedWalkLayout.setVisibility(View.GONE);
+
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        DocumentReference docIdRef = rootRef.collection("teams")
+                .document("EVUPjBYSoN3DjvDS4gI3")
+                .collection("proposeWalk").document();
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Log.d(TAG, "Checking if team has proposed walk");
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    Log.d(TAG, "team has proposed walk, showing info");
+                    proposedWalkLayout.setVisibility(View.VISIBLE);
+                    //set fields
+                    }
+                }
+            });
 
 
 
