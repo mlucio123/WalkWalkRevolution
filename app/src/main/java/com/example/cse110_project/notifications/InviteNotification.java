@@ -83,6 +83,8 @@ public class InviteNotification implements Notification {
         });
 
 
+
+
         db.collection("users")
                 .document(device)
                 .collection("invitations")
