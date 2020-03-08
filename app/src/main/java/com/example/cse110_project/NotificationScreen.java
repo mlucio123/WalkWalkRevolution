@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.Firebase.FirebaseMessageService;
+import com.example.cse110_project.Firebase.InvitationCallback;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.notifications.InviteNotification;
 import com.example.cse110_project.notifications.Notification;
@@ -85,6 +87,7 @@ public class NotificationScreen extends AppCompatActivity {
 
         currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
         subscribeToNotificationsTopic();
+
         Log.d("Notification: ", "This is user's id " + currUserID);
         chat = FirebaseFirestore.getInstance().collection("users");
 

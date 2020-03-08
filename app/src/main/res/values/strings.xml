@@ -59,6 +59,10 @@
     <string name="walkNotifStr">Walk Notifications</string>
     <string name="title_propose_walk_screeen">Propose a Walk</string>
     <string name="double_zero">00</string>
+    <string name="showDateLabel">Date: </string>
+    <string name="slashStr">/</string>
+    <string name="monthEntry">MM</string>
+    <string name="dayEntry">DD</string>
     <string name="title_activity_team_notification_screen">TeamNotificationScreen</string>
     <string name="walkTitileLabel">Walk: </string>
     <string name="startingPointTitileLabel">Starting Point: </string>
