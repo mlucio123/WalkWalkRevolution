@@ -1,12 +1,17 @@
 package com.example.cse110_project;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.cse110_project.Firebase.InvitationCallback;
 import com.example.cse110_project.notifications.InviteNotification;
+import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.api.Distribution;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,16 +22,53 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class TeamNotificationScreen extends AppCompatActivity {
-
-    private String TAG = "TEAM NOTIF SCREEN : ";
+    String TAG = TeamNotificationScreen.class.getSimpleName();
+    ImageButton cancel;
+    FirebaseFirestore db;
+    String deviceId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_notification_screen);
 
-        
+        cancel = (ImageButton) findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TeamNotificationScreen.this, HomeScreen.class );
+                startActivity(intent);
+            }
+        });
+        int textColor = Color.parseColor("#FFFFFFFF");
+        deviceId = AccessSharedPrefs.getUserID(TeamNotificationScreen.this);
+        db = FirebaseFirestore.getInstance();
+        db.collection("users")
+                .whereEqualTo("deviceID", deviceId)
+                .addSnapshotListener((userSnapShot, error) -> {
+            for(DocumentSnapshot userDoc : userSnapShot.getDocuments()){
+                String teamID = userDoc.get("teamID").toString();
+                db.collection("teams")
+                        .document(teamID)
+                        .collection("responses")
+                        .get()
+                        .addOnSuccessListener((teamNotifSnapShot) -> {
+                            for(DocumentSnapshot notif: teamNotifSnapShot.getDocuments()){
+                                String response = notif.get("action").toString();
+                                String fromDevice = notif.get("deviceID").toString();
+                                TextView add = new TextView(this);
+                                add.setText(fromDevice + " has " + response +" your team invitation");
+                                add.setTextColor(textColor);
+                                add.setTextSize(20);
+                                LinearLayout contain = findViewById(R.id.inviteResultContainer);
+                                contain.addView(add);
+                            }
+                        });
+            }
+        });
+
 
 
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -40,17 +82,7 @@ public class TeamNotificationScreen extends AppCompatActivity {
             }
         });
 
-        /*ImageButton backBtn = findViewById(R.id.backButton);
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });*/
-
-        //check for proposed walk
-        //if proposed walk exists, show proposed walk layout
     }
 
 }

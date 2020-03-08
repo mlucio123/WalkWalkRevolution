@@ -281,5 +281,4 @@ public class NotificationScreen extends AppCompatActivity {
             }
         });
     }
-
 }
