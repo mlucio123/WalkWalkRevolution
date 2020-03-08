@@ -39,9 +39,8 @@ public class TeamScreen extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
     private Button addTeamateBtn;
-    private MyRecyclerViewAdapter adapter;
+    private MultiViewTypeAdapter adapter;
     private String TAG = "Team Screen: ";
-    private String teamID;
 
     public static boolean testing = false;
 
@@ -78,46 +77,36 @@ public class TeamScreen extends AppCompatActivity {
 
         // Fetch list of teammates from database
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        deviceID = "69f564cdea524279";
         // Get team id
         UserCollection uc = new UserCollection();
         TeamCollection tc = new TeamCollection();
-        ArrayList<String> nameList = new ArrayList<String>();
-
-        uc.getTeammatesList(deviceID, new teammatesListListener() {
-            @Override
-            public void onSuccess(String name) {
-                nameList.add((name));
-            }
-        });
-
-
-        if (teamID == null) {
-            Log.i(TAG, "TeamID is null");
-        }
-        else {
-            Log.i(TAG, teamID);
-        }
-        // Get list of User IDs
-
-        // Get list of Pending IDs
-
-        // Create Teamate Model list
-
         ArrayList<TeamateModel> list= new ArrayList();
-//        list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,"JINING"));
-//        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"HOWARD"));
-//        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"CONOR"));
-//        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"MIA"));
+//        deviceID = "69f564cdea524279";
 
-        MultiViewTypeAdapter adapter = new MultiViewTypeAdapter(list,this);
+        MultiViewTypeAdapter adapter = new MultiViewTypeAdapter(list, this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(adapter);
-        list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,"JINING"));
-        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"HOWARD"));
+
+//        list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE, "Jining"));
+
+        uc.getTeammatesList(deviceID, new teammatesListListener() {
+            @Override
+            public void onSuccess(String name) {
+                // Create Teammate Model list
+                list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,name));
+                adapter.notifyDataSetChanged();
+                Log.i(TAG, "TEAMMATE LIST: " + list.toString());
+                Log.i(TAG, "TEAMMATE LIST SIZE: " + adapter.getItemCount());
+            }
+        });
+
+
+        // Get list of User IDs
+
+        // Get list of Pending IDs
 
 
     }

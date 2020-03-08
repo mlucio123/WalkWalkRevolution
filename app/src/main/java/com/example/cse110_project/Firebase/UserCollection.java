@@ -119,6 +119,7 @@ public class UserCollection {
 
     /* Get user's teamID */
     public void getTeammatesList(String deviceID, final teammatesListListener myListener) {
+        Log.d(TAG, "DEVICE ID: " + deviceID);
         DocumentReference userRef = db.collection("users").document(deviceID);
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -127,21 +128,25 @@ public class UserCollection {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         String teamID = document.get("teamID").toString();
-                        Log.d(TAG, "DocumentSnapshot data: " + teamID);
+
+                        // TODO: handle no teammate case
                         if (teamID == null){
+                            Log.d(TAG, "TEAM ID: NOT FOUND");
                             return;
                         }
                         else {
+                            Log.d(TAG, "TEAM ID: " + teamID);
                             DocumentReference teamRef = db.collection("teams").document(teamID);
                             teamRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()){
                                         DocumentSnapshot document = task.getResult();
-                                        if (document.exists()){
+                                        if (document.exists()) {
                                             List<String> userIds = (List<String>) document.get("listOfUserIDs");
-                                            ArrayList<String> nameList = new ArrayList<>();
-                                            for(int i = 0; i < userIds.size(); i++){
+                                            Log.i(TAG, "FOUND LIST OF USERS" + userIds.toString());
+
+                                            for (int i = 0; i < userIds.size(); i++) {
                                                 String userID = userIds.get(i);
                                                 DocumentReference currentUserRef = db.collection(("users")).document(userID);
                                                 currentUserRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -153,16 +158,14 @@ public class UserCollection {
                                                                 String firstName = document.get("firstName").toString();
                                                                 String lastName = document.get("lastName").toString();
                                                                 String userName = firstName + " " + lastName;
-                                                                nameList.add(userName);
-                                                                Log.i(TAG, userName);
-
+                                                                Log.i(TAG, "CURRENT USERNAME: " + userName);
+                                                                myListener.onSuccess(userName);
                                                             }
+
                                                         }
                                                     }
                                                 });
                                             }
-//                                            Log.i(TAG, Arrays.toString(nameList.toArray()));
-//                                            myListener.onSuccess(userName);
                                         }
                                     }
                                 }

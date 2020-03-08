@@ -332,6 +332,7 @@ public class TeamCollection {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
+                            Log.i(TAG, teamID);
                             if (document.exists()) {
                                 Log.d(TAG, "FOUND USERS ON THIS TEAM: " + document.getData());
 
