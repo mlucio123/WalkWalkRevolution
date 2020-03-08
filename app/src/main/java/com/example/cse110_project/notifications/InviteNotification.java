@@ -31,10 +31,15 @@ public class InviteNotification implements Notification {
 
     private String TAG = "INVITATION NOTIFICATION : ";
 
-    public InviteNotification( String deviceID, String fromName, String teamID) {
+    public InviteNotification(String deviceID, String fromName, String teamID) {
         this.type = NotifType.InviteNotification;
         this.fromName = fromName;
         this.teamID = teamID;
+        this.deviceID = deviceID;
+        db = FirebaseFirestore.getInstance();
+    }
+
+    public InviteNotification(String deviceID) {
         this.deviceID = deviceID;
         db = FirebaseFirestore.getInstance();
     }
@@ -101,7 +106,7 @@ public class InviteNotification implements Notification {
                                                                                     Log.d(TAG, "FOUND INVITER'S TeamID: " + document.getData().get("teamID"));
 
 
-                                                                                    callback.getUsers(deviceID, action);
+                                                                                    callback.getUsers(document.getData().get("initial").toString(), action);
 
 
                                                                                 } else {

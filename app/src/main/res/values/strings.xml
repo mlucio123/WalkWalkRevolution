@@ -39,6 +39,8 @@
     <string name="milesStr">Miles</string>
     <string name="feetStr">Feet</string>
     <string name="space"> </string>
+    <string name="plus">+</string>
+    <string name="teamStr">Team</string>
     <string name="recentWalkTitle">Your Recent Walk</string>
     <string name="route_form_title">Enter Route Info</string>
     <string name="enter_route_name">Enter Route Name</string>
@@ -54,10 +56,20 @@
     <string name="new_route_text">New Route</string>
     <string name="notes_label">Notes</string>
     <string name="route_summary_title">This is a new route!</string>
+    <string name="walkNotifStr">Walk Notifications</string>
     <string name="title_propose_walk_screeen">Propose a Walk</string>
     <string name="double_zero">00</string>
     <string name="showDateLabel">Date: </string>
     <string name="slashStr">/</string>
     <string name="monthEntry">MM</string>
     <string name="dayEntry">DD</string>
+    <string name="title_activity_team_notification_screen">TeamNotificationScreen</string>
+    <string name="walkTitileLabel">Walk: </string>
+    <string name="startingPointTitileLabel">Starting Point: </string>
+    <string name="startTimeTitle">Start Time: </string>
+    <string name="walkCreatorTitle">Proposed By: : </string>
+    <string name="declineBadTimeStr">Bad Time</string>
+    <string name="declineBadRoute">Bad Route</string>
+    <string name="proposedWalkDetailsTitle">Proposed Walk Details</string>
+    <string name="noProposedWalk">No Proposed Walk at This Time</string>
 </resources>
