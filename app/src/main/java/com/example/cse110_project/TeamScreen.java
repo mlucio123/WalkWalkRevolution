@@ -224,7 +224,6 @@ public class TeamScreen extends AppCompatActivity {
                 TeamCollection tc = new TeamCollection();
                 tc.setUserResponseToWalk(deviceID, "bad route");
                 Toast.makeText(TeamScreen.this, "Bad Route!", Toast.LENGTH_SHORT).show();
-//>>>>>>> origin/feature/ProposeWalk/firebaseUpload
 
             }
         });
