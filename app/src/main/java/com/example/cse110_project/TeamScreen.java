@@ -1,5 +1,6 @@
 package com.example.cse110_project;
 
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.cse110_project.Firebase.RouteCollection;
@@ -23,6 +25,7 @@ import com.example.cse110_project.Firebase.UserCollection;
 
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
@@ -53,6 +56,9 @@ public class TeamScreen extends AppCompatActivity {
     private Button acceptButton;
     private Button badTimeButton;
     private Button badRouteButton;
+
+    private Button scheduleButton;
+    private Button withdrawButton;
 
     public static boolean testing = false;
 
@@ -89,81 +95,139 @@ public class TeamScreen extends AppCompatActivity {
         propWalkLabel = findViewById(R.id.walkTitleField);
         startingPointLabel = findViewById(R.id.startingPoint);
         timeLabel = findViewById(R.id.walkStartTime);
-        proposerLabel = findViewById(R.id.createdByTitle);
+        proposerLabel = findViewById(R.id.createdBy);
 
         acceptButton = findViewById(R.id.acceptWalkButton);
         badTimeButton = findViewById(R.id.badTimeDeclineBtn);
         badRouteButton = findViewById(R.id.badRouteDeclineBtn);
 
+        scheduleButton = findViewById(R.id.scheduleWalkBtn);
+        withdrawButton = findViewById(R.id.withdrawWalkBtn);
+
+        acceptButton.setVisibility(View.GONE);
+        badTimeButton.setVisibility(View.GONE);
+        badRouteButton.setVisibility(View.GONE);
+        scheduleButton.setVisibility(View.GONE);
+        withdrawButton.setVisibility(View.GONE);
+
         Log.d(TAG, "hiding proposed walk layout");
         proposedWalkLayout = findViewById(R.id.proposedWalkLayout);
         proposedWalkLayout.setVisibility(View.GONE);
 
-
         Log.d(TAG, "Getting team with id " + deviceID);
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-        DocumentReference docIdRef = rootRef.collection("users")
-                .document(deviceID);
-        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    if(doc.contains("teamID")) {
-                        String teamID = doc.get("teamID").toString();
-                        Log.d(TAG, "User has team id: " + teamID);
-                        FirebaseFirestore innerRootRef = FirebaseFirestore.getInstance();
-                        DocumentReference teamIdRef = innerRootRef.collection("teams")
-                                .document(teamID)
-                                .collection("proposeWalk")
-                                .document(teamID);
-                        teamIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                Log.d(TAG, "Checking if team has proposed walk");
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
 
-                                    Log.d(TAG, "checking if document exists");
-                                    //return if no proposed walk exists
-                                    if(!document.exists()) {
-                                        Log.d(TAG, "it did not");
-                                        return;
-                                    }
+        rootRef.collection("users")
+                .document(deviceID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                                    Log.d(TAG, "team has proposed walk, showing info");
-                                    proposedWalkLayout.setVisibility(View.VISIBLE);
-                                    Log.d(TAG, "Walk title is: " + document.get("walkingName"));
-                                    propWalkLabel.setText(document.get("walkingName").toString());
-                                    //startingPointLabel.setText();
-                                    /*String minute = document.get("minute").toString();
-                                    String hour = document.get("hour").toString();
-
-                                    if(Integer.parseInt(hour) < 10) {
-                                        hour = "0" + hour;
-                                    }
-
-                                    if(Integer.parseInt(minute) < 10) {
-                                        minute = "0" + minute;
-                                    }
-
-                                    String timeStr = hour + ":" + minute;
-                                    timeLabel.setText(timeStr);
-
-                                    String proposedBy = document.get("proposedBy").toString();
-                                    Log.d(TAG, "Walk proposed by user with id: " + proposedBy);*/
+                       DocumentSnapshot rootDoc = task.getResult();
 
 
+                       String returnedTeamID = "";
 
-                                }
-                            }
-                        });
+                       if(rootDoc.getData().get("teamID") != null ) {
+                           returnedTeamID = rootDoc.getData().get("teamID").toString();
 
+
+                           DocumentReference docIdRef = rootRef
+                                   .collection("teams")
+                                   .document(returnedTeamID)
+                                   .collection("proposeWalk")
+                                   .document(returnedTeamID);
+                           docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                               @Override
+                               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                   Log.d(TAG, "Checking if team has proposed walk");
+                                   if (task.isSuccessful()) {
+                                       DocumentSnapshot document = task.getResult();
+                                       //set fields
+
+                                       if (document.getData() == null) {
+                                           Log.d(TAG, "team has no proposed walk");
+
+                                           proposedWalkLayout.setVisibility(View.GONE);
+                                       } else {
+
+                                           Log.d(TAG, "team has proposed walk, showing info");
+
+                                           proposedWalkLayout.setVisibility(View.VISIBLE);
+
+                                           Log.d(TAG, "DATA: " + document.getData());
+                                           String proposedBy = document.getData().get("proposedBy").toString();
+
+                                           propWalkLabel.setText(document.getData().get("walkingName").toString());
+
+                                           if (document.getData().get("routeSTart") != null) {
+                                               startingPointLabel.setText(document.getData().get("routeSTart").toString());
+                                           }
+
+                                           String theTime = "";
+
+                                           theTime = document.getData().get("hour").toString() + ":" + document.getData().get("minute").toString() + " " + document.getData().get("month") + "/" + document.getData().get("day") + "/" + document.getData().get("year");
+
+
+                                           timeLabel.setText(theTime);
+
+                                           proposerLabel.setText(proposedBy);
+
+
+                                           if (deviceID.equals(proposedBy)) {
+                                               scheduleButton.setVisibility(View.VISIBLE);
+                                               withdrawButton.setVisibility(View.VISIBLE);
+                                           } else {
+                                               acceptButton.setVisibility(View.VISIBLE);
+                                               badTimeButton.setVisibility(View.VISIBLE);
+                                               badRouteButton.setVisibility(View.VISIBLE);
+                                           }
+                                       }
+
+                                   }
+                               }
+                           });
+                       }
+                   }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error proposing a walk document", e);
                     }
-                }
+                });
+
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TeamCollection tc = new TeamCollection();
+                tc.setUserResponseToWalk(deviceID, "join walk");
+                Toast.makeText(TeamScreen.this, "Joining Walk!", Toast.LENGTH_SHORT).show();
+
             }
         });
 
+        badTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TeamCollection tc = new TeamCollection();
+                tc.setUserResponseToWalk(deviceID, "bad time");
+                Toast.makeText(TeamScreen.this, "Bad Time!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        badRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TeamCollection tc = new TeamCollection();
+                tc.setUserResponseToWalk(deviceID, "bad route");
+                Toast.makeText(TeamScreen.this, "Bad Route!", Toast.LENGTH_SHORT).show();
+//>>>>>>> origin/feature/ProposeWalk/firebaseUpload
+
+            }
+        });
 
 
         // Initialize teamBtn and bottom navigation bar

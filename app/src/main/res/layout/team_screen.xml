@@ -223,6 +223,34 @@
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
 
+        <Button
+            android:id="@+id/scheduleWalkBtn"
+            android:layout_width="250sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_rounded"
+            android:drawablePadding="5dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:layout_marginTop="25sp"
+            android:text="Schedule Walk"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/withdrawWalkBtn"
+            android:layout_width="250sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_rounded_red"
+            android:drawablePadding="5dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:layout_marginTop="25sp"
+            android:text="Withdraw Walk"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
 
     </LinearLayout>
 

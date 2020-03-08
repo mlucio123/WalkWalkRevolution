@@ -125,6 +125,7 @@ public class AddTeamateScreen extends AppCompatActivity {
                 Log.d(TAG, "SENDING INVITATION TO " + email + " from " + deviceID);
                 tc.sendInviteToEmail(email, deviceID);
                 Toast.makeText(AddTeamateScreen.this, "Invitation Sent!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
