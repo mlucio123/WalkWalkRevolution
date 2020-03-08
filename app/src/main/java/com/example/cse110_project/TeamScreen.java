@@ -21,6 +21,7 @@ import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
 
+import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -85,7 +86,7 @@ public class TeamScreen extends AppCompatActivity {
             }
         });
 
-        propWalkLabel = findViewById(R.id.walkTitle);
+        propWalkLabel = findViewById(R.id.walkTitleField);
         startingPointLabel = findViewById(R.id.startingPoint);
         timeLabel = findViewById(R.id.walkStartTime);
         proposerLabel = findViewById(R.id.createdByTitle);
@@ -98,22 +99,70 @@ public class TeamScreen extends AppCompatActivity {
         proposedWalkLayout = findViewById(R.id.proposedWalkLayout);
         proposedWalkLayout.setVisibility(View.GONE);
 
+
+        Log.d(TAG, "Getting team with id " + deviceID);
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-        DocumentReference docIdRef = rootRef.collection("teams")
-                .document("EVUPjBYSoN3DjvDS4gI3")
-                .collection("proposeWalk").document();
+        DocumentReference docIdRef = rootRef.collection("users")
+                .document(deviceID);
         docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                Log.d(TAG, "Checking if team has proposed walk");
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    Log.d(TAG, "team has proposed walk, showing info");
-                    proposedWalkLayout.setVisibility(View.VISIBLE);
-                    //set fields
+                if(task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.contains("teamID")) {
+                        String teamID = doc.get("teamID").toString();
+                        Log.d(TAG, "User has team id: " + teamID);
+                        FirebaseFirestore innerRootRef = FirebaseFirestore.getInstance();
+                        DocumentReference teamIdRef = innerRootRef.collection("teams")
+                                .document(teamID)
+                                .collection("proposeWalk")
+                                .document(teamID);
+                        teamIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                Log.d(TAG, "Checking if team has proposed walk");
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+
+                                    Log.d(TAG, "checking if document exists");
+                                    //return if no proposed walk exists
+                                    if(!document.exists()) {
+                                        Log.d(TAG, "it did not");
+                                        return;
+                                    }
+
+                                    Log.d(TAG, "team has proposed walk, showing info");
+                                    proposedWalkLayout.setVisibility(View.VISIBLE);
+                                    Log.d(TAG, "Walk title is: " + document.get("walkingName"));
+                                    propWalkLabel.setText(document.get("walkingName").toString());
+                                    //startingPointLabel.setText();
+                                    /*String minute = document.get("minute").toString();
+                                    String hour = document.get("hour").toString();
+
+                                    if(Integer.parseInt(hour) < 10) {
+                                        hour = "0" + hour;
+                                    }
+
+                                    if(Integer.parseInt(minute) < 10) {
+                                        minute = "0" + minute;
+                                    }
+
+                                    String timeStr = hour + ":" + minute;
+                                    timeLabel.setText(timeStr);
+
+                                    String proposedBy = document.get("proposedBy").toString();
+                                    Log.d(TAG, "Walk proposed by user with id: " + proposedBy);*/
+
+
+
+                                }
+                            }
+                        });
+
                     }
                 }
-            });
+            }
+        });
 
 
 
