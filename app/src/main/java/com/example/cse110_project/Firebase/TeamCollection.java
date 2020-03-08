@@ -405,6 +405,172 @@ public class TeamCollection {
     }
 
 
+    public void getWalkingResponses(String deviceID, InvitationCallback callback) {
+
+        //first layer for querying for teamID
+
+        db.collection("users")
+                .document(deviceID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "FOUND Device'S TeamID: " + document.get("teamID"));
+
+                                if(document.getData().get("teamID") != null) {
+                                    String teamID = document.get("teamID").toString();
+
+                                    // second layer for searching responses
+                                    db.collection("teams")
+                                            .document(teamID)
+                                            .collection("responsesToWalk")
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d("TAG", "LOGGING RESPONSES FOR TEAM " + teamID);
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            Log.d(TAG, document.getId() + " => " + document.getData());
+
+                                                            String deviceID = document.getData().get("deviceID").toString();
+                                                            String action = document.getData().get("response").toString();
+
+                                                            //Third layer
+
+                                                            db.collection("users")
+                                                                    .document(deviceID)
+                                                                    .get()
+                                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                            if (task.isSuccessful()) {
+                                                                                DocumentSnapshot document = task.getResult();
+                                                                                if (document.exists()) {
+                                                                                    Log.d(TAG, "Finding inviter's teamID: " + document.getData());
+                                                                                    Log.d(TAG, "FOUND INVITER'S TeamID: " + document.getData().get("teamID"));
+
+
+                                                                                    callback.getUsers(document.getData().get("initial").toString(), action);
+
+
+                                                                                } else {
+                                                                                    Log.d(TAG, "No such document");
+                                                                                }
+                                                                            } else {
+                                                                                Log.d(TAG, "get failed with ", task.getException());
+                                                                            }
+                                                                        }
+                                                                    })
+                                                                    .addOnFailureListener(new OnFailureListener() {
+                                                                        @Override
+                                                                        public void onFailure(@NonNull Exception e) {
+                                                                            Log.w(TAG, "Error at findInviterTeam" , e);
+                                                                        }
+                                                                    });
+
+
+
+
+                                                        }
+                                                    } else {
+                                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                                    }
+                                                }
+                                            });
+
+
+
+                                }
+
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error at getTeamRoutesFromDevice" , e);
+                    }
+                });
+
+
+    }
+
+    public void setUserResponseToWalk(String deviceID, String response) {
+
+        db.collection("users")
+                .document(deviceID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "Finding teamID: " + document.getData());
+
+                                String teamID = document.getData().get("teamID").toString();
+
+                                Map<String, Object> res = new HashMap<>();
+                                res.put("deviceID", deviceID);
+                                res.put("response", response);
+
+                                db.collection("teams")
+                                        .document(teamID)
+                                        .collection("responsesToWalk")
+                                        .document(deviceID)
+                                        .set(res)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, deviceID + " has responded " + response);
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error writing document", e);
+                                            }
+                                        });
+
+
+
+
+
+
+
+
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error at findInviterTeam" , e);
+                    }
+                });
+
+
+
+    }
+
+
+
     /* This method makes Route object from returning query document snapshot */
     private Route makeRoute(QueryDocumentSnapshot qry){
 
