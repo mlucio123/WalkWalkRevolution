@@ -15,14 +15,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class TeamNotificationScreen extends AppCompatActivity {
-
-    private LinearLayout notifLayout;
-    private LinearLayout noWalkLayout;
-    private LinearLayout proposedWalkLayout;
-    private Button acceptWalk;
-    private Button badTimeDecline;
-    private Button badRouteDecline;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,20 +29,6 @@ public class TeamNotificationScreen extends AppCompatActivity {
                 finish();
             }
         });*/
-
-        noWalkLayout = findViewById(R.id.noWalkMessage);
-        notifLayout = findViewById(R.id.notificationLayout);
-        proposedWalkLayout = findViewById(R.id.proposedWalkLayout);
-
-        acceptWalk = findViewById(R.id.acceptWalkButton);
-        badTimeDecline = findViewById(R.id.badTimeDeclineBtn);
-        badRouteDecline = findViewById(R.id.badRouteDeclineBtn);
-
-        noWalkLayout.setVisibility(View.GONE);
-        proposedWalkLayout.setVisibility(View.GONE);
-        notifLayout.setVisibility(View.GONE);
-
-
 
         //check for proposed walk
         //if proposed walk exists, show proposed walk layout
