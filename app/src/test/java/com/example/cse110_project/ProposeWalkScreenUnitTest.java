@@ -25,6 +25,8 @@ public class ProposeWalkScreenUnitTest {
     //private EditText startPosition;
     private EditText hour;
     private EditText minute;
+    private EditText month;
+    private EditText day;
 
     @Before
     public void setup() {
@@ -38,6 +40,8 @@ public class ProposeWalkScreenUnitTest {
         //startPosition = (EditText) proposeWalkScreen.findViewById(R.id.startPosition);
         hour = (EditText) proposeWalkScreen.findViewById(R.id.hour);
         minute = (EditText) proposeWalkScreen.findViewById(R.id.minute);
+        month = (EditText) proposeWalkScreen.findViewById(R.id.month);
+        day = (EditText) proposeWalkScreen.findViewById(R.id.day);
     }
 
     @Test
@@ -73,6 +77,24 @@ public class ProposeWalkScreenUnitTest {
             init(proposeWalkScreen);
             minute.setText("30");
             assertEquals("30", minute.getText().toString());
+        });
+    }
+
+    @Test
+    public void testMonth() {
+        scenario.onActivity(proposeWalkScreen -> {
+            init(proposeWalkScreen);
+            month.setText("03");
+            assertEquals("03", month.getText().toString());
+        });
+    }
+
+    @Test
+    public void testDay() {
+        scenario.onActivity(proposeWalkScreen -> {
+            init(proposeWalkScreen);
+            day.setText("15");
+            assertEquals("15", day.getText().toString());
         });
     }
 }
