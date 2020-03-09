@@ -45,6 +45,12 @@ public class AddTeamateScreen extends AppCompatActivity {
 
     private String TAG = "ADD TEAMMATE SCREEN";
 
+    private boolean productionMode;
+
+    public void isProductionMode(boolean productionMode) {
+        this.productionMode = productionMode;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,34 +74,9 @@ public class AddTeamateScreen extends AppCompatActivity {
         invitationLayout.setVisibility(View.GONE);
         createTeamLayout.setVisibility(View.GONE);
 
-
-        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-        DocumentReference docIdRef = rootRef.collection("users").document(deviceID);
-        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        if (document.get("teamID") != null) {
-                            Log.d(TAG, "THIS USER:" + deviceID + " HAS A TEAM!");
-                            invitationLayout.setVisibility(View.VISIBLE);
-                        } else {
-                            createTeamLayout.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        createTeamLayout.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error adding document", e);
-            }
-        });
-
+        if (deviceID != null) {
+            initializeFirebase(deviceID);
+        }
 
         createTeamBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +145,32 @@ public class AddTeamateScreen extends AppCompatActivity {
         }
     }
 
-
-
+    private void initializeFirebase(String deviceID) {
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        DocumentReference docIdRef = rootRef.collection("users").document(deviceID);
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        if (document.get("teamID") != null) {
+                            Log.d(TAG, "THIS USER:" + deviceID + " HAS A TEAM!");
+                            invitationLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            createTeamLayout.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        createTeamLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error adding document", e);
+            }
+        });
+    }
 }

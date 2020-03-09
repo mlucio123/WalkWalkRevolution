@@ -59,6 +59,31 @@ public class NotificationScreen extends AppCompatActivity {
 
         final String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
         Log.d("Notification: ", "This is user's id " + currUserID);
+        if (currUserID != "") {
+            rest(chat, currUserID);
+        }
+
+//        addWalkElement(example);
+ //       subscribeToNotificationsTopic();
+    }
+
+    private void subscribeToNotificationsTopic() {
+        String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
+
+   /*     FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
+                .addOnCompleteListener(task -> {
+                            String msg = "Subscribed to notifications";
+                            if (!task.isSuccessful()) {
+                                msg = "Subscribe to notifications failed";
+                            }
+                            Log.d(TAG, msg);
+                            Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                );
+
+    */
+    }
+    private void rest(CollectionReference chat, String currUserID) {
         chat = FirebaseFirestore.getInstance().collection("users");
 
         // Create a query against the collection.
@@ -167,27 +192,7 @@ public class NotificationScreen extends AppCompatActivity {
                 .result(true);
 
         Notification example = walk.getNotification();
-//        addWalkElement(example);
- //       subscribeToNotificationsTopic();
     }
-
-    private void subscribeToNotificationsTopic() {
-        String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
-
-   /*     FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
-                .addOnCompleteListener(task -> {
-                            String msg = "Subscribed to notifications";
-                            if (!task.isSuccessful()) {
-                                msg = "Subscribe to notifications failed";
-                            }
-                            Log.d(TAG, msg);
-                            Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
-                        }
-                );
-
-    */
-    }
-
 
 
     protected void addWalkElement(WalkNotification notif){
