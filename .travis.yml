@@ -43,6 +43,7 @@ branches:
     - "master"
     - "milestone1_delivery"
     - "staging"
+    - "feature/UnitTest/zx"
 
 jobs:
   include:
