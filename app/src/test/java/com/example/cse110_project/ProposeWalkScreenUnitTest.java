@@ -97,4 +97,12 @@ public class ProposeWalkScreenUnitTest {
             assertEquals("15", day.getText().toString());
         });
     }
+
+    @Test
+    public void testSubmitBtn() {
+        scenario.onActivity(proposeWalkScreen -> {
+            init(proposeWalkScreen);
+            assertEquals("Submit", submitBtn.getText().toString());
+        });
+    }
 }
