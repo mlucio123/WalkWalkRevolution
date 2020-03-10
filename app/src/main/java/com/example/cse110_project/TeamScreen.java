@@ -30,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class TeamScreen extends AppCompatActivity {
@@ -130,7 +131,7 @@ public class TeamScreen extends AppCompatActivity {
 
                        if(rootDoc.getData().get("teamID") != null ) {
                            returnedTeamID = rootDoc.getData().get("teamID").toString();
-
+                           subscribeToNotificationsTopic(returnedTeamID);
 
                            DocumentReference docIdRef = rootRef
                                    .collection("teams")
@@ -301,6 +302,20 @@ public class TeamScreen extends AppCompatActivity {
 //        inviteeEmail.setVisibility(View.VISIBLE);
 //        inviteeLabel.setVisibility(View.VISIBLE);
 //    }
+
+    private void subscribeToNotificationsTopic(String teamID) {
+
+        FirebaseMessaging.getInstance().subscribeToTopic(teamID)
+                .addOnCompleteListener(task -> {
+                            String msg = "Subscribed to notifications";
+                            if (!task.isSuccessful()) {
+                                msg = "Subscribe to notifications failed";
+                            }
+                            Log.d(TAG, msg);
+                            Toast.makeText(TeamScreen.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                );
+    }
 
 
     private void selectFragment(MenuItem item){

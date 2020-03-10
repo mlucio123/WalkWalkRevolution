@@ -71,6 +71,7 @@ public class TeamNotificationScreen extends AppCompatActivity {
                                 }
                             }
                         });
+
                         team.collection("responsesToWalk")
                                 .get()
                                 .addOnSuccessListener((teamNotifSnapShot) -> {
