@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.example.cse110_project.utils.Route;
@@ -70,7 +71,9 @@ public class RouteCollection {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with Route-ID: " + documentReference.getId());
-                        addToCompletedRoutes(deviceID, documentReference.getId(), addRoute.getLastCompletedTime(), addRoute.getLastCompletedDistance(), addRoute.getLastCompletedSteps());
+                        addRoute.setId(documentReference.getId());
+                        //addToCompletedRoutes(deviceID, documentReference.getId(), addRoute.getLastCompletedTime(),
+                                //addRoute.getLastCompletedDistance(), addRoute.getLastCompletedSteps());
 
                     }
                 })
@@ -100,9 +103,9 @@ public class RouteCollection {
                 );
     }
 
-    public void addToCompletedRoutes(String routeID, String userID, String steps, String distance,
+    public void addToCompletedRoutes(String routeID, String deviceID, String steps, String distance,
                                      String time) {
-        Log.d(TAG, "saving route " + routeID + " to user " + userID);
+        Log.d(TAG, "saving route " + routeID + " to user " + deviceID);
 
         Map<String,Object> map = new HashMap<>();
         map.put("distance", distance);
@@ -110,7 +113,7 @@ public class RouteCollection {
         map.put("time", time);
 
         db.collection("users")
-                .document(userID)
+                .document(deviceID)
                 .collection("completedRoutes")
                 .document(routeID)
                 .set(map);
@@ -149,10 +152,10 @@ public class RouteCollection {
                             ArrayList<Route> routesSimpleList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 try {
-                                    Route newRoute = makeRoute(document);
+                                    //Route newRoute = makeRoute(document);
                                     Log.d(TAG, "DATA: " + document.getData());
-                                    qryRoutes.add(makeRoute(document));
-                                    routesSimpleList.add(makeRoute(document));
+                                    qryRoutes.add(makeRoute(document,deviceID));
+                                    routesSimpleList.add(makeRoute(document,deviceID));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     Log.d(TAG, "THIS ROUTE CAN't be ADDED");
@@ -172,9 +175,11 @@ public class RouteCollection {
 
 
     /* This method makes Route object from returning query document snapshot */
-    private Route makeRoute(QueryDocumentSnapshot qry){
+    private Route makeRoute(QueryDocumentSnapshot qry, String deviceID){
+
 
         try {
+
             Route newRoute;
             String id = qry.getId();
 
@@ -292,6 +297,10 @@ public class RouteCollection {
                 }
             }
 
+            Log.d(TAG, "checking prev walked from make route");
+            checkPrevWalked(qry.getId(), deviceID, newRoute);
+
+
             newRoute.setId(id);
             return newRoute;
 
@@ -301,6 +310,33 @@ public class RouteCollection {
             return null;
         }
 
+    }
+
+    public void checkPrevWalked(String routeID, String deviceID, Route route) {
+        Log.d(TAG, "checking route with ID:  " + routeID);
+        db.collection("users")
+                .document(deviceID)
+                .collection("completedRoutes")
+                .document(routeID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+             @Override
+             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                 DocumentSnapshot doc = task.getResult();
+                 if(doc.exists()) {
+                     Log.d(TAG, "route is prev completed with ID: " + doc.getId());
+                     String lastCompletedDist = (String) doc.get("distance");
+                     String lastCompletedSteps = (String) doc.get("steps");
+                     String lastCompletedTime = (String) doc.get("time");
+                     route.setLastCompletedDistance(lastCompletedDist);
+                     route.setLastCompletedSteps(lastCompletedSteps);
+                     route.setLastCompletedTime(lastCompletedTime);
+                     route.setPrevWalked(true);
+                     Log.d(TAG, "prev walk exist with");
+                     Log.d(TAG, "steps: " + lastCompletedSteps);
+                     Log.d(TAG, "dist: " + lastCompletedDist);
+                     Log.d(TAG, "time: " + lastCompletedTime);
+                 }
+             }
+         });
     }
 
 

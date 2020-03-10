@@ -32,6 +32,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -114,6 +116,7 @@ public class RouteScreen extends AppCompatActivity {
 
 
                     }
+
                 });
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
@@ -131,7 +134,6 @@ public class RouteScreen extends AppCompatActivity {
                             tc.getTeamRoutesFromDevice(deviceID, new MyCallback() {
                                 @Override
                                 public void getRoutes(ArrayList<Route> routes) {
-
 
                                     LinearLayout outer = findViewById(R.id.teamrouteContain);
 
@@ -180,56 +182,6 @@ public class RouteScreen extends AppCompatActivity {
         });
 
     }
-
-    public void toggle_contents(Button exp, RelativeLayout hide){
-        if( hide.isShown()) {
-            hide.setVisibility(View.GONE);
-            exp.setText("Expand");
-        } else {
-            hide.setVisibility(View.VISIBLE);
-            exp.setText("Hide");
-        }
-    }
-
-    public void addMyRoutesTitle() {
-        TextView myRoutesTitle = new TextView(this);
-        int fontColor = Color.parseColor("#FFFFFFFF");
-        LinearLayout routeContain = findViewById(R.id.routeContain);
-
-        myRoutesTitle.setText("Your Routes");
-        myRoutesTitle.setTextSize(20);
-        myRoutesTitle.setTextColor(fontColor);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, .6f
-        );
-        myRoutesTitle.setLayoutParams(params);
-        myRoutesTitle.setGravity(Gravity.CENTER);
-
-
-        routeContain.addView(myRoutesTitle);
-    }
-
-    public void addTeamRoutestitle() {
-        TextView myRoutesTitle = new TextView(this);
-        int fontColor = Color.parseColor("#FFFFFFFF");
-        LinearLayout routeContain = findViewById(R.id.routeContain);
-
-        myRoutesTitle.setText("Your Team's Routes");
-        myRoutesTitle.setTextSize(20);
-        myRoutesTitle.setTextColor(fontColor);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, .6f
-        );
-        myRoutesTitle.setLayoutParams(params);
-        myRoutesTitle.setGravity(Gravity.CENTER);
-
-        routeContain.addView(myRoutesTitle);
-    }
-
 
     public void addElement(Route routeEntry, LinearLayout outer, boolean isTeam){
         int fontColor = Color.parseColor("#FFFFFFFF");
@@ -573,6 +525,10 @@ public class RouteScreen extends AppCompatActivity {
 
         LinearLayout btnHolder = new LinearLayout(this);
 
+        ImageView completedWalk = new ImageView(this);
+        Drawable prevWalkedCheck = getDrawable(R.drawable.ic_check_green_24dp);
+        completedWalk.setImageDrawable(prevWalkedCheck);
+
 
         /* DELETE ROUTE BUTTON */
 
@@ -694,6 +650,7 @@ public class RouteScreen extends AppCompatActivity {
 
         titleEntry.addView(title);
         titleEntry.addView(titleDisplay);
+        if(routeEntry.getPrevWalked()) titleEntry.addView(completedWalk);
         if (routeEntry.getFavorite()) {
             Log.d(TAG, routeEntry.getId() + " IS FAVORITE ");
             titleEntry.addView(favDisplay);
@@ -701,6 +658,7 @@ public class RouteScreen extends AppCompatActivity {
             Log.d(TAG, routeEntry.getId() + " IS NOT FAVORITE ");
         }
         container.addView(titleEntry);
+
         container.addView(startEntry);
         if(isTeam){
             container.addView(createdBy);
@@ -780,33 +738,5 @@ public class RouteScreen extends AppCompatActivity {
     public static int getRouteNumber() {
         return routesNum;
     }
-
-    /*@Override
-    public void onStart() {
-        /*Log.d(TAG, "Checking for google account");
-        super.onStart();
-        com.google.firebase.auth.FirebaseUser currUser;
-
-        com.google.android.gms.auth.api.signin.GoogleSignInAccount acct =
-                GoogleSignIn.getLastSignedInAccount(this);
-
-        if( acct == null ) {
-            Log.d(TAG, "account not found");
-        } else {
-            Log.d(TAG, "account found " + acct.getDisplayName());
-
-            com.google.firebase.auth.AuthCredential cred = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            currUser = mAuth.getCurrentUser();
-
-            if(currUser == null ) {
-                Log.d(TAG, "user not found in firebase");
-            } else {
-                Log.d(TAG, "user found in firebase");
-                //update UI
-            }
-        }
-
-    }*/
 
 }

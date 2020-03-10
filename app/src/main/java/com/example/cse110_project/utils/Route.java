@@ -15,6 +15,7 @@ public class Route extends Observable {
     private String extraNotes;
     private boolean favorite1;
     private boolean favorite;
+    private boolean prevWalked;
 
     private boolean out, loop;
     private boolean flat, hills;
@@ -90,6 +91,12 @@ public class Route extends Observable {
     public void setCreatedBy(String person) { this.createdBy = person; }
 
     public String getCreatedBy() { return this.createdBy; }
+
+    public boolean getPrevWalked() { return this.prevWalked; }
+
+    public void setPrevWalked(boolean result) {
+        Log.d(TAG, "marking as prev walked: " + id);
+        this.prevWalked = result;}
 
     public void setNotes(String notes){
         this.extraNotes = notes;
