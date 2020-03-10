@@ -29,6 +29,7 @@ import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
 import com.example.cse110_project.Firebase.TeammatesListListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class TeamScreen extends AppCompatActivity {
@@ -98,8 +99,6 @@ public class TeamScreen extends AppCompatActivity {
                 // Create Teammate Model list
                 list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,name));
                 adapter.notifyDataSetChanged();
-                Log.i(TAG, "TEAMMATE LIST: " + list.toString());
-                Log.i(TAG, "TEAMMATE LIST SIZE: " + adapter.getItemCount());
             }
         });
 
@@ -111,11 +110,6 @@ public class TeamScreen extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-
-
-        // Get list of Pending IDs
-
-
     }
 
     private void selectFragment(MenuItem item){
@@ -143,57 +137,4 @@ public class TeamScreen extends AppCompatActivity {
     }
 
 }
-
-
-//
-//        createTeamBtn = (Button) findViewById(R.id.createTeam);
-//        inviteBtn = (Button) findViewById(R.id.inviteMemberBtn);
-//        inviteeEmail = (EditText) findViewById(R.id.inviteEmail);
-//        inviteeLabel = (TextView) findViewById(R.id.inviteEmailLabel);
-//
-//
-//        String teamID = AccessSharedPrefs.getTeamID(TeamScreen.this);
-//
-//        if (teamID.length() == 0){
-//            inviteBtn.setVisibility(View.GONE);
-//            inviteeEmail.setVisibility(View.GONE);
-//            inviteeLabel.setVisibility(View.GONE);
-//        } else {
-//            createTeamBtn.setVisibility(View.GONE);
-//        }
-//
-//        createTeamBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //make new team in database
-//                Log.d(TAG, "Making new team");
-//                TeamCollection tc = new TeamCollection();
-//                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-//                String newTeamId = tc.makeTeam(deviceID);
-//                AccessSharedPrefs.saveTeamID(TeamScreen.this, newTeamId);
-//
-//                Toast.makeText(TeamScreen.this, "Team Created!", Toast.LENGTH_SHORT).show();
-//
-//                //render team screen ui
-//                createTeamBtn.setVisibility(View.GONE);
-//                inviteBtn.setVisibility(View.VISIBLE);
-//                inviteeEmail.setVisibility(View.VISIBLE);
-//                inviteeLabel.setVisibility(View.VISIBLE);
-//                //etc
-//            }
-//        });
-//
-//        inviteBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                String email = inviteeEmail.getText().toString();
-//                String currUserID = AccessSharedPrefs.getUserID(TeamScreen.this);
-//                String teamID = AccessSharedPrefs.getTeamID(TeamScreen.this);
-//                TeamCollection tc = new TeamCollection();
-//
-//                tc.sendInvitationEmail(email, teamID, currUserID);
-//                Toast.makeText(TeamScreen.this, "Invitation Sent!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 

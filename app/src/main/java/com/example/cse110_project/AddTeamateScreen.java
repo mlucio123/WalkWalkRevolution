@@ -17,6 +17,7 @@ import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
 import com.example.cse110_project.Firebase.TeammatesListListener;
+import com.example.cse110_project.Firebase.PendingTeammatesListListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -43,17 +44,22 @@ public class AddTeamateScreen extends AppCompatActivity {
 
         inviteeName = findViewById(R.id.inviteeName);
         inviteeEmail = findViewById(R.id.inviteeEmail);
+
+        Intent intent = new Intent(this, TeamScreen.class);
+
         // Configure addTeammateBtn, register listener
         addTeammateBtn = findViewById(R.id.submitBtn);
         addTeammateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String inviteeNameText = inviteeName.getText().toString();
+                String inviteeEmailText = inviteeEmail.getText().toString();
                 String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 TeamCollection tc = new TeamCollection();
-                tc.addToTeamPendingList(deviceID, new TeammatesListListener() {
+                tc.addToTeamPendingList(deviceID, inviteeNameText, inviteeEmailText, new PendingTeammatesListListener() {
                     @Override
-                    public void onSuccess(String name) {
-                        return;
+                    public void onSuccess() {
+                        startActivity(intent);
                     }
                 });
                 // Check if user has a team
@@ -61,10 +67,6 @@ public class AddTeamateScreen extends AppCompatActivity {
                     // else get team id
                 // Add new user to pending list
                 // send invitation
-
-
-                Log.i(TAG, inviteeName.getText().toString());
-                Log.i(TAG, inviteeEmail.getText().toString());
 
             }
         });

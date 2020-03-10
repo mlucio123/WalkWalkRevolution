@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.example.cse110_project.utils.Route;
 import com.example.cse110_project.utils.Team;
+import com.example.cse110_project.utils.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -94,7 +95,6 @@ public class TeamCollection {
                     }
                 });
 
-
     }
 
     public String getTeamID(String deviceID) {
@@ -154,35 +154,10 @@ public class TeamCollection {
     }
 
 
-
-//    public void addToTeamPendingList(String teamID, String newUserID) {
-//
-//        Map<String, Object> userMap = new HashMap<>();
-//        userMap.put("userID", newUserID);
-//
-//
-//        db.collection("teams")
-//                .document(teamID)
-//                .collection("listOfPendingUserIds")
-//                .add(userMap)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Log.d(TAG, newUserID + " is added to " + teamID + "'s pending list!");
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.w(TAG, "Error adding document", e);
-//                    }
-//                });
-//
-//
-//    }
-
-    public void addToTeamPendingList(String deviceID, TeammatesListListener myListener){
+    public void addToTeamPendingList(String deviceID, String inviteeName, String inviteeEmail, PendingTeammatesListListener myListener){
         Log.d(TAG, "DEVICE ID: " + deviceID);
+        Log.d(TAG, inviteeEmail);
+
         DocumentReference userRef = db.collection("users").document(deviceID);
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -192,51 +167,58 @@ public class TeamCollection {
                     if (document.exists()) {
                         Object teamIDObj = document.get("teamID");
 
-                        // TODO: handle no teammate case
+                        // make team fi teamID field not found
                         if (teamIDObj == null){
                             makeTeam(deviceID);
-//                            String teamID = document.get("teamID").toString();
-//                            Log.d(TAG, "CREATE NEW TEAMID: " + teamID);
                         }
-                        else {
-                            return;
-//                            String teamID = teamIDObj.toString();
-//                            Log.d(fTAG, "TEAM ID: " + teamID);
-//                            DocumentReference teamRef = db.collection("teams").document(teamID);
-//                            teamRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                                    if (task.isSuccessful()){
-//                                        DocumentSnapshot document = task.getResult();
-//                                        if (document.exists()) {
-//                                            List<String> userIds = (List<String>) document.get("listOfUserIDs");
-//                                            Log.i(TAG, "FOUND LIST OF USERS" + userIds.toString());
-//
-//                                            for (int i = 0; i < userIds.size(); i++) {
-//                                                String userID = userIds.get(i);
-//                                                DocumentReference currentUserRef = db.collection(("users")).document(userID);
-//                                                currentUserRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                                                    @Override
-//                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                                                        if (task.isSuccessful()) {
-//                                                            DocumentSnapshot document = task.getResult();
-//                                                            if (document.exists()) {
-//                                                                String firstName = document.get("firstName").toString();
-//                                                                String lastName = document.get("lastName").toString();
-//                                                                String userName = firstName + " " + lastName;
-//                                                                Log.i(TAG, "CURRENT USERNAME: " + userName);
-//                                                                myListener.onSuccess(userName);
-//                                                            }
-//
-//                                                        }
-//                                                    }
-//                                                });
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            });
-                        }
+
+                        // get pending list
+                        String teamID = teamIDObj.toString();
+                        Log.d(TAG, "TEAM ID: " + teamID);
+
+                        // check if user exists
+                        db.collection("users")
+                                .whereEqualTo("gmail", inviteeEmail)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            // add existing user to listOfPendingUserIds
+                                            // TODO: Check Duplicates
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                                String userID = document.getId();
+                                                Map<String,Object> pendingTeammate = new HashMap<>();
+                                                pendingTeammate.put("userID", userID);
+                                                db.collection("teams")
+                                                        .document(teamID)
+                                                        .collection("listOfPendingUserIds")
+                                                        .add(pendingTeammate)
+                                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                            @Override
+                                                            public void onSuccess(DocumentReference documentReference) {
+                                                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                                                sendInviteToEmail(inviteeEmail, deviceID);
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.w(TAG, "Error adding document", e);
+                                                            }
+                                                        });
+
+                                            }
+
+                                            // call callback function to perform intent
+                                            myListener.onSuccess();
+                                        } else {
+                                            Log.w(TAG, "Error getting documents.", task.getException());
+                                        }
+                                    }
+                                });
 
                     } else {
                         Log.d(TAG, "No such document");
@@ -277,7 +259,6 @@ public class TeamCollection {
                 });
 
     }
-
 
 
     public void findInviterTeam(String toUserId, String fromUserId) {
@@ -343,9 +324,7 @@ public class TeamCollection {
 
 
 
-
     public void getTeamRoutes(List<String> userIds, final MyCallback myCallback) {
-
 
         for(String deviceID : userIds) {
 
@@ -389,7 +368,6 @@ public class TeamCollection {
     }
 
 
-
     public void getTeamUsers(String teamID, final MyCallback myCallback) {
 
 
@@ -427,7 +405,6 @@ public class TeamCollection {
 
 
     }
-
 
 
     /* Get routes for current device */
