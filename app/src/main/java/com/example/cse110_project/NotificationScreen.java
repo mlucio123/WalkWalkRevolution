@@ -102,7 +102,9 @@ public class NotificationScreen extends AppCompatActivity {
             for (DocumentSnapshot document : newChatSnapShot.getDocuments()) {
                 CollectionReference invite = document.getReference().collection("invitations");
                 invite.addSnapshotListener((newSnapShot, err) -> {
-                    for(DocumentSnapshot doc : newSnapShot.getDocuments()) {
+                    List<DocumentChange> documentChanges = newSnapShot.getDocumentChanges();
+                    documentChanges.forEach(change -> {
+                        QueryDocumentSnapshot doc = change.getDocument();
                         StringBuilder header = new StringBuilder();
                         StringBuilder body = new StringBuilder();
                         header.append("You have a team invite from ");
