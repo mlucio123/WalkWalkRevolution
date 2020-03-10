@@ -118,7 +118,8 @@ public class NotificationScreen extends AppCompatActivity {
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT
                         );
-                        InviteNotification i = new InviteNotification(currUserID, doc.get("fromUserID").toString(), doc.get("teamId").toString());
+                        InviteNotification i = new InviteNotification(currUserID, doc.get("fromUserID").toString(),
+                                doc.get("teamId").toString(), currUserID.equals(doc.get("fromUserID").toString()), "");
                         newNotifHolder.setOrientation(LinearLayout.VERTICAL);
                         newNotifHolder.setBackground(draw);
                         newNotifHolder.setLayoutParams(containerParams);
@@ -189,14 +190,7 @@ public class NotificationScreen extends AppCompatActivity {
         });
 
 
-        WalkNotificationBuilder walk = new WalkNotificationBuilder()
-                .walkTitle("Example Walk")
-                .date("Example Date")
-                .isCreator(true)
-                .fromName("TeamMate")
-                .result(true);
 
-        Notification example = walk.getNotification();
 //        addWalkElement(example);
  //       subscribeToNotificationsTopic();
     }

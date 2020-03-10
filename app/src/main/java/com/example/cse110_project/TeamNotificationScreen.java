@@ -7,6 +7,9 @@ import android.os.Bundle;
 import com.example.cse110_project.Firebase.InvitationCallback;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.notifications.InviteNotification;
+import com.example.cse110_project.notifications.Notification;
+import com.example.cse110_project.notifications.WalkNotification;
+import com.example.cse110_project.notifications.WalkNotificationBuilder;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Team;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,7 +48,7 @@ public class TeamNotificationScreen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        int textColor = Color.parseColor("#FFFFFFFF");
+
         deviceId = AccessSharedPrefs.getUserID(TeamNotificationScreen.this);
         db = FirebaseFirestore.getInstance();
         db.collection("users")
@@ -59,15 +62,12 @@ public class TeamNotificationScreen extends AppCompatActivity {
                         .get()
                         .addOnSuccessListener((teamNotifSnapShot) -> {
                             for(DocumentSnapshot notif: teamNotifSnapShot.getDocuments()){
-                                String response = notif.get("action").toString();
-                                String fromDevice = notif.get("deviceID").toString();
-                                TextView add = new TextView(this);
-                                add.setText(fromDevice + " has " + response +" your team invitation");
-                                add.setTextColor(textColor);
-                                add.setTextSize(20);
-                                LinearLayout contain = findViewById(R.id.inviteResultContainer);
-                                if (!deviceId.equals(fromDevice)) {
-                                    contain.addView(add);
+                                InviteNotification newInviteNotif =
+                                        new InviteNotification(deviceId, notif.get("deviceID").toString(),
+                                                teamID, deviceId.equals(notif.get("deviceID").toString()),
+                                                notif.get("action").toString());
+                                if (!newInviteNotif.getIsCreator()) {
+                                    addNotification(newInviteNotif, findViewById(R.id.inviteResultContainer));
                                 }
                             }
                         });
@@ -76,21 +76,20 @@ public class TeamNotificationScreen extends AppCompatActivity {
                                 .get()
                                 .addOnSuccessListener((teamNotifSnapShot) -> {
                                     for(DocumentSnapshot notif: teamNotifSnapShot.getDocuments()){
-                                        String response = notif.get("response").toString();
-                                        String fromDevice = notif.get("deviceID").toString();
-                                        TextView add = new TextView(this);
-                                        add.setText(fromDevice + "'s response to your proposed walk is " + response);
-                                        add.setTextColor(textColor);
-                                        add.setTextSize(20);
-                                        LinearLayout contain = findViewById(R.id.walkNotifContainer);
-                                        //ensure only notifs from other teammates are displayed
-                                        if (!deviceId.equals(fromDevice)) {
-                                            contain.addView(add);
+                                        WalkNotificationBuilder builder = new WalkNotificationBuilder();
+                                        builder.isCreator(deviceId.equals(notif.get("deviceID").toString()))
+                                                .fromName(notif.get("deviceID").toString())
+                                                .result(notif.get("response").toString());
+                                        WalkNotification newWalkNotif = builder.getNotification();
+                                        if (!newWalkNotif.getIsCreator()) {
+                                            addNotification(newWalkNotif, findViewById(R.id.walkNotifContainer));
                                         }
                                     }
                                 });
             }
         });
+
+
 
 
 
@@ -117,5 +116,32 @@ public class TeamNotificationScreen extends AppCompatActivity {
 
 
     }
+
+
+
+
+    private void addNotification(Notification notification, LinearLayout container){
+        int textColor = Color.parseColor("#FFFFFFFF");
+        int textSize = 20;
+        TextView add = new TextView(this);
+        if(notification.getType() == Notification.NotifType.WalkNotification) {
+            add.setText(notification.getFromName() + "'s response to your proposed walk is: " + notification.getResult());
+        } else {
+            add.setText(notification.getFromName() + " has " + notification.getResult() + " your team invitation");
+        }
+        add.setTextColor(textColor);
+        add.setTextSize(textSize);
+        //ensure only notifs from other teammates are displayed
+        container.addView(add);
+    }
+
+
+
+
+
+
+
+
+
 
 }

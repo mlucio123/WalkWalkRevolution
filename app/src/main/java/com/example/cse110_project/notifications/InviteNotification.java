@@ -26,16 +26,19 @@ public class InviteNotification implements Notification {
     private String fromName;
     private String teamID;
     private String deviceID;
-    private boolean accepted;
+    private String result;
+    private boolean isCreator;
     FirebaseFirestore db;
 
     private String TAG = "INVITATION NOTIFICATION : ";
 
-    public InviteNotification(String deviceID, String fromName, String teamID) {
+    public InviteNotification(String deviceID, String fromName, String teamID, boolean isCreator, String result) {
         this.type = NotifType.InviteNotification;
         this.fromName = fromName;
         this.teamID = teamID;
         this.deviceID = deviceID;
+        this.isCreator = isCreator;
+        this.result = result;
         db = FirebaseFirestore.getInstance();
     }
 
@@ -53,6 +56,16 @@ public class InviteNotification implements Notification {
     @Override
     public String getFromName(){
         return this.fromName;
+    }
+
+    @Override
+    public String getResult(){
+        return this.result;
+    }
+
+    @Override
+    public boolean getIsCreator(){
+        return this.isCreator;
     }
 
 

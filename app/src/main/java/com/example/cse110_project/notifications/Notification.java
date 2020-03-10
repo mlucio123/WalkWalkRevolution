@@ -8,5 +8,7 @@ public interface Notification {
     }
     String getFromName();
     NotifType getType();
+    String getResult();
+    boolean getIsCreator();
     //void deleteNotification(String deviceID, String fromDeviceID, String notificationID);
 }
