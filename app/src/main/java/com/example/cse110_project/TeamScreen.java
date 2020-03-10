@@ -92,7 +92,7 @@ public class TeamScreen extends AppCompatActivity {
             }
         });
 
-        propWalkLabel = findViewById(R.id.walkTitleField);
+//        propWalkLabel = findViewById(R.id.walkTitleField);
         startingPointLabel = findViewById(R.id.startingPoint);
         timeLabel = findViewById(R.id.walkStartTime);
         proposerLabel = findViewById(R.id.createdBy);
@@ -259,14 +259,14 @@ public class TeamScreen extends AppCompatActivity {
 
         // Create Teamate Model list
 
-        Button proposeWalk = (Button) findViewById(R.id.ppWalkBtn);
-
-        proposeWalk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchProposeWalkScreen();
-            }
-        });
+//        Button proposeWalk = (Button) findViewById(R.id.ppWalkBtn);
+//
+//        proposeWalk.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                launchProposeWalkScreen();
+//            }
+//        });
 
     }
 

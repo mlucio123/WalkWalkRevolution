@@ -650,6 +650,9 @@ public class RouteScreen extends AppCompatActivity {
 
         titleEntry.addView(title);
         titleEntry.addView(titleDisplay);
+
+        Log.d(TAG, "ROUTE: " + routeEntry.getName() + " is completed = " + routeEntry.getPrevWalked());
+
         if(routeEntry.getPrevWalked()) titleEntry.addView(completedWalk);
         if (routeEntry.getFavorite()) {
             Log.d(TAG, routeEntry.getId() + " IS FAVORITE ");

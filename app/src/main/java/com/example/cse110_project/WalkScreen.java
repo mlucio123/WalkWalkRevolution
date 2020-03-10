@@ -272,7 +272,7 @@ public class WalkScreen extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "Route is in db, updating stats");
                     RouteCollection rc = new RouteCollection();
-                    rc.updateRouteStats(routeID, deviceID, steps, distance, timer, initials);
+                    rc.updateRouteStats(routeID, deviceID, timer, steps, distance, initials);
                     Toast.makeText(WalkScreen.this, "You successfully updated your walk.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(WalkScreen.this, RouteScreen.class);
                     startActivity(intent);
