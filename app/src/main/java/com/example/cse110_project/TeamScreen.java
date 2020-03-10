@@ -25,6 +25,7 @@ import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
 
+import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -107,7 +108,7 @@ public class TeamScreen extends AppCompatActivity {
             }
         });
 
-        propWalkLabel = findViewById(R.id.walkTitleText);
+//        propWalkLabel = findViewById(R.id.walkTitleField);
         startingPointLabel = findViewById(R.id.startingPoint);
         timeLabel = findViewById(R.id.walkStartTime);
         proposerLabel = findViewById(R.id.createdBy);
@@ -135,7 +136,7 @@ public class TeamScreen extends AppCompatActivity {
         proposedWalkLayout = findViewById(R.id.proposedWalkLayout);
         proposedWalkLayout.setVisibility(View.GONE);
 
-
+        Log.d(TAG, "Getting team with id " + deviceID);
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
 
         rootRef.collection("users")
@@ -521,6 +522,7 @@ public class TeamScreen extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+
 
         // Get list of pending User IDs
         uc.getPendingTeammatesList(deviceID, new TeammatesListListener() {

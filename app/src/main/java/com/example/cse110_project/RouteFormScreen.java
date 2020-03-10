@@ -264,7 +264,8 @@ public class RouteFormScreen extends AppCompatActivity {
                     String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                     String initial = AccessSharedPrefs.getInitial(RouteFormScreen.this);
                     int[] colors = AccessSharedPrefs.getColors(RouteFormScreen.this);
-                    rc.addRoute(newRoute, deviceID, initial, colors);
+                    Log.d(TAG, "xxDevice id: " + deviceID);
+                    rc.addRoute(newRoute, deviceID, initial, colors,timer,steps,distance);
 
                     Toast.makeText(RouteFormScreen.this, "Form Submitted!", Toast.LENGTH_SHORT).show();
 
