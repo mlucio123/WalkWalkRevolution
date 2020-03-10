@@ -82,7 +82,7 @@ public class TeamNotificationScreen extends AppCompatActivity {
                                         add.setText(fromDevice + "'s response to your proposed walk is " + response);
                                         add.setTextColor(textColor);
                                         add.setTextSize(20);
-                                        LinearLayout contain = findViewById(R.id.inviteResultContainer);
+                                        LinearLayout contain = findViewById(R.id.walkNotifContainer);
                                         //ensure only notifs from other teammates are displayed
                                         if (!deviceId.equals(fromDevice)) {
                                             contain.addView(add);
