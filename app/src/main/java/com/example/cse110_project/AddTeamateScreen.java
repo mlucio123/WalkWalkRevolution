@@ -17,10 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
+
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.example.cse110_project.Firebase.TeammatesListListener;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,12 +31,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class AddTeamateScreen extends AppCompatActivity {
-
+    private String TAG = "ADD TEAMMATE SCREEN: ";
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
+    private Button addTeammateBtn;
+    private EditText inviteeName;
+    private EditText inviteeEmail;
+
 
     private Button submitBtn;
-    private EditText inviteeEmail;
     private Button createTeamBtn;
 
 
@@ -42,8 +48,6 @@ public class AddTeamateScreen extends AppCompatActivity {
 
 
     public static boolean testing = false;
-
-    private String TAG = "ADD TEAMMATE SCREEN";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,6 @@ public class AddTeamateScreen extends AppCompatActivity {
         RouteCollection.initFirebase(this);
         UserCollection.initFirebase(this);
         TeamCollection.initFirebase(this);
-
 
         submitBtn = findViewById(R.id.submitBtn);
         createTeamBtn = findViewById(R.id.createTeamBtn);
@@ -114,18 +117,47 @@ public class AddTeamateScreen extends AppCompatActivity {
 
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+
+                 String email = inviteeEmail.getText().toString();
+
+                 TeamCollection tc = new TeamCollection();
+
+                 // tc.sendInvitationEmail(email, teamID, currUserID);
+                 Log.d(TAG, "SENDING INVITATION TO " + email + " from " + deviceID);
+                 tc.sendInviteToEmail(email, deviceID);
+                 Toast.makeText(AddTeamateScreen.this, "Invitation Sent!", Toast.LENGTH_SHORT).show();
+                 finish();
+             }
+         });
+
+        inviteeName = findViewById(R.id.inviteeName);
+        inviteeEmail = findViewById(R.id.inviteeEmail);
+        // Configure addTeammateBtn, register listener
+        addTeammateBtn = findViewById(R.id.submitBtn);
+        addTeammateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                String email = inviteeEmail.getText().toString();
-
+            public void onClick(View view) {
+                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 TeamCollection tc = new TeamCollection();
+                tc.addToTeamPendingList(deviceID, new TeammatesListListener() {
+                    @Override
+                    public void onSuccess(String name) {
 
-                // tc.sendInvitationEmail(email, teamID, currUserID);
-                Log.d(TAG, "SENDING INVITATION TO " + email + " from " + deviceID);
-                tc.sendInviteToEmail(email, deviceID);
-                Toast.makeText(AddTeamateScreen.this, "Invitation Sent!", Toast.LENGTH_SHORT).show();
-                finish();
+                        return;
+                    }
+                });
+                // Check if user has a team
+                // create team if not and add user
+                // else get team id
+                // Add new user to pending list
+                // send invitation
+
+
+                Log.i(TAG, inviteeName.getText().toString());
+                Log.i(TAG, inviteeEmail.getText().toString());
+
             }
         });
 
@@ -141,30 +173,30 @@ public class AddTeamateScreen extends AppCompatActivity {
     }
 
 
-    private void selectFragment(MenuItem item){
 
-        Intent newIntent;
-        switch(item.getItemId()) {
-            case R.id.navigation_home:
-                newIntent = new Intent(this, HomeScreen.class);
-                newIntent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
-                startActivity(newIntent);
-                break;
-            case R.id.navigation_walk:
-                newIntent = new Intent(this, WalkScreen.class);
-                startActivity(newIntent);
-                break;
-            case R.id.navigation_routes:
-                newIntent = new Intent(this, RouteScreen.class);
-                startActivity(newIntent);
-                break;
-            case R.id.navigation_team:
-                break;
-            default:
-                break;
+        private void selectFragment(MenuItem item) {
+
+            Intent newIntent;
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    newIntent = new Intent(AddTeamateScreen.this, HomeScreen.class);
+                    newIntent.putExtra(HomeScreen.FITNESS_SERVICE_KEY, fitnessServiceKey);
+                    startActivity(newIntent);
+                    break;
+                case R.id.navigation_walk:
+                    newIntent = new Intent(AddTeamateScreen.this, WalkScreen.class);
+                    startActivity(newIntent);
+                    break;
+                case R.id.navigation_routes:
+                    newIntent = new Intent(AddTeamateScreen.this, RouteScreen.class);
+                    startActivity(newIntent);
+                    break;
+                default:
+                    break;
+            }
         }
-    }
 
 
 
 }
+

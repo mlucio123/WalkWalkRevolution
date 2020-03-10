@@ -1,11 +1,15 @@
 package com.example.cse110_project;
 
 import android.opengl.Visibility;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 
 import android.content.Intent;
 import android.provider.Settings;
@@ -19,6 +23,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import android.util.Log;
+
+
+
 import com.example.cse110_project.Firebase.ProposeWalkCollection;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
@@ -27,6 +40,7 @@ import com.example.cse110_project.Firebase.UserCollection;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.example.cse110_project.Firebase.TeammatesListListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,7 +56,8 @@ public class TeamScreen extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
     private Button addTeamateBtn;
-    private MyRecyclerViewAdapter adapter;
+
+//    private MyRecyclerViewAdapter adapter;
     private LinearLayout proposedWalkLayout;
 
 
@@ -77,9 +92,9 @@ public class TeamScreen extends AppCompatActivity {
 
     public boolean hasTeam = false;
 
-    public void setHasTeam(boolean newValue) { this.hasTeam = newValue; }
+    private MultiViewTypeAdapter adapter;
 
-    public boolean getHasTean() { return this.hasTeam; }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -483,16 +498,57 @@ public class TeamScreen extends AppCompatActivity {
 
         // Create Teamate Model list
 
-        Button proposeWalk = (Button) findViewById(R.id.ppWalkBtn);
+//        Button proposeWalk = (Button) findViewById(R.id.ppWalkBtn);
+//
+//        proposeWalk.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                launchProposeWalkScreen();
+//            }
+//        });
 
-        proposeWalk.setOnClickListener(new View.OnClickListener() {
+        // Get team id
+        UserCollection uc = new UserCollection();
+        ArrayList<TeamateModel> list= new ArrayList();
+
+        MultiViewTypeAdapter adapter = new MultiViewTypeAdapter(list, this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(adapter);
+
+        TeammatesListListener tm = new TeammatesListListener() {
             @Override
-            public void onClick(View view) {
-                launchProposeWalkScreen();
+            public void onSuccess(String name) {
+                return;
+            }
+        };
+        // Get list of User IDs
+        uc.getTeammatesList(deviceID, new TeammatesListListener() {
+            @Override
+            public void onSuccess(String name) {
+                // Create Teammate Model list
+                list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,name));
+                adapter.notifyDataSetChanged();
+                Log.i(TAG, "TEAMMATE LIST: " + list.toString());
+                Log.i(TAG, "TEAMMATE LIST SIZE: " + adapter.getItemCount());
             }
         });
 
+        // Get list of pending User IDs
+        uc.getPendingTeammatesList(deviceID, new TeammatesListListener() {
+            @Override
+            public void onSuccess(String name) {
+                list.add(new TeamateModel(TeamateModel.PENDING_TYPE,name));
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
+        // Get list of Pending IDs
     }
+
 
     public void launchProposeWalkScreen() {
         Intent intent = new Intent(this, ProposeWalkScreen.class);
@@ -503,30 +559,6 @@ public class TeamScreen extends AppCompatActivity {
         Intent intent = new Intent(this, TeamNotificationScreen.class);
         startActivity(intent);
     }
-
-    /*
-        ArrayList<TeamateModel> list= new ArrayList();
-//        list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,"JINING"));
-//        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"HOWARD"));
-//        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"CONOR"));
-//        list.add(new TeamateModel(TeamateModel.PENDING_TYPE,"MIA"));
-
-        MultiViewTypeAdapter adapter = new MultiViewTypeAdapter(list,this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(adapter);
-
-    }
-    */
-//    public void renderOnATeamUI() {
-//        createTeamBtn.setVisibility(View.GONE);
-//        inviteBtn.setVisibility(View.VISIBLE);
-//        inviteeEmail.setVisibility(View.VISIBLE);
-//        inviteeLabel.setVisibility(View.VISIBLE);
-//    }
-
 
     private void selectFragment(MenuItem item){
 
