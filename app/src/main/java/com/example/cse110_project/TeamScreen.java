@@ -1,7 +1,4 @@
 package com.example.cse110_project;
-
-import android.opengl.Visibility;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -21,16 +18,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import android.util.Log;
-
-
 
 import com.example.cse110_project.Firebase.ProposeWalkCollection;
 import com.example.cse110_project.Firebase.RouteCollection;
@@ -48,8 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
 
 
 public class TeamScreen extends AppCompatActivity {
@@ -533,8 +519,6 @@ public class TeamScreen extends AppCompatActivity {
                 // Create Teammate Model list
                 list.add(new TeamateModel(TeamateModel.ACCEPT_TYPE,name));
                 adapter.notifyDataSetChanged();
-                Log.i(TAG, "TEAMMATE LIST: " + list.toString());
-                Log.i(TAG, "TEAMMATE LIST SIZE: " + adapter.getItemCount());
             }
         });
 
@@ -546,9 +530,6 @@ public class TeamScreen extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-
-
-        // Get list of Pending IDs
     }
 
 
@@ -575,7 +556,6 @@ public class TeamScreen extends AppCompatActivity {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(adapter);
-
     }
     */
 //    public void renderOnATeamUI() {
@@ -625,6 +605,3 @@ public class TeamScreen extends AppCompatActivity {
     }
 
 }
-
-
-
