@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.cse110_project.Firebase.ProposeWalkCollection;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.Firebase.UserCollection;
@@ -31,6 +32,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 
 public class TeamScreen extends AppCompatActivity {
@@ -59,6 +64,15 @@ public class TeamScreen extends AppCompatActivity {
 
     private Button scheduleButton;
     private Button withdrawButton;
+
+    private TextView isScheduleText;
+    private TextView acceptPpl;
+    private TextView badTimePpl;
+    private TextView badRoutePpl;
+
+    private final ArrayList<String> acceptsPplList = new ArrayList<>();
+    private final ArrayList<String> declineTimeList = new ArrayList<>();
+    private final ArrayList<String> declineRouteList = new ArrayList<>();
 
     public static boolean testing = false;
 
@@ -104,11 +118,17 @@ public class TeamScreen extends AppCompatActivity {
         scheduleButton = findViewById(R.id.scheduleWalkBtn);
         withdrawButton = findViewById(R.id.withdrawWalkBtn);
 
+        acceptPpl = findViewById(R.id.acceptsPeople);
+        badTimePpl = findViewById(R.id.badTimePeople);
+        badRoutePpl = findViewById(R.id.badRoutePeople);
+
         acceptButton.setVisibility(View.GONE);
         badTimeButton.setVisibility(View.GONE);
         badRouteButton.setVisibility(View.GONE);
         scheduleButton.setVisibility(View.GONE);
         withdrawButton.setVisibility(View.GONE);
+
+        isScheduleText = findViewById(R.id.isScheduledText);
 
         Log.d(TAG, "hiding proposed walk layout");
         proposedWalkLayout = findViewById(R.id.proposedWalkLayout);
@@ -125,7 +145,6 @@ public class TeamScreen extends AppCompatActivity {
                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                        DocumentSnapshot rootDoc = task.getResult();
-
 
                        String returnedTeamID = "";
 
@@ -157,9 +176,23 @@ public class TeamScreen extends AppCompatActivity {
                                            proposedWalkLayout.setVisibility(View.VISIBLE);
 
                                            Log.d(TAG, "DATA: " + document.getData());
-                                           String proposedBy = document.getData().get("proposedBy").toString();
+                                           String proposedByID = document.getData().get("proposedBy").toString();
 
-                                           propWalkLabel.setText(document.getData().get("walkingName").toString());
+                                           rootRef.collection("users")
+                                                   .document(proposedByID)
+                                                   .get()
+                                                   .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                      @Override
+                                                      public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                          try {
+                                                              proposerLabel.setText(task.getResult().getData().get("initial").toString());
+                                                          } catch(Exception e) {
+                                                              Log.d(TAG, "ERROR " + e.toString());
+                                                          }
+                                                      }
+                                                  });
+
+
 
                                            if (document.getData().get("routeSTart") != null) {
                                                startingPointLabel.setText(document.getData().get("routeSTart").toString());
@@ -170,12 +203,21 @@ public class TeamScreen extends AppCompatActivity {
                                            theTime = document.getData().get("hour").toString() + ":" + document.getData().get("minute").toString() + " " + document.getData().get("month") + "/" + document.getData().get("day") + "/" + document.getData().get("year");
 
 
+                                           String isSchStr = document.getData().get("isScheduled").toString();
+
+                                           boolean val = Boolean.parseBoolean(isSchStr);
+
+                                           if(val) {
+                                               isScheduleText.setText("This walk is scheduled!");
+                                           } else {
+                                               isScheduleText.setText("Not yet!");
+                                           }
+
                                            timeLabel.setText(theTime);
 
-                                           proposerLabel.setText(proposedBy);
+//                                           proposerLabel.setText(proposedBy);
 
-
-                                           if (deviceID.equals(proposedBy)) {
+                                           if (deviceID.equals(proposedByID)) {
                                                scheduleButton.setVisibility(View.VISIBLE);
                                                withdrawButton.setVisibility(View.VISIBLE);
                                            } else {
@@ -185,9 +227,174 @@ public class TeamScreen extends AppCompatActivity {
                                            }
                                        }
 
+
                                    }
                                }
                            });
+
+                           rootRef.collection("teams")
+                                   .document(returnedTeamID)
+                                   .collection("responsesToWalk")
+                                   .whereEqualTo("response", "join walk")
+                                   .get()
+                                   .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                           if (task.isSuccessful()) {
+
+                                               Log.d(TAG, "RECEIVED RESULT COUNT : " + task.getResult().size());
+
+                                               for (QueryDocumentSnapshot document : task.getResult()) {
+                                                   Log.d(TAG, "Retrieving replies for  => " + document.getData());
+
+                                                   String userID = document.getData().get("deviceID").toString();
+
+                                                   FirebaseFirestore thirdCheck = FirebaseFirestore.getInstance();
+
+
+                                                   thirdCheck.collection("users")
+                                                           .document(userID)
+                                                           .get()
+                                                           .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                               @Override
+                                                               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                   if (task.isSuccessful()) {
+                                                                       DocumentSnapshot document = task.getResult();
+                                                                       if (document.exists()) {
+                                                                           String initial = document.getData().get("initial").toString();
+                                                                           Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                                                                           acceptsPplList.add(initial);
+                                                                           acceptPpl.setText(acceptsPplList.toString());
+
+                                                                       }
+                                                                   }
+                                                               }
+                                                           });
+
+                                               }
+
+                                           } else {
+                                               Log.d(TAG, "Error getting documents: ", task.getException());
+                                           }
+                                       }
+                                   })
+                                   .addOnFailureListener(new OnFailureListener() {
+                                       @Override
+                                       public void onFailure(@NonNull Exception e) {
+                                           Log.w(TAG, "Error proposing a walk document", e);
+                                       }
+                                   });
+
+
+                           rootRef.collection("teams")
+                                   .document(returnedTeamID)
+                                   .collection("responsesToWalk")
+                                   .whereEqualTo("response", "bad time")
+                                   .get()
+                                   .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                           if (task.isSuccessful()) {
+
+                                               Log.d(TAG, "RECEIVED RESULT COUNT : " + task.getResult().size());
+
+                                               for (QueryDocumentSnapshot document : task.getResult()) {
+                                                   Log.d(TAG, "Retrieving replies for  => " + document.getData());
+
+                                                   String userID = document.getData().get("deviceID").toString();
+
+                                                   FirebaseFirestore thirdCheck = FirebaseFirestore.getInstance();
+
+
+                                                   thirdCheck.collection("users")
+                                                           .document(userID)
+                                                           .get()
+                                                           .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                               @Override
+                                                               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                   if (task.isSuccessful()) {
+                                                                       DocumentSnapshot document = task.getResult();
+                                                                       if (document.exists()) {
+                                                                           String initial = document.getData().get("initial").toString();
+                                                                           Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                                                                           declineTimeList.add(initial);
+                                                                           badTimeButton.setText(declineTimeList.toString());
+
+                                                                       }
+                                                                   }
+                                                               }
+                                                           });
+
+                                               }
+
+                                           } else {
+                                               Log.d(TAG, "Error getting documents: ", task.getException());
+                                           }
+                                       }
+                                   })
+                                   .addOnFailureListener(new OnFailureListener() {
+                                       @Override
+                                       public void onFailure(@NonNull Exception e) {
+                                           Log.w(TAG, "Error proposing a walk document", e);
+                                       }
+                                   });
+
+
+                           rootRef.collection("teams")
+                                   .document(returnedTeamID)
+                                   .collection("responsesToWalk")
+                                   .whereEqualTo("response", "bad route")
+                                   .get()
+                                   .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                           if (task.isSuccessful()) {
+
+                                               Log.d(TAG, "RECEIVED RESULT COUNT : " + task.getResult().size());
+
+                                               for (QueryDocumentSnapshot document : task.getResult()) {
+                                                   Log.d(TAG, "Retrieving replies for  => " + document.getData());
+
+                                                   String userID = document.getData().get("deviceID").toString();
+
+                                                   FirebaseFirestore thirdCheck = FirebaseFirestore.getInstance();
+
+
+                                                   thirdCheck.collection("users")
+                                                           .document(userID)
+                                                           .get()
+                                                           .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                               @Override
+                                                               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                   if (task.isSuccessful()) {
+                                                                       DocumentSnapshot document = task.getResult();
+                                                                       if (document.exists()) {
+                                                                           String initial = document.getData().get("initial").toString();
+                                                                           Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                                                                           declineRouteList.add(initial);
+                                                                           badRoutePpl.setText(declineRouteList.toString());
+
+                                                                       }
+                                                                   }
+                                                               }
+                                                           });
+
+                                               }
+
+                                           } else {
+                                               Log.d(TAG, "Error getting documents: ", task.getException());
+                                           }
+                                       }
+                                   })
+                                   .addOnFailureListener(new OnFailureListener() {
+                                       @Override
+                                       public void onFailure(@NonNull Exception e) {
+                                           Log.w(TAG, "Error proposing a walk document", e);
+                                       }
+                                   });
                        }
                    }
                 })
@@ -224,10 +431,29 @@ public class TeamScreen extends AppCompatActivity {
                 TeamCollection tc = new TeamCollection();
                 tc.setUserResponseToWalk(deviceID, "bad route");
                 Toast.makeText(TeamScreen.this, "Bad Route!", Toast.LENGTH_SHORT).show();
-
             }
         });
 
+        scheduleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProposeWalkCollection pwc = new ProposeWalkCollection();
+                pwc.setScheduled(deviceID);
+                isScheduleText.setText("This walk is scheduled!");
+                Toast.makeText(TeamScreen.this, "Scheduled Proposed Walk!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        withdrawButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProposeWalkCollection pwc = new ProposeWalkCollection();
+                pwc.withdrawWalk(deviceID);
+                proposedWalkLayout.setVisibility(View.GONE);
+                Toast.makeText(TeamScreen.this, "Withdraw Proposed Walk!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Initialize teamBtn and bottom navigation bar
         addTeamateBtn = (Button) findViewById(R.id.addBtn);
@@ -345,55 +571,4 @@ public class TeamScreen extends AppCompatActivity {
 }
 
 
-//
-//        createTeamBtn = (Button) findViewById(R.id.createTeam);
-//        inviteBtn = (Button) findViewById(R.id.inviteMemberBtn);
-//        inviteeEmail = (EditText) findViewById(R.id.inviteEmail);
-//        inviteeLabel = (TextView) findViewById(R.id.inviteEmailLabel);
-//
-//
-//        String teamID = AccessSharedPrefs.getTeamID(TeamScreen.this);
-//
-//        if (teamID.length() == 0){
-//            inviteBtn.setVisibility(View.GONE);
-//            inviteeEmail.setVisibility(View.GONE);
-//            inviteeLabel.setVisibility(View.GONE);
-//        } else {
-//            createTeamBtn.setVisibility(View.GONE);
-//        }
-//
-//        createTeamBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //make new team in database
-//                Log.d(TAG, "Making new team");
-//                TeamCollection tc = new TeamCollection();
-//                String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-//                String newTeamId = tc.makeTeam(deviceID);
-//                AccessSharedPrefs.saveTeamID(TeamScreen.this, newTeamId);
-//
-//                Toast.makeText(TeamScreen.this, "Team Created!", Toast.LENGTH_SHORT).show();
-//
-//                //render team screen ui
-//                createTeamBtn.setVisibility(View.GONE);
-//                inviteBtn.setVisibility(View.VISIBLE);
-//                inviteeEmail.setVisibility(View.VISIBLE);
-//                inviteeLabel.setVisibility(View.VISIBLE);
-//                //etc
-//            }
-//        });
-//
-//        inviteBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                String email = inviteeEmail.getText().toString();
-//                String currUserID = AccessSharedPrefs.getUserID(TeamScreen.this);
-//                String teamID = AccessSharedPrefs.getTeamID(TeamScreen.this);
-//                TeamCollection tc = new TeamCollection();
-//
-//                tc.sendInvitationEmail(email, teamID, currUserID);
-//                Toast.makeText(TeamScreen.this, "Invitation Sent!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
