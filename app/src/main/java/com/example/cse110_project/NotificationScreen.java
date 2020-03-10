@@ -186,7 +186,7 @@ public class NotificationScreen extends AppCompatActivity {
                         newNotifHolder.addView(acceptBtn);
                         newNotifHolder.addView(declineBtn);
                         notifContainer.addView(newNotifHolder);
-                    }
+                    });
                 });
             }
         });
