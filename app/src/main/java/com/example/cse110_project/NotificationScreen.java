@@ -13,19 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.Firebase.FirebaseMessageService;
-import com.example.cse110_project.Firebase.InvitationCallback;
-import com.example.cse110_project.Firebase.TeamCollection;
 import com.example.cse110_project.notifications.InviteNotification;
-import com.example.cse110_project.notifications.Notification;
 import com.example.cse110_project.notifications.WalkNotification;
-import com.example.cse110_project.notifications.WalkNotificationBuilder;
 import com.example.cse110_project.utils.AccessSharedPrefs;
-import com.example.cse110_project.utils.Team;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -34,7 +28,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -184,16 +177,14 @@ public class NotificationScreen extends AppCompatActivity {
                         newNotifHolder.addView(acceptBtn);
                         newNotifHolder.addView(declineBtn);
                         notifContainer.addView(newNotifHolder);
-                    });
+                    }
+
                 });
+
             }
         });
-
-
-
-//        addWalkElement(example);
- //       subscribeToNotificationsTopic();
     }
+
 
     private void subscribeToNotificationsTopic() {
 
