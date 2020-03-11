@@ -48,7 +48,7 @@ public class TeamNotificationScreen extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TeamNotificationScreen.this, HomeScreen.class );
+                Intent intent = new Intent(TeamNotificationScreen.this, TeamScreen.class );
                 startActivity(intent);
             }
         });
