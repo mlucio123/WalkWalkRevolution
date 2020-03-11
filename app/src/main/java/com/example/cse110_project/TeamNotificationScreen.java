@@ -15,9 +15,11 @@ import com.example.cse110_project.utils.Team;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.api.Distribution;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,6 +31,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class TeamNotificationScreen extends AppCompatActivity {
     String TAG = TeamNotificationScreen.class.getSimpleName();
@@ -54,37 +58,47 @@ public class TeamNotificationScreen extends AppCompatActivity {
         db.collection("users")
                 .whereEqualTo("deviceID", deviceId)
                 .addSnapshotListener((userSnapShot, error) -> {
-            for(DocumentSnapshot userDoc : userSnapShot.getDocuments()){
+                    for (DocumentSnapshot userDoc : userSnapShot.getDocuments()){
                 String teamID = userDoc.get("teamID").toString();
                 DocumentReference team = db.collection("teams")
                         .document(teamID);
+
                         team.collection("responses")
-                        .get()
-                        .addOnSuccessListener((teamNotifSnapShot) -> {
-                            for(DocumentSnapshot notif: teamNotifSnapShot.getDocuments()){
-                                InviteNotification newInviteNotif =
-                                        new InviteNotification(deviceId, notif.get("deviceID").toString(),
-                                                teamID, deviceId.equals(notif.get("deviceID").toString()),
-                                                notif.get("action").toString());
-                                if (!newInviteNotif.getIsCreator()) {
-                                    addNotification(newInviteNotif, findViewById(R.id.inviteResultContainer));
+                        .addSnapshotListener((teamNotifSnapShot, err) -> {
+                            List<DocumentChange> docChanges = teamNotifSnapShot.getDocumentChanges();
+                            docChanges.forEach(c -> {
+                                QueryDocumentSnapshot notif = c.getDocument();
+                                db.collection("users")
+                                        .document(notif.get("deviceID").toString()).get().addOnSuccessListener((fromSnap) -> {
+
+                                    InviteNotification newInviteNotif = new InviteNotification(deviceId, fromSnap.get("firstName")
+                                            .toString(),
+                                            teamID, deviceId.equals(notif.get("deviceID").toString()),
+                                            notif.get("action").toString());
+                                    if (!newInviteNotif.getIsCreator()) {
+                                        addNotification(newInviteNotif, findViewById(R.id.inviteResultContainer));
                                 }
-                            }
+                                });
+                            });
                         });
 
                         team.collection("responsesToWalk")
-                                .get()
-                                .addOnSuccessListener((teamNotifSnapShot) -> {
-                                    for(DocumentSnapshot notif: teamNotifSnapShot.getDocuments()){
-                                        WalkNotificationBuilder builder = new WalkNotificationBuilder();
-                                        builder.isCreator(deviceId.equals(notif.get("deviceID").toString()))
-                                                .fromName(notif.get("deviceID").toString())
-                                                .result(notif.get("response").toString());
-                                        WalkNotification newWalkNotif = builder.getNotification();
-                                        if (!newWalkNotif.getIsCreator()) {
-                                            addNotification(newWalkNotif, findViewById(R.id.walkNotifContainer));
-                                        }
-                                    }
+                                .addSnapshotListener((teamNotifSnapShot, err) -> {
+                                    List<DocumentChange> docChanges = teamNotifSnapShot.getDocumentChanges();
+                                    docChanges.forEach(c -> {
+                                        QueryDocumentSnapshot notif = c.getDocument();
+                                        db.collection("users")
+                                                .document(notif.get("deviceID").toString()).get().addOnSuccessListener((fromSnap) -> {
+                                            WalkNotificationBuilder builder = new WalkNotificationBuilder();
+                                            builder.isCreator(deviceId.equals(notif.get("deviceID").toString()))
+                                                    .fromName(fromSnap.get("fromName").toString())
+                                                    .result(notif.get("response").toString());
+                                            WalkNotification newWalkNotif = builder.getNotification();
+                                            if (!newWalkNotif.getIsCreator()) {
+                                                addNotification(newWalkNotif, findViewById(R.id.walkNotifContainer));
+                                            }
+                                        });
+                                    });
                                 });
             }
         });
@@ -131,7 +145,6 @@ public class TeamNotificationScreen extends AppCompatActivity {
         }
         add.setTextColor(textColor);
         add.setTextSize(textSize);
-        //ensure only notifs from other teammates are displayed
         container.addView(add);
     }
 
