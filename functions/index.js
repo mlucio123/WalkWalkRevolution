@@ -5,6 +5,9 @@ admin.initializeApp();
 exports.sendInvite = functions.firestore
    .document('users/{userID}/invitations/{invitationID}')
    .onCreate((snap, context) => {
+	snap.ref.update({
+        	timestamp: admin.firestore.FieldValue.serverTimestamp()
+               });
      // Get an object with the current document value.
      // If the document does not exist, it has been deleted.
      const document = snap.exists ? snap.data() : null;
@@ -36,6 +39,9 @@ exports.sendInvite = functions.firestore
 exports.sendInviteResponse = functions.firestore
 	.document('teams/{teamID}/responses/{responseID}')
 	.onCreate((snap, context) => {
+	snap.ref.update({
+        	timestamp: admin.firestore.FieldValue.serverTimestamp()
+               });
 
      const document = snap.exists ? snap.data() : null;
 
@@ -67,6 +73,9 @@ exports.sendInviteResponse = functions.firestore
 exports.sendProposeWalkResponse = functions.firestore
 	.document('teams/{teamID}/responsesToWalk/{responseID}')
 	.onCreate((snap, context) => {
+	snap.ref.update({
+        	timestamp: admin.firestore.FieldValue.serverTimestamp()
+               });
 
      const document = snap.exists ? snap.data() : null;
 

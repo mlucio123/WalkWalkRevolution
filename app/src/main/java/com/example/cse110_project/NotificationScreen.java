@@ -92,7 +92,7 @@ public class NotificationScreen extends AppCompatActivity {
         chat = FirebaseFirestore.getInstance().collection("users");
 
         // Create a query against the collection.
-        Query query = chat.whereEqualTo("deviceID", currUserID);
+        Query query = chat.whereEqualTo("deviceID", currUserID).orderBy("timestamp", Query.Direction.ASCENDING);
         int textColor = Color.parseColor("#FFFFFFFF");
         int bodySize = 20;
         int headerSize = 30;

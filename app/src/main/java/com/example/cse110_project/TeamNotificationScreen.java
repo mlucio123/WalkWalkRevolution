@@ -19,6 +19,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,7 +64,7 @@ public class TeamNotificationScreen extends AppCompatActivity {
                 DocumentReference team = db.collection("teams")
                         .document(teamID);
 
-                        team.collection("responses")
+                        team.collection("responses").orderBy("timestamp", Query.Direction.ASCENDING)
                         .addSnapshotListener((teamNotifSnapShot, err) -> {
                             List<DocumentChange> docChanges = teamNotifSnapShot.getDocumentChanges();
                             docChanges.forEach(c -> {
@@ -82,7 +83,7 @@ public class TeamNotificationScreen extends AppCompatActivity {
                             });
                         });
 
-                        team.collection("responsesToWalk")
+                        team.collection("responsesToWalk").orderBy("timestamp", Query.Direction.ASCENDING)
                                 .addSnapshotListener((teamNotifSnapShot, err) -> {
                                     List<DocumentChange> docChanges = teamNotifSnapShot.getDocumentChanges();
                                     docChanges.forEach(c -> {
