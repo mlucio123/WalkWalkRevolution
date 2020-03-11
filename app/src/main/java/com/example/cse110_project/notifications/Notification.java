@@ -1,7 +1,7 @@
 package com.example.cse110_project.notifications;
 
 public interface Notification {
-    public enum NotifType
+    enum NotifType
     {
         WalkNotification,
         InviteNotification
