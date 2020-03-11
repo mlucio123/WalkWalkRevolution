@@ -63,6 +63,8 @@ public class NotificationScreen extends AppCompatActivity {
             }
         });
 
+        String currentDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -139,7 +141,7 @@ public class NotificationScreen extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 InviteNotification inviteNotification = (InviteNotification) view.getTag();
-                                inviteNotification.deleteNotification( currUserID, document.getId(),doc.get("teamId").toString(), doc.getId());
+                                inviteNotification.deleteNotification( currUserID, document.getId(),doc.get("teamId").toString(), doc.getId(), "declined");
                                 newNotifHolder.setVisibility(View.GONE);
                             }
                         });
@@ -160,13 +162,11 @@ public class NotificationScreen extends AppCompatActivity {
                                 Log.d(TAG, "STARTING TO ACCEPT INVITE");
                                 InviteNotification inviteNotification = (InviteNotification) v.getTag();
                                 Log.d(TAG, "SECOND STEP PASSED");
-                                inviteNotification.addUserToTeamList(currUserID, doc.get("teamId").toString());
+                                inviteNotification.addUserToTeamList(currentDeviceID, doc.get("teamId").toString());
                                 Toast.makeText(NotificationScreen.this, "Accepted invitation clicked", Toast.LENGTH_SHORT).show();
-                                inviteNotification.deleteNotification( currUserID, document.getId(),doc.get("teamId").toString(), doc.getId());
+//                                inviteNotification.deleteNotification( currUserID, document.getId(),doc.get("teamId").toString(), doc.getId(), "accepted");
                                 newNotifHolder.setVisibility(View.GONE);
                                 AccessSharedPrefs.saveOnTeam(NotificationScreen.this);
-                                TeamCollection tc = new TeamCollection();
-                                tc.addTeamID(doc.get("teamId").toString(),currUserID);
                             }
                         });
 

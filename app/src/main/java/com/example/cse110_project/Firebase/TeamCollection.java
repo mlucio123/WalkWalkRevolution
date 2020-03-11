@@ -605,6 +605,7 @@ public class TeamCollection {
                                 res.put("deviceID", deviceID);
                                 res.put("response", response);
 
+
                                 db.collection("teams")
                                         .document(teamID)
                                         .collection("responsesToWalk")
@@ -622,14 +623,6 @@ public class TeamCollection {
                                                 Log.w(TAG, "Error writing document", e);
                                             }
                                         });
-
-
-
-
-
-
-
-
 
                             } else {
                                 Log.d(TAG, "No such document");

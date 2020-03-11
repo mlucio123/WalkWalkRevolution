@@ -412,6 +412,7 @@ public class TeamScreen extends AppCompatActivity {
             public void onClick(View v) {
                 TeamCollection tc = new TeamCollection();
                 tc.setUserResponseToWalk(deviceID, "join walk");
+
                 Toast.makeText(TeamScreen.this, "Joining Walk!", Toast.LENGTH_SHORT).show();
 
             }
