@@ -51,38 +51,39 @@
 
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="65sp"-->
-<!--        android:layout_marginLeft="30sp"-->
-<!--        android:layout_marginRight="30sp"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_gravity="center_horizontal">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65sp"
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
 
-<!--        <TextView-->
-<!--            android:id="@+id/startPositionEntry"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/lato"-->
-<!--            android:text="@string/start_position"-->
-<!--            android:textColor="@color/colorText"-->
-<!--            android:textSize="25sp" />-->
+        <TextView
+            android:id="@+id/startPositionEntry"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato"
+            android:text="@string/start_position"
+            android:textColor="@color/colorText"
+            android:textSize="25sp" />
 
-<!--        <EditText-->
-<!--            android:id="@+id/startPosition"-->
-<!--            android:layout_width="180sp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/lato_bold"-->
-<!--            android:hint="@string/start_position"-->
-<!--            android:inputType="text"-->
-<!--            android:background="@color/white"-->
-<!--            android:textColor="@color/colorAccent"-->
-<!--            android:textSize="25sp"-->
-<!--            android:importantForAutofill="no" />-->
+        <EditText
+            android:id="@+id/startPosition"
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_bold"
+            android:hint="@string/start_position"
+            android:inputType="text"
+            android:background="@color/white"
+            android:textColor="@color/colorAccent"
+            android:textSize="25sp"
+            android:importantForAutofill="no" />
 
-<!--    </LinearLayout>-->
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

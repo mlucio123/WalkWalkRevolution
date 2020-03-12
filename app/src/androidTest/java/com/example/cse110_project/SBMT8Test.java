@@ -43,6 +43,8 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class SBMT8Test {
 
+    /*
+
     @Rule
     public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
 
@@ -354,4 +356,6 @@ public class SBMT8Test {
             }
         };
     }
+
+     */
 }

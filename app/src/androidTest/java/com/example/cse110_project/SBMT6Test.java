@@ -44,6 +44,8 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class SBMT6Test {
 
+    /*
+
     @Rule
     public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
 
@@ -179,4 +181,6 @@ public class SBMT6Test {
             }
         };
     }
+
+     */
 }
