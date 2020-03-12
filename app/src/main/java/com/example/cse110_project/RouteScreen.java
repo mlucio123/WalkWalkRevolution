@@ -3,11 +3,9 @@ package com.example.cse110_project;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,17 +21,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cse110_project.Firebase.MyCallback;
 import com.example.cse110_project.Firebase.RouteCollection;
 import com.example.cse110_project.Firebase.TeamCollection;
-import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.example.cse110_project.utils.Route;
-import com.example.cse110_project.utils.Team;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -146,7 +140,7 @@ public class RouteScreen extends AppCompatActivity {
                                         Route testRoute = new Route("Regular Walk", "Stressman and Bragg");
                                         //routes.clear();
                                         //routes.add(testRoute);
-                                        addElement(testRoute, outer, true);
+                                        addElement(testRoute, outer, false);
                                         return;
                                     }
 
@@ -335,6 +329,11 @@ public class RouteScreen extends AppCompatActivity {
             Log.d(TAG, "GOT INTO ROUTE SCREEN FOR TEAMS AND GOT CREATED BY " + routeEntry.getCreatedBy());
 
             int[] colors = routeEntry.getColors();
+            if(testing) {
+                colors[0] = 144;
+                colors[1] = 144;
+                colors[2] = 144;
+            }
             //Log.d(TAG, "RECEIVED COLOR FOR THIS USER AS : " + colors.toString());
 
             int RGB = android.graphics.Color.argb(255, colors[0], colors[1], colors[2]);
