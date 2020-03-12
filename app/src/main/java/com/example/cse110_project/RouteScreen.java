@@ -32,6 +32,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +42,9 @@ import java.util.List;
 import static java.lang.Integer.valueOf;
 
 public class RouteScreen extends AppCompatActivity {
+
+    public static boolean isTesting = false;
+
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
     private Button addRoute;
@@ -114,6 +119,7 @@ public class RouteScreen extends AppCompatActivity {
 
 
                     }
+
                 });
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
@@ -129,9 +135,9 @@ public class RouteScreen extends AppCompatActivity {
                             TeamCollection tc = new TeamCollection();
                             Log.d(TAG, "GETTING TEAM ROUTES RIGHT HERE!");
                             tc.getTeamRoutesFromDevice(deviceID, new MyCallback() {
+
                                 @Override
                                 public void getRoutes(ArrayList<Route> routes) {
-
 
                                     LinearLayout outer = findViewById(R.id.teamrouteContain);
 
@@ -180,56 +186,6 @@ public class RouteScreen extends AppCompatActivity {
         });
 
     }
-
-    public void toggle_contents(Button exp, RelativeLayout hide){
-        if( hide.isShown()) {
-            hide.setVisibility(View.GONE);
-            exp.setText("Expand");
-        } else {
-            hide.setVisibility(View.VISIBLE);
-            exp.setText("Hide");
-        }
-    }
-
-    public void addMyRoutesTitle() {
-        TextView myRoutesTitle = new TextView(this);
-        int fontColor = Color.parseColor("#FFFFFFFF");
-        LinearLayout routeContain = findViewById(R.id.routeContain);
-
-        myRoutesTitle.setText("Your Routes");
-        myRoutesTitle.setTextSize(20);
-        myRoutesTitle.setTextColor(fontColor);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, .6f
-        );
-        myRoutesTitle.setLayoutParams(params);
-        myRoutesTitle.setGravity(Gravity.CENTER);
-
-
-        routeContain.addView(myRoutesTitle);
-    }
-
-    public void addTeamRoutestitle() {
-        TextView myRoutesTitle = new TextView(this);
-        int fontColor = Color.parseColor("#FFFFFFFF");
-        LinearLayout routeContain = findViewById(R.id.routeContain);
-
-        myRoutesTitle.setText("Your Team's Routes");
-        myRoutesTitle.setTextSize(20);
-        myRoutesTitle.setTextColor(fontColor);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, .6f
-        );
-        myRoutesTitle.setLayoutParams(params);
-        myRoutesTitle.setGravity(Gravity.CENTER);
-
-        routeContain.addView(myRoutesTitle);
-    }
-
 
     public void addElement(Route routeEntry, LinearLayout outer, boolean isTeam){
         int fontColor = Color.parseColor("#FFFFFFFF");
@@ -570,8 +526,14 @@ public class RouteScreen extends AppCompatActivity {
 //        int black = Color.parseColor("#ff000000");
         expand.setTextColor(fontColor);
         expand.setVisibility(View.VISIBLE);
-
+        if (isTesting) {
+            expand.performClick();
+        }
         LinearLayout btnHolder = new LinearLayout(this);
+
+        ImageView completedWalk = new ImageView(this);
+        Drawable prevWalkedCheck = getDrawable(R.drawable.ic_check_green_24dp);
+        completedWalk.setImageDrawable(prevWalkedCheck);
 
 
         /* DELETE ROUTE BUTTON */
@@ -627,12 +589,51 @@ public class RouteScreen extends AppCompatActivity {
             }
         });
 
+
+        /* Propose Walk Button */
+        final Button proposeWalkBtn = new Button(RouteScreen.this);
+        if(isTeam) {
+            proposeWalkBtn.setBackground(buttonBack);
+            proposeWalkBtn.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            proposeWalkBtn.setText("Propose Walk");
+            proposeWalkBtn.setId(R.id.proWalk);
+            proposeWalkBtn.setTag(routeEntry);
+            proposeWalkBtn.setVisibility(View.VISIBLE);
+            proposeWalkBtn.setTextColor(fontColor);
+            proposeWalkBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(RouteScreen.this, ProposeWalkScreen.class);
+                    Route dummy = (Route) view.getTag();
+                    intent.putExtra("routeID", dummy.getId());
+                    intent.putExtra("routeName", dummy.getName());
+                    intent.putExtra("routeStart", dummy.getStartingPoint());
+                    intent.putExtra("routeNotes", dummy.getNotes());
+                    intent.putExtra("lastCompletedTime", dummy.getLastCompletedTime());
+                    intent.putExtra("lastCompletedSteps", dummy.getLastCompletedSteps());
+                    intent.putExtra("lastCompletedDistance", dummy.getLastCompletedDistance());
+                    startActivity(intent);
+                }
+            });
+            if (isTesting == true) {
+                proposeWalkBtn.performClick();
+            }
+        }
+
+
+
         btnParams.setMargins(150, 50, 150, 0);
 
         btnHolder.setLayoutParams(btnParams);
         newButton.setLayoutParams(btnParams);
         deleteBtn.setLayoutParams(btnParams);
 
+        if(isTeam) {
+            proposeWalkBtn.setLayoutParams(btnParams);
+        }
 
 
         // ADD COMPLETED ELEMENTS
@@ -646,6 +647,9 @@ public class RouteScreen extends AppCompatActivity {
         hidden.addView(stepHolder);
         hidden.addView(newButton);
         hidden.addView(deleteBtn);
+        if(isTeam) {
+            hidden.addView(proposeWalkBtn);
+        }
         startEntry.addView(start);
         startEntry.addView(startDisplay);
 
@@ -656,6 +660,10 @@ public class RouteScreen extends AppCompatActivity {
 
         titleEntry.addView(title);
         titleEntry.addView(titleDisplay);
+
+        Log.d(TAG, "ROUTE: " + routeEntry.getName() + " is completed = " + routeEntry.getPrevWalked());
+
+        if(routeEntry.getPrevWalked()) titleEntry.addView(completedWalk);
         if (routeEntry.getFavorite()) {
             Log.d(TAG, routeEntry.getId() + " IS FAVORITE ");
             titleEntry.addView(favDisplay);
@@ -663,6 +671,7 @@ public class RouteScreen extends AppCompatActivity {
             Log.d(TAG, routeEntry.getId() + " IS NOT FAVORITE ");
         }
         container.addView(titleEntry);
+
         container.addView(startEntry);
         if(isTeam){
             container.addView(createdBy);
@@ -742,33 +751,5 @@ public class RouteScreen extends AppCompatActivity {
     public static int getRouteNumber() {
         return routesNum;
     }
-
-    /*@Override
-    public void onStart() {
-        /*Log.d(TAG, "Checking for google account");
-        super.onStart();
-        com.google.firebase.auth.FirebaseUser currUser;
-
-        com.google.android.gms.auth.api.signin.GoogleSignInAccount acct =
-                GoogleSignIn.getLastSignedInAccount(this);
-
-        if( acct == null ) {
-            Log.d(TAG, "account not found");
-        } else {
-            Log.d(TAG, "account found " + acct.getDisplayName());
-
-            com.google.firebase.auth.AuthCredential cred = GoogleAuthProvider.getCredential(acct.getIdToken(),null);
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            currUser = mAuth.getCurrentUser();
-
-            if(currUser == null ) {
-                Log.d(TAG, "user not found in firebase");
-            } else {
-                Log.d(TAG, "user found in firebase");
-                //update UI
-            }
-        }
-
-    }*/
 
 }
