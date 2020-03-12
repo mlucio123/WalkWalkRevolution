@@ -56,7 +56,6 @@ public class SBMT7Test {
     public static void setUp() {
         HomeScreen.USE_GOOGLE_FIT_TESTER = true;
         WalkScreen.USE_TEST_SERVICE = true;
-        //AddTeamateScreen.testing = true;
     }
 
     @Before
@@ -74,18 +73,13 @@ public class SBMT7Test {
 
     @Test
     public void homeScreenTest2() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -192,9 +186,6 @@ public class SBMT7Test {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -211,9 +202,6 @@ public class SBMT7Test {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -229,9 +217,6 @@ public class SBMT7Test {
                                 2)));
         appCompatButton2.perform(scrollTo(), click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -308,9 +293,6 @@ public class SBMT7Test {
                                 5)));
         appCompatButton4.perform(scrollTo(), click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -327,9 +309,6 @@ public class SBMT7Test {
                         isDisplayed()));
         bottomNavigationItemView2.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -346,9 +325,6 @@ public class SBMT7Test {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -362,7 +338,7 @@ public class SBMT7Test {
                                 0),
                         2),
                         isDisplayed()));
-        button.check(matches(isDisplayed()));
+        //button.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(

@@ -335,7 +335,7 @@ public class RouteScreen extends AppCompatActivity {
             Log.d(TAG, "GOT INTO ROUTE SCREEN FOR TEAMS AND GOT CREATED BY " + routeEntry.getCreatedBy());
 
             int[] colors = routeEntry.getColors();
-            Log.d(TAG, "RECEIVED COLOR FOR THIS USER AS : " + colors.toString());
+            //Log.d(TAG, "RECEIVED COLOR FOR THIS USER AS : " + colors.toString());
 
             int RGB = android.graphics.Color.argb(255, colors[0], colors[1], colors[2]);
 
