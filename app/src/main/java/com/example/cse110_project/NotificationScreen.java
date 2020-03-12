@@ -94,6 +94,11 @@ public class NotificationScreen extends AppCompatActivity {
 
         //retrieve  query results asynchronously using query.get()
         query.addSnapshotListener((newChatSnapShot, error) -> {
+
+            if(newChatSnapShot == null) {
+                return;
+            }
+
             for (DocumentSnapshot document : newChatSnapShot.getDocuments()) {
                 document.getReference().collection("invitations")
                         .get()
