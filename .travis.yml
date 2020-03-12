@@ -42,7 +42,8 @@ branches:
   only:
     - "master"
     - "staging"
-    - "testing"
+    - "featureProposeWalk"
+    - "feature/UnitTest/zx"
 
 jobs:
   include:

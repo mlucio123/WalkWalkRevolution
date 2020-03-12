@@ -35,7 +35,7 @@ public class ProposeWalkScreenUnitTest {
 
         submitBtn = proposeWalkScreen.findViewById(R.id.submitBtn);
         routeName = (EditText) proposeWalkScreen.findViewById(R.id.routeName);
-        startPosition = (EditText) proposeWalkScreen.findViewById(R.id.startPosition);
+        //startPosition = (EditText) proposeWalkScreen.findViewById(R.id.startPosition);
         hour = (EditText) proposeWalkScreen.findViewById(R.id.hour);
         minute = (EditText) proposeWalkScreen.findViewById(R.id.minute);
     }
@@ -49,14 +49,14 @@ public class ProposeWalkScreenUnitTest {
         });
     }
 
-    @Test
-    public void testStartPosition() {
-        scenario.onActivity(proposeWalkScreen -> {
-            init(proposeWalkScreen);
-            startPosition.setText("Home");
-            assertEquals("Home", startPosition.getText().toString());
-        });
-    }
+//    @Test
+//    public void testStartPosition() {
+//        scenario.onActivity(proposeWalkScreen -> {
+//            init(proposeWalkScreen);
+//            startPosition.setText("Home");
+//            assertEquals("Home", startPosition.getText().toString());
+//        });
+//    }
 
     @Test
     public void testHour() {

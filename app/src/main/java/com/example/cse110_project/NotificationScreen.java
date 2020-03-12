@@ -84,6 +84,32 @@ public class NotificationScreen extends AppCompatActivity {
         subscribeToNotificationsTopic();
 
         Log.d("Notification: ", "This is user's id " + currUserID);
+        if (currUserID != "") {
+            rest(chat, currentDeviceID);
+        }
+
+//        addWalkElement(example);
+ //       subscribeToNotificationsTopic();
+    }
+
+    private void subscribeToNotificationsTopic() {
+        String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
+
+   /*     FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
+                .addOnCompleteListener(task -> {
+                            String msg = "Subscribed to notifications";
+                            if (!task.isSuccessful()) {
+                                msg = "Subscribe to notifications failed";
+                            }
+                            Log.d(TAG, msg);
+                            Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                );
+
+    */
+    }
+
+    private void rest(CollectionReference crChat, String currUserID) {
         chat = FirebaseFirestore.getInstance().collection("users");
 
         // Create a query against the collection.
@@ -200,23 +226,23 @@ public class NotificationScreen extends AppCompatActivity {
     }
 
 
-    private void subscribeToNotificationsTopic() {
-
-
-        FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
-                .addOnCompleteListener(task -> {
-                            String msg = "Subscribed to notifications";
-                            if (!task.isSuccessful()) {
-                                msg = "Subscribe to notifications failed";
-                            }
-                            Log.d(TAG, msg);
-                            Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
-                        }
-                );
-
-
-    }
-
+//    private void subscribeToNotificationsTopic() {
+//
+//
+//        FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
+//                .addOnCompleteListener(task -> {
+//                            String msg = "Subscribed to notifications";
+//                            if (!task.isSuccessful()) {
+//                                msg = "Subscribe to notifications failed";
+//                            }
+//                            Log.d(TAG, msg);
+//                            Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
+//                        }
+//                );
+//
+//
+//
+//    }
 
 
     protected void addWalkElement(WalkNotification notif){
