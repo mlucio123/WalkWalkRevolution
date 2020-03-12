@@ -37,7 +37,7 @@ import static java.lang.Integer.valueOf;
 
 public class RouteScreen extends AppCompatActivity {
 
-    public static boolean isTesting = false;
+    public static boolean testing = false;
 
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
@@ -48,7 +48,6 @@ public class RouteScreen extends AppCompatActivity {
 
     private ArrayList<Route> currentRoutes;
     private static int routesNum = 0;
-    public static boolean testing = false;
     private String TAG = "ROUTE SCREEN: ";
 
     private Route dummyRoute;
@@ -525,7 +524,7 @@ public class RouteScreen extends AppCompatActivity {
 //        int black = Color.parseColor("#ff000000");
         expand.setTextColor(fontColor);
         expand.setVisibility(View.VISIBLE);
-        if (isTesting) {
+        if (testing) {
             expand.performClick();
         }
         LinearLayout btnHolder = new LinearLayout(this);
@@ -617,7 +616,7 @@ public class RouteScreen extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            if (isTesting == true) {
+            if (testing == true) {
                 proposeWalkBtn.performClick();
             }
         }

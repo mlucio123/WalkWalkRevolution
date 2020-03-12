@@ -1,7 +1,6 @@
 package com.example.cse110_project;
 
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -12,12 +11,9 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.example.cse110_project.utils.AccessSharedPrefs;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -56,16 +52,10 @@ public class SBMT10Test {
     public static void setUp() {
         HomeScreen.USE_GOOGLE_FIT_TESTER = true;
         WalkScreen.USE_TEST_SERVICE = true;
-        RouteScreen.isTesting = true;
+        RouteScreen.testing = true;
     }
 
     @Before
-    public void setSharedPrefs() {
-        Log.d("SAVING", "PREFS");
-        AccessSharedPrefs.setUserInfo(mActivityTestRule.getActivity(), "z",
-                "x", 6, 6);
-    }
-
     @After
     public void clearSharedPreferences() {
         mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)

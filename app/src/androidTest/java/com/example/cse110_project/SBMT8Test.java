@@ -31,7 +31,6 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -57,7 +56,7 @@ public class SBMT8Test {
     public static void setUp() {
         HomeScreen.USE_GOOGLE_FIT_TESTER = true;
         WalkScreen.USE_TEST_SERVICE = true;
-        RouteScreen.isTesting = true;
+        RouteScreen.testing = true;
     }
 
     @Before
