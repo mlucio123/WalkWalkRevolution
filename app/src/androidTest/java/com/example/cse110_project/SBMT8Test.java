@@ -43,7 +43,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class SBMT8Test {
 
-    /*
+    private static final String TAG = "SBMT8";
 
     @Rule
     public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
@@ -75,11 +75,9 @@ public class SBMT8Test {
 
     @Test
     public void temp() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+
         try {
-            Thread.sleep(7000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -184,11 +182,8 @@ public class SBMT8Test {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -203,11 +198,8 @@ public class SBMT8Test {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -221,11 +213,8 @@ public class SBMT8Test {
                                 2)));
         appCompatButton2.perform(scrollTo(), click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -284,7 +273,7 @@ public class SBMT8Test {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -303,10 +292,11 @@ public class SBMT8Test {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        Log.d(TAG, "After 2nd to last sleep");
 
         ViewInteraction bottomNavigationItemView3 = onView(
                 allOf(withId(R.id.navigation_routes),
@@ -318,24 +308,14 @@ public class SBMT8Test {
                         isDisplayed()));
         bottomNavigationItemView3.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        Log.d(TAG, "After last sleep");
 
-        ViewInteraction button2 = onView(
-                allOf(withId(R.id.submitBtn),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                4),
-                        isDisplayed()));
-        button2.check(matches(isDisplayed()));
+
     }
 
     private static Matcher<View> childAtPosition(
@@ -356,6 +336,4 @@ public class SBMT8Test {
             }
         };
     }
-
-     */
 }
