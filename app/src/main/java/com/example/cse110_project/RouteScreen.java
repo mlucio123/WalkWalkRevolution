@@ -42,6 +42,9 @@ import java.util.List;
 import static java.lang.Integer.valueOf;
 
 public class RouteScreen extends AppCompatActivity {
+
+    public static boolean isTesting = false;
+
     private String fitnessServiceKey = "GOOGLE_FIT";
     private BottomNavigationView bottomNavigationView;
     private Button addRoute;
@@ -523,7 +526,9 @@ public class RouteScreen extends AppCompatActivity {
 //        int black = Color.parseColor("#ff000000");
         expand.setTextColor(fontColor);
         expand.setVisibility(View.VISIBLE);
-
+        if (isTesting) {
+            expand.performClick();
+        }
         LinearLayout btnHolder = new LinearLayout(this);
 
         ImageView completedWalk = new ImageView(this);
@@ -594,6 +599,7 @@ public class RouteScreen extends AppCompatActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT
             ));
             proposeWalkBtn.setText("Propose Walk");
+            proposeWalkBtn.setId(R.id.proWalk);
             proposeWalkBtn.setTag(routeEntry);
             proposeWalkBtn.setVisibility(View.VISIBLE);
             proposeWalkBtn.setTextColor(fontColor);
@@ -612,6 +618,9 @@ public class RouteScreen extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            if (isTesting == true) {
+                proposeWalkBtn.performClick();
+            }
         }
 
 
