@@ -60,6 +60,7 @@ public class TeamNotificationScreen extends AppCompatActivity {
                 .whereEqualTo("deviceID", deviceId)
                 .addSnapshotListener((userSnapShot, error) -> {
                     for (DocumentSnapshot userDoc : userSnapShot.getDocuments()){
+                        if (userDoc.get("teamID") != null){
                 String teamID = userDoc.get("teamID").toString();
                 DocumentReference team = db.collection("teams")
                         .document(teamID);
@@ -101,7 +102,7 @@ public class TeamNotificationScreen extends AppCompatActivity {
                                         });
                                     });
                                 });
-            }
+                } }
         });
 
 
