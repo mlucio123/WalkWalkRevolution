@@ -22,9 +22,11 @@ public class ProposeWalkScreenUnitTest {
     private ActivityScenario<ProposeWalkScreen> scenario;
     private Button submitBtn;
     private EditText routeName;
-    private EditText startPosition;
+    //private EditText startPosition;
     private EditText hour;
     private EditText minute;
+    private EditText month;
+    private EditText day;
 
     @Before
     public void setup() {
@@ -34,10 +36,12 @@ public class ProposeWalkScreenUnitTest {
     private void init(ProposeWalkScreen proposeWalkScreen) {
 
         submitBtn = proposeWalkScreen.findViewById(R.id.submitBtn);
-        routeName = (EditText) proposeWalkScreen.findViewById(R.id.routeName);
-        startPosition = (EditText) proposeWalkScreen.findViewById(R.id.startPosition);
+        routeName = (EditText) proposeWalkScreen.findViewById(R.id.walkName);
+        //startPosition = (EditText) proposeWalkScreen.findViewById(R.id.startPosition);
         hour = (EditText) proposeWalkScreen.findViewById(R.id.hour);
         minute = (EditText) proposeWalkScreen.findViewById(R.id.minute);
+        month = (EditText) proposeWalkScreen.findViewById(R.id.month);
+        day = (EditText) proposeWalkScreen.findViewById(R.id.day);
     }
 
     @Test
@@ -49,14 +53,6 @@ public class ProposeWalkScreenUnitTest {
         });
     }
 
-    @Test
-    public void testStartPosition() {
-        scenario.onActivity(proposeWalkScreen -> {
-            init(proposeWalkScreen);
-            startPosition.setText("Home");
-            assertEquals("Home", startPosition.getText().toString());
-        });
-    }
 
     @Test
     public void testHour() {
@@ -73,6 +69,32 @@ public class ProposeWalkScreenUnitTest {
             init(proposeWalkScreen);
             minute.setText("30");
             assertEquals("30", minute.getText().toString());
+        });
+    }
+
+    @Test
+    public void testMonth() {
+        scenario.onActivity(proposeWalkScreen -> {
+            init(proposeWalkScreen);
+            month.setText("03");
+            assertEquals("03", month.getText().toString());
+        });
+    }
+
+    @Test
+    public void testDay() {
+        scenario.onActivity(proposeWalkScreen -> {
+            init(proposeWalkScreen);
+            day.setText("15");
+            assertEquals("15", day.getText().toString());
+        });
+    }
+
+    @Test
+    public void testSubmitBtn() {
+        scenario.onActivity(proposeWalkScreen -> {
+            init(proposeWalkScreen);
+            assertEquals("Submit", submitBtn.getText().toString());
         });
     }
 }

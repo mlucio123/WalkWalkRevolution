@@ -3,6 +3,7 @@ package com.example.cse110_project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -48,7 +49,6 @@ public class ProposeWalkScreen extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 String res = validate();
 
@@ -144,7 +144,6 @@ public class ProposeWalkScreen extends AppCompatActivity {
         return "SUCCESS";
 
     }
-
 
 
 }

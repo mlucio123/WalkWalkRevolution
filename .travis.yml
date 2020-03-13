@@ -42,7 +42,7 @@ branches:
   only:
     - "master"
     - "staging"
-    - "testing"
+    - "featureProposeWalk"
 
 jobs:
   include:

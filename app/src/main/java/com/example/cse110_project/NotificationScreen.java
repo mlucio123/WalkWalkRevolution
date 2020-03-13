@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.Firebase.FirebaseMessageService;
@@ -22,6 +23,8 @@ import com.example.cse110_project.notifications.WalkNotification;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -46,6 +49,9 @@ public class NotificationScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        FirebaseApp.initializeApp(NotificationScreen.this);
+
         setContentView(R.layout.notification_screen);
         cancel = (ImageButton) findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +90,32 @@ public class NotificationScreen extends AppCompatActivity {
         subscribeToNotificationsTopic();
 
         Log.d("Notification: ", "This is user's id " + currUserID);
+        if (currUserID != "") {
+            rest(chat, currentDeviceID);
+        }
+
+//        addWalkElement(example);
+ //       subscribeToNotificationsTopic();
+    }
+
+    private void subscribeToNotificationsTopic() {
+        String currUserID = AccessSharedPrefs.getUserID(NotificationScreen.this);
+
+   /*     FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
+                .addOnCompleteListener(task -> {
+                            String msg = "Subscribed to notifications";
+                            if (!task.isSuccessful()) {
+                                msg = "Subscribe to notifications failed";
+                            }
+                            Log.d(TAG, msg);
+                            Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                );
+
+    */
+    }
+
+    private void rest(CollectionReference crChat, String currUserID) {
         chat = FirebaseFirestore.getInstance().collection("users");
 
         // Create a query against the collection.
@@ -200,23 +232,23 @@ public class NotificationScreen extends AppCompatActivity {
     }
 
 
-    private void subscribeToNotificationsTopic() {
-
-
-        FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
-                .addOnCompleteListener(task -> {
-                            String msg = "Subscribed to notifications";
-                            if (!task.isSuccessful()) {
-                                msg = "Subscribe to notifications failed";
-                            }
-                            Log.d(TAG, msg);
-                            Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
-                        }
-                );
-
-
-    }
-
+//    private void subscribeToNotificationsTopic() {
+//
+//
+//        FirebaseMessaging.getInstance().subscribeToTopic(currUserID)
+//                .addOnCompleteListener(task -> {
+//                            String msg = "Subscribed to notifications";
+//                            if (!task.isSuccessful()) {
+//                                msg = "Subscribe to notifications failed";
+//                            }
+//                            Log.d(TAG, msg);
+//                            Toast.makeText(NotificationScreen.this, msg, Toast.LENGTH_SHORT).show();
+//                        }
+//                );
+//
+//
+//
+//    }
 
 
     protected void addWalkElement(WalkNotification notif){

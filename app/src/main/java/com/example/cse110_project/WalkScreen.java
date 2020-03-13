@@ -86,7 +86,7 @@ public class WalkScreen extends AppCompatActivity {
          * Create and start fitnessService
          */
         is_test = getIntent().getBooleanExtra("is_test", USE_TEST_SERVICE);
-        fitnessService = FitnessServiceFactory.create(this, false);
+        fitnessService = FitnessServiceFactory.create(this, USE_TEST_SERVICE);
         fitnessService.setup();
 
         startButton = findViewById(R.id.startWalkMaterial);

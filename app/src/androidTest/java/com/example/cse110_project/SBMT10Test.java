@@ -1,7 +1,6 @@
 package com.example.cse110_project;
 
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -12,12 +11,9 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.example.cse110_project.utils.AccessSharedPrefs;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -56,16 +52,10 @@ public class SBMT10Test {
     public static void setUp() {
         HomeScreen.USE_GOOGLE_FIT_TESTER = true;
         WalkScreen.USE_TEST_SERVICE = true;
-        RouteScreen.isTesting = true;
+        RouteScreen.testing = true;
     }
 
     @Before
-    public void setSharedPrefs() {
-        Log.d("SAVING", "PREFS");
-        AccessSharedPrefs.setUserInfo(mActivityTestRule.getActivity(), "z",
-                "x", 6, 6);
-    }
-
     @After
     public void clearSharedPreferences() {
         mActivityTestRule.getActivity().getSharedPreferences("user_info", MODE_PRIVATE)
@@ -74,11 +64,9 @@ public class SBMT10Test {
 
     @Test
     public void sBMT10() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -163,11 +151,8 @@ public class SBMT10Test {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -182,11 +167,8 @@ public class SBMT10Test {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -200,11 +182,8 @@ public class SBMT10Test {
                                 2)));
         appCompatButton2.perform(scrollTo(), click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -279,11 +258,8 @@ public class SBMT10Test {
                                 5)));
         appCompatButton4.perform(scrollTo(), click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -298,14 +274,35 @@ public class SBMT10Test {
                         isDisplayed()));
         bottomNavigationItemView2.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        //TODO : open expandable
+
+        /*
+        ViewInteraction button2 = onView(
+                allOf(withText("BUTTON"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.teamrouteContain),
+                                        0),
+                                4),
+                        isDisplayed()));
+        button2.perform(click());
+
+
+        ViewInteraction button3 = onView(
+                allOf(withText("PROPOSE WALK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.teamrouteContain),
+                                        0),
+                                4),
+                        isDisplayed()));
+        button3.perform(click());
 
         ViewInteraction appCompatEditText13 = onView(
                 allOf(withId(R.id.walkName),
@@ -397,36 +394,12 @@ public class SBMT10Test {
                         isDisplayed()));
         appCompatButton5.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-//        ViewInteraction button2 = onView(
-//                allOf(withId(R.id.scheduleWalkBtn), withText("Schedule Walk"),
-//                        childAtPosition(
-//                                allOf(withId(R.id.proposedWalkLayout),
-//                                        childAtPosition(
-//                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-//                                                1)),
-//                                9),
-//                        isDisplayed()));
-//        button2.check(matches(isDisplayed()));
-//
-//        ViewInteraction button3 = onView(
-//                allOf(withId(R.id.withdrawWalkBtn),
-//                        childAtPosition(
-//                                allOf(withId(R.id.proposedWalkLayout),
-//                                        childAtPosition(
-//                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-//                                                1)),
-//                                10),
-//                        isDisplayed()));
-//        button3.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton6 = onView(
                 allOf(withId(R.id.scheduleWalkBtn), withText("Schedule Walk"),
@@ -437,6 +410,8 @@ public class SBMT10Test {
                                                 1)),
                                 12)));
         appCompatButton6.perform(scrollTo(), click());
+        
+         */
     }
 
     private static Matcher<View> childAtPosition(
