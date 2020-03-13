@@ -5,19 +5,20 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.cse110_project.utils.Route;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import com.example.cse110_project.utils.Route;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RouteCollection {
@@ -46,15 +47,18 @@ public class RouteCollection {
 
 
     /* add routes along with device ID */
-    public void addRoute(Route addRoute, String deviceID, String initial, int[] colors) {
+    public void addRoute(Route addRoute, String deviceID, String initial, int[] colors,
+                         String timer, String steps, String distance) {
 
         Map<String, Object> route = addRoute.getFeatureMap();
+        route.put("initials", initial);
         route.put("deviceID", deviceID);
         route.put("createdBy", initial);
         route.put("red", colors[0]);
         route.put("green", colors[1]);
         route.put("blue", colors[2]);
         Log.d(TAG, "Adding COLORS to Route: " + colors[0] +", " + colors[1] + ", " + colors[2]);
+
 
          // Add a new document with a generated ID
         db.collection("routes")
@@ -63,6 +67,11 @@ public class RouteCollection {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with Route-ID: " + documentReference.getId());
+
+                        addRoute.setId(documentReference.getId());
+                        //addToCompletedRoutes(deviceID, documentReference.getId(), addRoute.getLastCompletedTime(),
+                                //addRoute.getLastCompletedDistance(), addRoute.getLastCompletedSteps());
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -74,15 +83,45 @@ public class RouteCollection {
     }
 
 
+
     /* Update walking stats to existing routes */
-    public void updateRouteStats(String id, String lastCompletedTime, String lastCompletedSteps, String lastCompletedDistance) {
+    public void updateRouteStats(String id, String deviceID, String lastCompletedTime, String lastCompletedSteps, String lastCompletedDistance, String initials) {
+
+        //if route not is already completed, add to completed routes
+
+        addToCompletedRoutes(id, deviceID, lastCompletedSteps, lastCompletedDistance, lastCompletedTime);
 
         db.collection("routes").document(id)
                 .update(
                         "lastCompletedTime", lastCompletedTime,
                         "lastCompletedSteps", lastCompletedSteps,
-                        "lastCompletedDistance", lastCompletedDistance
+                        "lastCompletedDistance", lastCompletedDistance,
+                        "initials", initials
                 );
+    }
+
+    public void addToCompletedRoutes(String routeID, String deviceID, String steps, String distance,
+                                     String time) {
+        Log.d(TAG, "saving route " + routeID + " to user " + deviceID);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("distance", distance);
+        map.put("steps", steps);
+        map.put("time", time);
+
+        db.collection("users")
+                .document(deviceID)
+                .collection("completedRoutes")
+                .document(routeID)
+                .set(map);
+
+
+        db.collection("routes")
+                .document(routeID)
+                .collection("completedUsers")
+                .document(deviceID)
+                .set(map);
+
     }
 
 
@@ -107,42 +146,84 @@ public class RouteCollection {
     /* Get routes for current device */
     public void getRoutes(String deviceID, final MyCallback myCallback){
 
-        db.collection("routes")
-                .whereEqualTo("deviceID", deviceID)
+        ArrayList<String> completedRoutesID = new ArrayList<>();
+        HashMap<String, QueryDocumentSnapshot> statsMap = new HashMap<>();
+
+        db.collection("users")
+                .document(deviceID)
+                .collection("completedRoutes")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            ArrayList<Route> routesSimpleList = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                try {
-                                    Route newRoute = makeRoute(document);
-                                    Log.d(TAG, "DATA: " + document.getData());
-                                    qryRoutes.add(makeRoute(document));
-                                    routesSimpleList.add(makeRoute(document));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Log.d(TAG, "THIS ROUTE CAN't be ADDED");
-                                }
+                            Log.d(TAG, "Completed Routes: ");
 
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, "Completed this route " + document.getId() + " by " + deviceID);
+                                Log.d(TAG, "with stats as " + document.getData());
+                                completedRoutesID.add(document.getId());
+                                statsMap.put(document.getId(), document);
                             }
-                            myCallback.getRoutes(routesSimpleList);
-                            Log.d(TAG, "CURRENT LIST OF ROUTES: " + qryRoutes.size());
+
+                            db.collection("routes")
+                                    .whereEqualTo("deviceID", deviceID)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                ArrayList<Route> routesSimpleList = new ArrayList<>();
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    try {
+                                                        //Route newRoute = makeRoute(document);
+                                                        Log.d(TAG, "DATA: " + document.getData());
+
+                                                        if(completedRoutesID.contains(document.getId())) {
+                                                            QueryDocumentSnapshot statsDoc = statsMap.get(document.getId());
+                                                            routesSimpleList.add(makeRoute(document,deviceID, true, statsDoc));
+                                                        } else {
+                                                            routesSimpleList.add(makeRoute(document, deviceID, false, null));
+                                                        }
+
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                        Log.d(TAG, "THIS ROUTE CAN't be ADDED");
+                                                    }
+
+                                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                                }
+
+                                                Log.d(TAG, "CURRENT LIST OF ROUTES: " + routesSimpleList.size());
+                                                for(Route curr : routesSimpleList) {
+                                                    Log.d(TAG, curr.getName() + " " + curr.getId());
+                                                }
+                                                myCallback.getRoutes(routesSimpleList);
+
+                                            } else {
+                                                Log.w(TAG, "Error getting documents.", task.getException());
+                                            }
+                                        }
+                                    });
 
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
+
+
     }
 
 
     /* This method makes Route object from returning query document snapshot */
-    private Route makeRoute(QueryDocumentSnapshot qry){
+    private Route makeRoute(QueryDocumentSnapshot qry, String deviceID, boolean hasWalked, QueryDocumentSnapshot statsMap){
+
 
         try {
+
             Route newRoute;
             String id = qry.getId();
 
@@ -260,6 +341,17 @@ public class RouteCollection {
                 }
             }
 
+            Log.d(TAG, "checking prev walked from make route");
+
+            if(hasWalked) {
+                Log.d(TAG, "THIS USER WALKED ON THIS ROUTE: " + id);
+                Log.d(TAG, statsMap.getData().toString());
+                newRoute.setLastCompletedDistance(statsMap.getData().get("distance").toString());
+                newRoute.setLastCompletedSteps(statsMap.getData().get("steps").toString());
+                newRoute.setLastCompletedTime(statsMap.getData().get("time").toString());
+                newRoute.setPrevWalked(true);
+            }
+
             newRoute.setId(id);
             return newRoute;
 
@@ -269,6 +361,33 @@ public class RouteCollection {
             return null;
         }
 
+    }
+
+    public void checkPrevWalked(String routeID, String deviceID, Route route) {
+        Log.d(TAG, "checking route with ID:  " + routeID);
+        db.collection("users")
+                .document(deviceID)
+                .collection("completedRoutes")
+                .document(routeID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+             @Override
+             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                 DocumentSnapshot doc = task.getResult();
+                 if(doc.exists()) {
+                     Log.d(TAG, "route is prev completed with ID: " + doc.getId());
+                     String lastCompletedDist = (String) doc.get("distance");
+                     String lastCompletedSteps = (String) doc.get("steps");
+                     String lastCompletedTime = (String) doc.get("time");
+                     route.setLastCompletedDistance(lastCompletedDist);
+                     route.setLastCompletedSteps(lastCompletedSteps);
+                     route.setLastCompletedTime(lastCompletedTime);
+                     route.setPrevWalked(true);
+                     Log.d(TAG, "prev walk exist with");
+                     Log.d(TAG, "steps: " + lastCompletedSteps);
+                     Log.d(TAG, "dist: " + lastCompletedDist);
+                     Log.d(TAG, "time: " + lastCompletedTime);
+                 }
+             }
+         });
     }
 
 

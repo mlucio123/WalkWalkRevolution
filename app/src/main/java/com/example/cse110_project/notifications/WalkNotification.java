@@ -7,9 +7,9 @@ public class WalkNotification implements Notification {
     private String fromName;
     private String walkTitle;
     private String date;
-    private boolean result;
+    private String result;
 
-    public WalkNotification(boolean creator, String fromName, String walkTitle, String date, boolean result) {
+    public WalkNotification(boolean creator, String fromName, String walkTitle, String date, String result) {
         this.isCreator = creator;
         this.type = Notification.NotifType.WalkNotification;
         this.fromName = fromName;
@@ -33,6 +33,12 @@ public class WalkNotification implements Notification {
     public String getFromName(){
         return this.fromName;
     }
+
+    @Override
+    public String getResult() {return this.result;}
+
+    @Override
+    public boolean getIsCreator(){return this.isCreator;}
 
 
     public String getMessage(){

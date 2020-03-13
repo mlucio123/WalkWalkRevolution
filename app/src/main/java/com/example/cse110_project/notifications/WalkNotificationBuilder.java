@@ -5,7 +5,7 @@ public class WalkNotificationBuilder extends AbstractNotificationBuilder {
     private String walkTitleString;
     private String fromNameString;
     private String  date;
-    private boolean res;
+    private String res;
 
     public WalkNotificationBuilder walkTitle(String walkTitleString){
         this.walkTitleString = walkTitleString;
@@ -23,7 +23,7 @@ public class WalkNotificationBuilder extends AbstractNotificationBuilder {
         this.date = date;
         return this;
     }
-    public WalkNotificationBuilder result(boolean res){
+    public WalkNotificationBuilder result(String res){
         this.res = res;
         return this;
     }

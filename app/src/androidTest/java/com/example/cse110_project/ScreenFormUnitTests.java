@@ -44,7 +44,7 @@ public class ScreenFormUnitTests {
                 RouteCollection routeCol = new RouteCollection();
                 String deviceID = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
                 Route testRoute = new Route(name, location);
-                routeCol.addRoute(testRoute, deviceID,initials,colors);
+                routeCol.addRoute(testRoute, deviceID,initials,colors, "", "", "");
 
                 RouteCollection routec = new RouteCollection();
                 ArrayList<Route> routeArr = routec.qryRoutes;
