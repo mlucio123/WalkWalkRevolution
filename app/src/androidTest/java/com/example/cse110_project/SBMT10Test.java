@@ -280,6 +280,30 @@ public class SBMT10Test {
             e.printStackTrace();
         }
 
+        //TODO : open expandable
+
+        /*
+        ViewInteraction button2 = onView(
+                allOf(withText("BUTTON"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.teamrouteContain),
+                                        0),
+                                4),
+                        isDisplayed()));
+        button2.perform(click());
+
+
+        ViewInteraction button3 = onView(
+                allOf(withText("PROPOSE WALK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.teamrouteContain),
+                                        0),
+                                4),
+                        isDisplayed()));
+        button3.perform(click());
+
         ViewInteraction appCompatEditText13 = onView(
                 allOf(withId(R.id.walkName),
                         childAtPosition(
@@ -386,6 +410,8 @@ public class SBMT10Test {
                                                 1)),
                                 12)));
         appCompatButton6.perform(scrollTo(), click());
+        
+         */
     }
 
     private static Matcher<View> childAtPosition(
