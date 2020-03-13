@@ -36,6 +36,7 @@ public class TeamScreenUnitTest {
     public void test() {
         scenario.onActivity(teamScreen -> {
             init(teamScreen);
+            title = teamScreen.findViewById(R.id.teamTitle);
             assertEquals("Team", title.getText().toString());
         });
     }
