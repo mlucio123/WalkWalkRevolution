@@ -74,20 +74,9 @@ public class SBMT11Test {
 
     @Test
     public void sBMT11Test() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -172,11 +161,8 @@ public class SBMT11Test {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -191,11 +177,8 @@ public class SBMT11Test {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -210,7 +193,7 @@ public class SBMT11Test {
                         isDisplayed()));
         textView.check(matches(withText("Start Position:")));
 
-        ViewInteraction textView2 = onView(
+        /*ViewInteraction textView2 = onView(
                 allOf(withText("y"),
                         childAtPosition(
                                 childAtPosition(
@@ -228,7 +211,7 @@ public class SBMT11Test {
                                         1),
                                 1),
                         isDisplayed()));
-        textView3.perform(click());
+        textView3.perform(click());*/
     }
 
     private static Matcher<View> childAtPosition(

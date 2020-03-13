@@ -44,8 +44,6 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class SBMT6Test {
 
-    /*
-
     @Rule
     public ActivityTestRule<HomeScreen> mActivityTestRule = new ActivityTestRule<>(HomeScreen.class);
 
@@ -149,18 +147,6 @@ public class SBMT6Test {
                                 2),
                         isDisplayed()));
         bottomNavigationItemView3.perform(click());
-
-        SystemClock.sleep(5000);
-
-        ViewInteraction button = onView(
-                allOf(withText("Expand"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        3),
-                                0),
-                        isDisplayed()));
-        button.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
@@ -182,5 +168,4 @@ public class SBMT6Test {
         };
     }
 
-     */
 }
