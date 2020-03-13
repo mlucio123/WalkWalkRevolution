@@ -36,7 +36,7 @@ public class ProposeWalkScreenUnitTest {
     private void init(ProposeWalkScreen proposeWalkScreen) {
 
         submitBtn = proposeWalkScreen.findViewById(R.id.submitBtn);
-        routeName = (EditText) proposeWalkScreen.findViewById(R.id.routeName);
+        routeName = (EditText) proposeWalkScreen.findViewById(R.id.walkName);
         //startPosition = (EditText) proposeWalkScreen.findViewById(R.id.startPosition);
         hour = (EditText) proposeWalkScreen.findViewById(R.id.hour);
         minute = (EditText) proposeWalkScreen.findViewById(R.id.minute);

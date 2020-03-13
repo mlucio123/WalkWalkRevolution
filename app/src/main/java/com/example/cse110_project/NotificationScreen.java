@@ -24,6 +24,7 @@ import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,6 +49,9 @@ public class NotificationScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        FirebaseApp.initializeApp(NotificationScreen.this);
+
         setContentView(R.layout.notification_screen);
         cancel = (ImageButton) findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
