@@ -48,8 +48,8 @@ public class NotificationScreenTest {
     @Test
     public void testEmptyScreen() {
         scenario.onActivity(activity -> {
-            String currUserID = AccessSharedPrefs.getUserID(activity);
-            firebase.whereEqualTo("");
+            init(activity);
+            assertEquals("Notifications", textView.getText().toString());
         });
 
     }
