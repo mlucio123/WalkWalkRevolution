@@ -42,7 +42,7 @@ branches:
   only:
     - "master"
     - "staging"
-    - "featureProposeWalk"
+    - "milestone2_delivery"
 
 jobs:
   include:
