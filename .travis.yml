@@ -43,7 +43,6 @@ branches:
     - "master"
     - "staging"
     - "featureProposeWalk"
-    - "feature/UnitTest/zx"
 
 jobs:
   include:

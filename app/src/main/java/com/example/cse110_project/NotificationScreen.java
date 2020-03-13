@@ -50,6 +50,9 @@ public class NotificationScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        FirebaseApp.initializeApp(NotificationScreen.this);
+
         setContentView(R.layout.notification_screen);
         cancel = (ImageButton) findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
