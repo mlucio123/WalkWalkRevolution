@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cse110_project.Firebase.FirebaseMessageService;
 import com.example.cse110_project.notifications.InviteNotification;
+import com.example.cse110_project.notifications.Notification;
 import com.example.cse110_project.notifications.WalkNotification;
 import com.example.cse110_project.utils.AccessSharedPrefs;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -62,8 +63,10 @@ public class NotificationScreen extends AppCompatActivity {
             }
         });
 
+
         String currentDeviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        FirebaseApp.initializeApp(this);
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
